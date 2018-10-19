@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MapView from 'react-native-maps';
+import { Header } from 'react-native-elements';
 
 export default class App extends React.Component {
   constructor() {
@@ -25,6 +26,11 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={{ width: '100%', height: '100%' }}>
+        <Header
+          leftComponent={{ icon: 'menu', color: '#fff' }}
+          centerComponent={{ text: 'PETER PARKER', style: { color: '#fff' } }}
+          rightComponent={{ icon: 'home', color: '#fff' }}
+        />
         <MapView
           style={styles.map}
           initialRegion={{
@@ -43,5 +49,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
+    marginTop: 65
   },
 });
