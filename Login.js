@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MapView from 'react-native-maps';
 import Logo from './Logo'
-
+import LoginButton from './LoginButton'
+import RegisterSection from './RegisterSection'
+import Form from './Form'
 export default class Login extends React.Component {
   constructor() {
     super();
@@ -14,13 +15,10 @@ export default class Login extends React.Component {
   render() {
     return (
       <View style={styles.fullscreen_container}>
-      <Logo/>
-      {/* <Form/> */}
-      {/* <Username/>
-      <Password/>
-      <LoginButton/>
-      <RegisterLink/>
-      <ResetPassLink/> */}
+        <Logo />
+        <Form />
+        <RegisterSection />
+        <LoginButton />
       </View>
     );
   }
