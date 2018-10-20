@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import MapView from 'react-native-maps';
+import {  Text, View, StatusBar } from 'react-native';
+// import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { Header, PricingCard } from 'react-native-elements';
 import Dashboard from './Dashboard.js';
+// import OrderHistory from './OrderHistory.js';
+// import { StackNavigator } from 'react-navigation';
+import styles from './styles.js'
+import { DashboardStack } from './router.js'
 
 let users = [
   {
@@ -124,10 +128,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  map: {
-    ...StyleSheet.absoluteFillObject,
-    marginTop: 65
-  },
-});

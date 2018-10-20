@@ -1,14 +1,36 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, StatusBar, Button } from 'react-native';
-
+import { Text, View, Image, Button } from 'react-native';
+import {  List, ListItem } from 'react-native-elements';
+import styles from './styles.js'
 
 
 export default class Dashboard extends React.Component {
-
   
-
+  
+  
   render() {
     
+    
+    const list = [
+      {
+        title: 'Order History',
+        icon: 'receipt',
+        navigate: 'OrderHistory'
+      },
+      {
+        title: 'Rent History',
+        icon: ''
+      },
+      {
+        title: 'My Spots',
+        icon: ''
+      },
+      {
+        title: 'Add a spot',
+        icon: ''
+      },
+      
+    ]
     // vehicleSize(size) {
     //   switch (size) {
     //     case 'small':
@@ -48,105 +70,20 @@ export default class Dashboard extends React.Component {
         </View>
 
         <View style={styles.body}>
-          <View style={styles.item}>
-            <View style={styles.iconContent}>
-              <Image style={styles.icon} source={{uri: 'https://png.icons8.com/home/win8/50/ffffff'}}/>
-            </View>
-            <View style={styles.infoContent}>
-              <Text style={styles.info}>Home</Text>
-            </View>
-          </View>
-
-          <View style={styles.item}>
-            <View style={styles.iconContent}>
-              <Image style={styles.icon} source={{uri: 'https://png.icons8.com/settings/win8/50/ffffff'}}/>
-            </View>
-            <View style={styles.infoContent}>
-              <Text style={styles.info}>Your Spots</Text>
-            </View>
-          </View>
-
-            <View style={styles.item}>
-            <View style={styles.iconContent}>
-              <Image style={styles.icon} source={{uri: 'https://png.icons8.com/color/50/000000/purchase-order.png'}}/>
-            </View>
-            <View style={styles.infoContent}>
-              <Text style={styles.info}>Order History</Text>
-            </View>
-          </View>
-
-          <View style={styles.bottom_button}>
-            <Button
-              onPress={(e) => console.log('pressed')}
-              title="Add a Spot"
-              color="blue"
-              accessibilityLabel="Add a spot to rent"
-            />
-          </View>          
-        </View>
+          <List>
+            {
+              list.map((item) => (
+              <ListItem
+                key={item.title}
+                title={item.title}
+                // onPress={() => this.props.navigation.navigate({item.navigate})}
+                // leftIcon={{name: item.icon}}
+              />
+              ))
+            }
+          </List>  
+        </View> 
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  header:{
-    backgroundColor: "#DCDCDC",
-  },
-  headerContent:{
-    padding:30,
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-    // borderRadius: 63,
-    // borderWidth: 4,
-    // borderColor: "white",
-    marginBottom:10,
-  },
-  name:{
-    fontSize:22,
-    color:"#000000",
-    fontWeight:'600',
-  },
-  userInfo:{
-    fontSize:16,
-    color:"#778899",
-    fontWeight:'600',
-  },
-  body:{
-    backgroundColor: "#778899",
-    height:500,
-    // alignItems:'center',
-  },
-  item:{
-    flexDirection : 'row',
-  },
-  infoContent:{
-    flex:1,
-    alignItems:'flex-start',
-    paddingLeft:5
-  },
-  iconContent:{
-    flex:1,
-    alignItems:'flex-end',
-    paddingRight:5,
-  },
-  icon:{
-    width:30,
-    height:30,
-    marginTop:20,
-  },
-  info:{
-    fontSize:18,
-    marginTop:20,
-    color: "#FFFFFF",
-  },
-  bottom_button:{
-    position: 'absolute',
-    backgroundColor: 'red',
-    width: '100%',
-    bottom: 0,
-  }
-});
