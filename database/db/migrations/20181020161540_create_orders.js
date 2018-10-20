@@ -2,9 +2,9 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('orders', function (table) {
     table.increments();
     table.integer('renter_id').unsigned().notNullable();
-    table.foreign('renter_id').references('users.id');
+    table.foreign('renter_id').references('users.id').onDelete('CASCADE').onUpdate('CASCADE');;
     table.integer('lot_id').unsigned().notNullable();
-    table.foreign('lot_id').references('lots.id');
+    table.foreign('lot_id').references('lots.id').onDelete('CASCADE').onUpdate('CASCADE');;
     table.dateTime('start_time').notNullable();
     table.dateTime('end_time').notNullable();
     table.string('total').unsigned();

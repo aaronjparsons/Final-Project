@@ -5,8 +5,7 @@ exports.up = function(knex, Promise) {
     table.increments();
     table.integer('owner_id').unsigned().notNullable();
     table.integer('contract_id').unsigned().notNullable();
-    table.foreign('owner_id').references('users.id');
-    table.foreign('contract_id').references('contracts.id');
+    table.foreign('contract_id').references('contracts.id').onDelete('CASCADE').onUpdate('CASCADE');
     table.string('set_price').notNullable();
     table.boolean('is_available');
     table.string('picture_src');
