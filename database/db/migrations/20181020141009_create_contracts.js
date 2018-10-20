@@ -1,10 +1,9 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('contracts', function (table) {
-  
     table.increments();
     table.integer("owner_id").unsigned().notNullable();
-    table.foreign('owner_id').references('users.id').onDelete('CASCADE');
+    table.foreign('owner_id').references('users.id');
     table.timestamp('start_date').notNullable();
     table.timestamp('end_date').notNullable();
     table.text('description');
