@@ -1,5 +1,6 @@
 import React from 'react';
-import { PricingCard } from 'react-native-elements';
+import { View } from 'react-native';
+import { PricingCard, Button } from 'react-native-elements';
 
 class InfoCard extends React.Component {
   constructor(props) {
@@ -8,12 +9,15 @@ class InfoCard extends React.Component {
 
   render() {
     return (
-      <PricingCard
-        color='#4f9deb'
-        price= {`$${this.props.info.price}/hour`}/*'$1.25/hour'*/
-        info={['Plug available', '12345 12 Street']}
-        button={{ title: 'PARK HERE' }}
-      />
+      <View>
+        <PricingCard
+          color='#4f9deb'
+          price={`$${this.props.info.price}/hour`}
+          info={['Plug Available', '12345 98 Ave']}
+          button={{ title: 'PARK HERE' }}
+          onButtonPress={this.props.buttonPressed}
+        />
+      </View>
     );
   }
 }
