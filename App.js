@@ -5,6 +5,19 @@ import { Marker } from 'react-native-maps';
 import { Header, PricingCard } from 'react-native-elements';
 import Dashboard from './Dashboard.js';
 
+let users = [
+  {
+    id: 1,
+    first_name: 'Some',
+    last_name: 'Guy',
+    email: 'test@test.ca',
+    phone_number: '403-111-1111',
+    license_plate: 'BJW-1819',
+    car_size: 'medium',
+    password: 'something',
+  }
+]
+
 export default class App extends React.Component {
   constructor() {
     super();
@@ -84,7 +97,7 @@ export default class App extends React.Component {
           centerComponent={{ text: 'PETER PARKER', style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
         />
-        <Dashboard />
+        <Dashboard user={users[0]} />
 {/*          
         <MapView
           style={styles.map}
