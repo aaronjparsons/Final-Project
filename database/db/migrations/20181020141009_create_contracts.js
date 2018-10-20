@@ -4,13 +4,13 @@ exports.up = function(knex, Promise) {
     table.increments();
     table.integer("owner_id").unsigned().notNullable();
     table.foreign('owner_id').references('users.id');
-    table.timestamp('start_date').notNullable();
-    table.timestamp('end_date').notNullable();
+    table.dateTime('start_date').notNullable();
+    table.dateTime('end_date').notNullable();
     table.text('description');
     table.json('location').notNullable();
     table.string('price').notNullable();
     table.integer('total_lots').unsigned().notNullable();
-    table.timestamp("date_created").defaultTo(knex.fn.now());
+    table.dateTime("date_created").defaultTo(knex.fn.now());
   }).then(function(){
     console.log('table created');
   })
