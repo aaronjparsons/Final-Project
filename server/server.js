@@ -8,7 +8,7 @@ const spotsArray = [
     longitude: -114.0593,
     title: 'title',
     description: "description",
-    price: 1
+    price: 1.00
   },
   {
     id : 2,
@@ -16,7 +16,7 @@ const spotsArray = [
     longitude: -114.0493,
     title: 'title',
     description: "description",
-    price: 2
+    price: 2.00
   },
   {
     id: 3,

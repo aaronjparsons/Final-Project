@@ -20,7 +20,7 @@ export default class App extends React.Component {
       markers: [],
       cardPressed: false,
       popUpInfo: {
-        price: 0,
+        price: 1.25,
         info: ['Plug available', '12345 12 Street']
       }
     }
@@ -28,6 +28,16 @@ export default class App extends React.Component {
   }
 
   renderCard(data) {  
+    this.state.markers.find((marker) => {
+      if (data.id === marker.id) {
+        this.setState({
+          popUpInfo: {
+            price: marker.price,
+            info: ['Plug available', '12345 12 Street']
+          }
+        });
+      }
+    });
     if (!this.state.cardPressed) {
       this.setState({
         cardPressed: true
@@ -62,7 +72,7 @@ export default class App extends React.Component {
           centerComponent={{ text: 'PETER PARKER', style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
         />
-        {this.state.cardPressed &&  <InfoCard /> }
+        {this.state.cardPressed &&  <InfoCard info={this.state.popUpInfo}/> }
         <MapView
           style={styles.map}
           initialRegion={this.state.region}

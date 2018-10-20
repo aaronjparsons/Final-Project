@@ -10,7 +10,7 @@ class InfoCard extends React.Component {
     return (
       <PricingCard
         color='#4f9deb'
-        price='$1.25/hour'
+        price= {`$${this.props.info.price}/hour`}/*'$1.25/hour'*/
         info={['Plug available', '12345 12 Street']}
         button={{ title: 'PARK HERE' }}
       />
