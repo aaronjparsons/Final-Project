@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { Header } from 'react-native-elements';
+import InfoCard from './InfoCard';
 
 export default class App extends React.Component {
   constructor() {
@@ -16,34 +17,24 @@ export default class App extends React.Component {
       },
       latitude: 0,
       longitude: 0,
-      markers: [{
-        id: 1,
-        longitude: 51.0478,
-        latitude: -114.0593,
-        title: 'title',
-        description: "description"
-      }],
+      markers: [],
+      cardPressed: false,
+      popUpInfo: {
+        price: 0,
+        info: ['Plug available', '12345 12 Street']
+      }
     }
-    this.socket = new WebSocket("ws://172.16.203.34:8000/");;
+    this.socket = new WebSocket("ws://172.16.203.34:8000/");
   }
 
-  onRegionChange(region) {
-    this.setState({ region });
+  renderCard(data) {  
+    if (!this.state.cardPressed) {
+      this.setState({
+        cardPressed: true
+      });
+    }
   }
-
-  createMarkers() {
-    this.state.markers.map((marker) => {
-      console.log('marker console log', marker);
-      return (
-        <Marker
-          key={marker.id}
-          coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
-          title={marker.title}
-          description={marker.description}
-        />
-      );
-    });
-  }
+  
 
   componentDidMount() {
     this.socket.onopen = (event) => {
@@ -51,7 +42,8 @@ export default class App extends React.Component {
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      // this.setState({markers: data});
+      console.log(data);
+      this.setState({markers: data});
     }
 
     navigator.geolocation.getCurrentPosition(function(e) {
@@ -63,8 +55,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    const markers = this.createMarkers();
-
     return (
       <View style={{ width: '100%', height: '100%' }}>
         <Header
@@ -72,13 +62,22 @@ export default class App extends React.Component {
           centerComponent={{ text: 'PETER PARKER', style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
         />
+        {this.state.cardPressed &&  <InfoCard /> }
         <MapView
           style={styles.map}
-          region={this.state.region}
-          // onRegionChange = {this.onRegionChange}
+          initialRegion={this.state.region}
           showsUserLocation={true}
+          onPress={() => {if (this.state.cardPressed) {this.setState({cardPressed: false})}}}
         >
-          {markers}
+        {this.state.markers.map(marker => {
+          return (
+            <Marker
+              key={marker.id}
+              coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
+              onPress={() => this.renderCard({id: marker.id})}
+            />
+          );
+        })}
         </MapView>
       </View>
     );
