@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import { Header } from 'react-native-elements';
+import { Header, PricingCard } from 'react-native-elements';
+import Dashboard from './Dashboard.js';
 
 export default class App extends React.Component {
   constructor() {
@@ -24,7 +25,7 @@ export default class App extends React.Component {
         description: "description"
       }],
     }
-    this.socket = new WebSocket("ws://172.16.203.34:8000/");;
+    this.socket = new WebSocket("ws://172.16.80.107:3001/");;
   }
 
   onRegionChange(region) {
@@ -43,6 +44,17 @@ export default class App extends React.Component {
         />
       );
     });
+  }
+
+  createPriceCard() {
+    return (
+      <PricingCard   
+        color='#4f9deb'
+        title='Free'
+        price='$0'
+        info={['1 User', 'Basic Support', 'All Core Features']}
+        button={{ title: 'GET STARTED', icon: 'flight-takeoff' }}/>
+    )
   }
 
   componentDidMount() {
@@ -72,14 +84,29 @@ export default class App extends React.Component {
           centerComponent={{ text: 'PETER PARKER', style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
         />
+        <Dashboard />
+{/*          
         <MapView
           style={styles.map}
           region={this.state.region}
           // onRegionChange = {this.onRegionChange}
           showsUserLocation={true}
         >
-          {markers}
-        </MapView>
+          {this.state.markers.map(marker => {
+          return (
+          <MapView.Marker
+            id={'1'}
+            coordinate={{latitude: 51.0478,
+              longitude: -114.0593}}
+            title={'12-12 Street S.W.'}
+            description={'Parking Lot'}
+            pinColor={'orange'}
+            flat={false}
+            // image={'./assets/parkinglines.jpg'}
+            onPress={this.createPriceCard}
+          />)
+          })}
+        </MapView> */}
       </View>
     );
   }
