@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, Button } from 'react-native';
 import {  List, ListItem } from 'react-native-elements';
-import styles from './styles.js'
+import styles from '../styles.js'
 
 
 export default class Dashboard extends React.Component {
@@ -19,15 +19,18 @@ export default class Dashboard extends React.Component {
       },
       {
         title: 'Rent History',
-        icon: ''
+        icon: '',
+        navigate: 'RentHistory'
       },
       {
         title: 'My Spots',
-        icon: ''
+        icon: '',
+        navigate: 'MySpots'
       },
       {
         title: 'Add a spot',
-        icon: ''
+        icon: '',
+        navigate: 'AddASpot'
       },
       
     ]
@@ -76,7 +79,7 @@ export default class Dashboard extends React.Component {
               <ListItem
                 key={item.title}
                 title={item.title}
-                // onPress={() => this.props.navigation.navigate({item.navigate})}
+                onPress={() => this.props.navigation.navigate(item.navigate)}
                 // leftIcon={{name: item.icon}}
               />
               ))
