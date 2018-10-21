@@ -1,16 +1,17 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import MapView from 'react-native-maps';
-import { Header } from 'react-native-elements';
-
+import React from "react";
+import { StyleSheet, View, Image } from "react-native";
+import Login from "./src/Components/Login";
+import { createDrawerNavigator, DrawerItems } from "react-navigation";
+import Home from "./src/Components/Home";
+import { Container, Content, Header, Body } from "native-base";
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
       latitude: 0,
       longitude: 0,
-      statusBarHeight: 1,
-    }
+      statusBarHeight: 1
+    };
   }
 
   componentDidMount() {
@@ -25,30 +26,50 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={{ width: '100%', height: '100%' }}>
-        <Header
-          leftComponent={{ icon: 'menu', color: '#fff' }}
-          centerComponent={{ text: 'PETER PARKER', style: { color: '#fff' } }}
-          rightComponent={{ icon: 'home', color: '#fff' }}
-        />
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: 51.0478,
-            longitude: -114.0593,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.1,
-          }}
-          showsUserLocation={true}
-        />
+      <View style={{ width: "100%", height: "100%" }}>
+        <MyApp />
       </View>
     );
   }
 }
+const CustomDrawerContentComponent = props => (
+  <Container>
+    <Header style={{ height: 200 }}>
+      <Body>
+        <Image
+          style={styles.drawerImage}
+          source={require("./assets/peter.jpg")}
+        />
+      </Body>
+    </Header>
+    <Content>
+      <DrawerItems {...props} />
+    </Content>
+  </Container>
+);
+const MyApp = createDrawerNavigator(
+  {
+    Home: {
+      screen: Home
+    },
+    Logout: {
+      screen: Login
+    }
+  },
+  {
+    InitalRouteName: "Account",
+    contentComponent: CustomDrawerContentComponent,
+    drawerOpenRoute: "DrawerOpen",
+    drawerCloseRoute: "DrawerClose",
+    drawerToggleRoute: "DrawerToggle"
+  }
+);
 
 const styles = StyleSheet.create({
-  map: {
-    ...StyleSheet.absoluteFillObject,
-    marginTop: 65
-  },
+  drawerImage: {
+    height: 150,
+    width: 150,
+    borderRadius: 75,
+    marginLeft: 45
+  }
 });
