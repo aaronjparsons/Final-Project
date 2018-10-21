@@ -1,13 +1,17 @@
 import React from 'react';
 import {  Text, View, StatusBar } from 'react-native';
-// import MapView from 'react-native-maps';
+import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { Header, PricingCard } from 'react-native-elements';
-import Dashboard from './Dashboard.js';
-// import OrderHistory from './OrderHistory.js';
-// import { StackNavigator } from 'react-navigation';
+import Dashboard from './screens/Dashboard.js';
+import OrderHistory from './screens/OrderHistory.js';
+import MySpots from './screens/MySpots.js';
+import AddASpot from './screens/AddASpot.js';
+import RentHistory from './screens/RentHistory.js'
 import styles from './styles.js'
-import { DashboardStack } from './router.js'
+// import { DashboardStack } from './config/router.js'
+import { createStackNavigator } from 'react-navigation';
+
 
 let users = [
   {
@@ -22,7 +26,7 @@ let users = [
   }
 ]
 
-export default class App extends React.Component {
+class HomeScreen extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -101,7 +105,7 @@ export default class App extends React.Component {
           centerComponent={{ text: 'PETER PARKER', style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
         />
-        <Dashboard user={users[0]} />
+        <Dashboard navigation={this.props.navigation} user={users[0]} />
 {/*          
         <MapView
           style={styles.map}
@@ -126,5 +130,34 @@ export default class App extends React.Component {
         </MapView> */}
       </View>
     );
+  }
+}
+
+const RootStack = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+    },
+    OrderHistory: {
+      screen: OrderHistory,
+    },
+    RentHistory: {
+      screen: RentHistory,
+    },
+    MySpots: {
+      screen: MySpots,
+    },
+    AddASpot: {
+      screen: AddASpot,
+    }
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
+
+export default class App extends React.Component {
+  render() {
+    return <RootStack />;
   }
 }
