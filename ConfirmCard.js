@@ -12,9 +12,9 @@ class InfoCard extends React.Component {
       <View>
         <PricingCard
           color='#4f9deb'
-          price={`$${this.props.info.price}/hour`}
-          info={['Plug Available', '12345 98 Ave']}
-          button={{ title: 'PARK HERE' }}
+          price='Confirm?'
+          info={[`$${this.props.info.price}/hour`, '12345 98 Ave']}
+          button={{ title: 'Confirm Parking' }}
           onButtonPress={this.props.buttonPressed}
         />
       </View>

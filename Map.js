@@ -4,25 +4,28 @@ import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import * as Animatable from 'react-native-animatable';
 import InfoCard from './InfoCard';
+import ConfirmCard from './ConfirmCard';
 
 class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cardPressed: false,
-      popUpInfo: {
+      parkPressed: false,
+      spotInfo: {
         price: 1.25,
         info: ['Plug available', '12345 12 Street']
       }
     }
     this.removeCard = this.removeCard.bind(this);
+    this.parkHerePressed = this.parkHerePressed.bind(this);
   }
 
-  showCard(data) {  
+  showCard(data) {
     this.props.markers.find((marker) => {
       if (data.id === marker.id) {
         this.setState({
-          popUpInfo: {
+          spotInfo: {
             price: marker.price,
             info: ['Plug available', '12345 12 Street']
           }
@@ -39,15 +42,29 @@ class Map extends React.Component {
 
   removeCard() {
     if (this.state.cardPressed) {
-      this.refs.infocard.bounceOut(600);
+      this.refs.infocard.bounceOut(500);
       setTimeout(() => { 
         this.setState({cardPressed: false});
-      }, 1000);
+      }, 700);
+    }
+    if (this.state.parkPressed) {
+      this.refs.confirmcard.bounceOut(500);
+      setTimeout(() => { 
+        this.setState({parkPressed: false});
+      }, 700);
     }
   }
 
   parkHerePressed() {
-    console.log('PARK HERE');
+    this.removeCard();
+    if (!this.state.parkPressed) {
+      setTimeout(() => {
+        this.refs.confirmcard.bounceIn(1000);
+        this.setState({
+          parkPressed: true
+        });
+      }, 700);
+    }
   }
 
   render() {
@@ -75,7 +92,10 @@ class Map extends React.Component {
         })}
         </MapView>
         <Animatable.View ref="infocard">
-            {this.state.cardPressed &&  <InfoCard info={this.state.popUpInfo} buttonPressed={this.parkHerePressed}/> }
+            {this.state.cardPressed &&  <InfoCard info={this.state.spotInfo} buttonPressed={this.parkHerePressed}/> }
+        </Animatable.View>
+        <Animatable.View ref="confirmcard">
+            {this.state.parkPressed &&  <ConfirmCard info={this.state.spotInfo} buttonPressed={this.parkHerePressed}/> }
         </Animatable.View>
       </View>
     );
