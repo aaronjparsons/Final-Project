@@ -1,4 +1,7 @@
 import React from 'react';
+import { MyApp } from './config/router.js'
+import { View } from "react-native";
+
 // import {  Text, View, StatusBar } from 'react-native';
 // import { Header, PricingCard } from 'react-native-elements';
 // import MapView from 'react-native-maps';
@@ -10,90 +13,20 @@ import React from 'react';
 // import RentHistory from './screens/RentHistory.js'
 // import styles from './styles.js'
 // import { createStackNavigator } from 'react-navigation';
-import RootStack from './config/router.js'
+// import Map from './src/Components/Map'
+// import Login from "./src/Components/Login";
+// import { createDrawerNavigator, DrawerItems } from "react-navigation";
+// import Home from "./src/Components/Home";
+// import { Container, Content, Header, Body } from "native-base";
+// import HeaderNavigation from './src/Components/Home.js'
 
-import Map from './Map'
-
-
-import React from "react";
-import { StyleSheet, View, Image } from "react-native";
-import Login from "./src/Components/Login";
-import { createDrawerNavigator, DrawerItems } from "react-navigation";
-import Home from "./src/Components/Home";
-import { Container, Content, Header, Body } from "native-base";
 export default class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      markers: [],
-    }
-    this.socket = new WebSocket("ws://172.16.203.34:8000/");
-  }
-
-  componentDidMount() {
-    this.socket.onopen = (event) => {
-    };
-
-    this.socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log(data);
-      this.setState({markers: data});
-    }
-  }
 
   render() {
     return (
-      <View style={{ width: '100%', height: '100%' }}>
-        <Header
-          leftComponent={{ icon: 'menu', color: '#fff' }}
-          centerComponent={{ text: 'PETER PARKER', style: { color: '#fff' } }}
-          rightComponent={{ icon: 'home', color: '#fff' }}
-        />
-        <Map markers={this.state.markers} />
       <View style={{ width: "100%", height: "100%" }}>
         <MyApp />
       </View>
     );
   }
 }
-const CustomDrawerContentComponent = props => (
-  <Container>
-    <Header style={{ height: 200 }}>
-      <Body>
-        <Image
-          style={styles.drawerImage}
-          source={require("./assets/peter.jpg")}
-        />
-      </Body>
-    </Header>
-    <Content>
-      <DrawerItems {...props} />
-    </Content>
-  </Container>
-);
-const MyApp = createDrawerNavigator(
-  {
-    Home: {
-      screen: Home
-    },
-    Logout: {
-      screen: Login
-    }
-  },
-  {
-    InitalRouteName: "Account",
-    contentComponent: CustomDrawerContentComponent,
-    drawerOpenRoute: "DrawerOpen",
-    drawerCloseRoute: "DrawerClose",
-    drawerToggleRoute: "DrawerToggle"
-  }
-);
-
-const styles = StyleSheet.create({
-  drawerImage: {
-    height: 150,
-    width: 150,
-    borderRadius: 75,
-    marginLeft: 45
-  }
-});
