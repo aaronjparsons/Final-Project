@@ -1,10 +1,9 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import * as Animatable from 'react-native-animatable';
+import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import InfoCard from './InfoCard';
-import ConfirmCard from './ConfirmCard';
 
 class Map extends React.Component {
   constructor(props) {
@@ -17,8 +16,7 @@ class Map extends React.Component {
         info: ['Plug available', '12345 12 Street']
       }
     }
-    this.removeCard = this.removeCard.bind(this);
-    this.parkHerePressed = this.parkHerePressed.bind(this);
+    this.markerPressed = this.markerPressed.bind(this);
   }
 
   showCard(data) {
@@ -32,42 +30,21 @@ class Map extends React.Component {
         });
       }
     });
-    if (!this.state.cardPressed) {
-      this.refs.infocard.bounceIn(1000);
-      this.setState({
-        cardPressed: true
-      });
-    }
   }
 
-  removeCard() {
-    if (this.state.cardPressed) {
-      this.refs.infocard.bounceOut(500);
-      setTimeout(() => { 
-        this.setState({cardPressed: false});
-      }, 700);
-    }
-    if (this.state.parkPressed) {
-      this.refs.confirmcard.bounceOut(500);
-      setTimeout(() => { 
-        this.setState({parkPressed: false});
-      }, 700);
-    }
+  markerPressed(data) {
+    this.popupDialog.show()
   }
 
-  parkHerePressed() {
-    this.removeCard();
-    if (!this.state.parkPressed) {
-      setTimeout(() => {
-        this.refs.confirmcard.bounceIn(1000);
-        this.setState({
-          parkPressed: true
-        });
-      }, 700);
-    }
+  parkPressed() {
+    console.log('park pressed');
   }
 
   render() {
+    const slideAnimation = new SlideAnimation({
+      slideFrom: 'top',
+    });
+
     return (
       <View style={{width: '100%', height: '100%'}}>
         <MapView
@@ -86,17 +63,21 @@ class Map extends React.Component {
             <Marker
               key={marker.id}
               coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
-              onPress={() => this.showCard({id: marker.id})}
+              onPress={() => this.markerPressed(marker)}
             />
           );
         })}
         </MapView>
-        <Animatable.View ref="infocard">
-            {this.state.cardPressed &&  <InfoCard info={this.state.spotInfo} buttonPressed={this.parkHerePressed}/> }
-        </Animatable.View>
-        <Animatable.View ref="confirmcard">
-            {this.state.parkPressed &&  <ConfirmCard info={this.state.spotInfo} buttonPressed={this.parkHerePressed}/> }
-        </Animatable.View>
+
+        <View style={styles.popupContainer}>
+          <PopupDialog 
+            ref={(popupDialog) => { this.popupDialog = popupDialog; }} 
+            dialogAnimation={slideAnimation} 
+            dialogStyle={styles.dialog}>
+            <InfoCard info={this.state.spotInfo} parkPressed={this.parkPressed}/>
+          </PopupDialog>
+        </View>
+      
       </View>
     );
   }
@@ -107,5 +88,15 @@ export default Map;
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  popupContainer: {
+    height: '100%',
+    width: '100%',
+  },
+  dialog: {
+    position: 'absolute', 
+    top: '4%', 
+    width: '90%', 
+    height: '38%'
   },
 });
