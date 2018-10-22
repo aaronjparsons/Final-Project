@@ -15,13 +15,17 @@ export default CurrentRental;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#99cc00',
+    backgroundColor: '#1194F6',
     margin: '5%',
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#0773c5'
   },
   text: {
     fontSize: 20,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: 'bold'
   }
 });
