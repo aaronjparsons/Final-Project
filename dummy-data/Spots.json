@@ -1,30 +1,30 @@
 [
   {
-    "id" : 1,
-    "longitude": 51.0478,
-    "latitude": -114.0593,
-    "owner": 1,
-    "status": "open"
+    "id": 1,
+    "latitude": 51.0478,
+    "longitude": -114.0593,
+    "title": "title",
+    "description": "description"
   },
   {
     "id" : 2,
-    "longitude": 51.0278,
-    "latitude": -114.0493,
-    "owner": 1,
-    "status": "open"
+    "latitude": 51.0278,
+    "longitude": -114.0493,
+    "title": "title",
+    "description": "description"
   },
   {
-    "id" : 3,
-    "longitude": 51.0538,
-    "latitude": -114.0123,
-    "owner": 1,
-    "status": "open"
+    "id": 3,
+    "latitude": 51.0538,
+    "longitude": -114.0123,
+    "title": "title",
+    "description": "description"
   },
   {
-    "id" : 4,
-    "longitude": 51.0522,
-    "latitude": -114.0519,
-    "owner": 1,
-    "status": "open"
+    "id": 4,
+    "latitude": 51.0522,
+    "longitude": -114.0519,
+    "title": "title",
+    "description": "description"
   }
 ]

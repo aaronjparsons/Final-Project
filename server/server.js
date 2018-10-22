@@ -4,36 +4,40 @@ const WebSocket = require('ws');
 const spotsArray = [
   {
     id: 1,
-    longitude: 51.0478,
-    latitude: -114.0593,
+    latitude: 51.0478,
+    longitude: -114.0593,
     title: 'title',
-    description: "description"
+    description: "description",
+    price: 1.00
   },
   {
     id : 2,
-    longitude: 51.0278,
-    latitute: -114.0493,
+    latitude: 51.0278,
+    longitude: -114.0493,
     title: 'title',
-    description: "description"
+    description: "description",
+    price: 2.00
   },
   {
     id: 3,
-    longitude: 51.0538,
-    latitute: -114.0123,
+    latitude: 51.0538,
+    longitude: -114.0123,
     "title": 'title',
-    "description": "description"
+    "description": "description",
+    price: 1.25
   },
   {
     id: 4,
-    longitude: 51.0522,
-    latitude: -114.0519,
+    latitude: 51.0522,
+    longitude: -114.0519,
     title: 'title',
-    description: "description"
+    description: "description",
+    price: 1.75
   }
 ];
 
 // Set the port to 3001
-const PORT = 8000;
+const PORT = 3001;
 
 // Create a new express server
 const server = express()
