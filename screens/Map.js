@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import InfoCard from '../Components/InfoCard';
+import ConfirmCard from '../Components/ConfirmCard';
 
 class Map extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Map extends Component {
     }
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
-    this.resetCard = this.resetCard.bind(this);
+    this.parkingConfirmComplete = this.parkingConfirmComplete.bind(this);
   }
 
   showCard(data) {
@@ -67,19 +68,22 @@ class Map extends Component {
   }
 
   markerPressed(data) {
-    this.popupDialog.show()
+    this.infoPopup.show()
   }
-  
+
   parkButtonPressed() {
     console.log('park pressed');
+    this.infoPopup.dismiss(() => {
+      setTimeout(() => {
+        this.confirmPopup.show();
+      },200);
+    });    
   }
 
-  resetCard() {
-    this.setState({
-      parkPressed: false
-    });
+  parkingConfirmComplete() {
+    console.log('PAYMENT COMPLETE');
+    this.confirmPopup.dismiss();
   }
-
 
   render() {
     const slideAnimation = new SlideAnimation({
@@ -112,11 +116,16 @@ class Map extends Component {
 
         <View style={styles.popupContainer}>
           <PopupDialog 
-            ref={(popupDialog) => { this.popupDialog = popupDialog; }} 
+            ref={(infoPopup) => { this.infoPopup = infoPopup; }} 
             dialogAnimation={slideAnimation} 
-            dialogStyle={styles.dialog}
-            onDismissed={this.resetCard}>
-            <InfoCard info={this.state.spotInfo} parkPressed={this.state.parkPressed} parkButtonPressed={this.parkButtonPressed} />
+            dialogStyle={styles.dialog}>
+            <InfoCard info={this.state.spotInfo} parkButtonPressed={this.parkButtonPressed} />
+          </PopupDialog>
+          <PopupDialog 
+            ref={(confirmPopup) => { this.confirmPopup = confirmPopup; }} 
+            dialogAnimation={slideAnimation} 
+            dialogStyle={styles.dialog}>
+            <ConfirmCard info={this.state.spotInfo} parkingConfirmComplete={this.parkingConfirmComplete}/>
           </PopupDialog>
         </View>
       

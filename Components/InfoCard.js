@@ -6,15 +6,6 @@ class InfoCard extends React.Component {
     super(props);
   }
 
-
-  confirmPressed() {
-    console.log('CONFIRM!!');
-  }
-
-  componentDidMount() {
-    console.log('card rendered');
-  }
-
   render() {
     return (
       <View style={styles.popup}>
