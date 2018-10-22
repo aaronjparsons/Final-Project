@@ -4,6 +4,7 @@ import MapView, { Marker } from 'react-native-maps';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import InfoCard from '../Components/InfoCard';
 import ConfirmCard from '../Components/ConfirmCard';
+import CurrentRental from '../Components/CurrentRental';
 
 class Map extends Component {
   constructor(props) {
@@ -47,7 +48,8 @@ class Map extends Component {
       spotInfo: {
         price: 1.25,
         info: ['Plug available', '12345 12 Street']
-      }
+      },
+      spotRented: false
     }
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
@@ -83,6 +85,9 @@ class Map extends Component {
   parkingConfirmComplete() {
     console.log('PAYMENT COMPLETE');
     this.confirmPopup.dismiss();
+    this.setState({
+      spotRented: true
+    })
   }
 
   render() {
@@ -113,6 +118,8 @@ class Map extends Component {
           );
         })}
         </MapView>
+
+        {this.state.spotRented && <CurrentRental />}
 
         <View style={styles.popupContainer}>
           <PopupDialog 
