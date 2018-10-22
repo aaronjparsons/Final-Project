@@ -96,7 +96,7 @@ class Map extends Component {
     });
 
     return (
-      <View style={{width: '100%', height: '100%'}}>
+      <View style={{width: '100%', height: '100%', alignItems: 'center'}}>
         <MapView
           style={styles.map}
           initialRegion={{
@@ -119,7 +119,7 @@ class Map extends Component {
         })}
         </MapView>
 
-        {this.state.spotRented && <CurrentRental />}
+        <View style={styles.currentRental}>{this.state.spotRented && <CurrentRental />}</View>
 
         <View style={styles.popupContainer}>
           <PopupDialog 
@@ -157,4 +157,8 @@ const styles = StyleSheet.create({
     width: '90%', 
     height: '38%'
   },
+  currentRental: {
+    position: 'absolute',
+    bottom: 0
+  }
 });
