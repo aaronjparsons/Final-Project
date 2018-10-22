@@ -1,16 +1,25 @@
 import React from 'react';
 import { Text, View, Image, Button } from 'react-native';
 import {  List, ListItem } from 'react-native-elements';
-import styles from '../styles.js'
+import styles from '../config/styles.js'
 
 
 export default class Dashboard extends React.Component {
   
-  
-  
   render() {
     
-    
+    let users = [
+      {
+        id: 1,
+        first_name: 'Some',
+        last_name: 'Guy',
+        email: 'test@test.ca',
+        phone_number: '403-111-1111',
+        license_plate: 'BJW-1819',
+        car_size: 'medium',
+        password: 'something',
+      }
+    ]
     const list = [
       {
         title: 'Order History',
@@ -56,10 +65,10 @@ export default class Dashboard extends React.Component {
         
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <Text style={styles.name}>{this.props.user.first_name} {this.props.user.last_name}</Text>
-            <Text style={styles.userInfo}>{this.props.user.email}</Text>
-            <Text style={styles.userInfo}>{this.props.user.phone_number}</Text>
-            <Text style={styles.userInfo}>License Plate: {this.props.user.license_plate}</Text>
+            <Text style={styles.name}>{users.first_name} {users.last_name}</Text>
+            <Text style={styles.userInfo}>{users.email}</Text>
+            <Text style={styles.userInfo}>{users.phone_number}</Text>
+            <Text style={styles.userInfo}>License Plate: {users.license_plate}</Text>
             <Image style={styles.avatar}
                    source={{uri: 'https://png.icons8.com/office/40/000000/sedan.png'}}/>
             <Button

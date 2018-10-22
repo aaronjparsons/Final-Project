@@ -8,7 +8,7 @@ export default class Login extends React.Component {
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
-            source={require("../../assets/peter.jpg")}
+            source={require("../assets/peter.jpg")}
           />
           <Text style={styles.title}>Park Yo Shit</Text>
         </View>

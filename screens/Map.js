@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
-import MapView from 'react-native-maps';
-import { Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
-import InfoCard from './InfoCard';
+import InfoCard from '../Components/InfoCard';
 
-class Map extends React.Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      markers: [],
       cardPressed: false,
       parkPressed: false,
       spotInfo: {
@@ -20,7 +20,7 @@ class Map extends React.Component {
   }
 
   showCard(data) {
-    this.props.markers.find((marker) => {
+    this.state.markers.find((marker) => {
       if (data.id === marker.id) {
         this.setState({
           spotInfo: {
@@ -58,7 +58,7 @@ class Map extends React.Component {
           showsUserLocation={true}
           onPress={this.removeCard}
         >
-        {this.props.markers.map(marker => {
+        {this.state.markers.map(marker => {
           return (
             <Marker
               key={marker.id}
