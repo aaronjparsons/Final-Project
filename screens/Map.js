@@ -10,7 +10,7 @@ class Map extends Component {
     this.state = {
       markers: [],
       cardPressed: false,
-      parkPressed: false,
+      parkPressed: false, 
       spotInfo: {
         price: 1.25,
         info: ['Plug available', '12345 12 Street']
