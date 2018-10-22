@@ -4,6 +4,8 @@ import Login from "./src/Components/Login";
 import { createDrawerNavigator, DrawerItems } from "react-navigation";
 import Home from "./src/Components/Home";
 import { Container, Content, Header, Body } from "native-base";
+import MapView from "react-native-maps";
+import Marker from "react-native-maps";
 export default class App extends React.Component {
   constructor() {
     super();
@@ -12,19 +14,21 @@ export default class App extends React.Component {
         latitude: 51.0478,
         longitude: -114.0593,
         latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
+        longitudeDelta: 0.1
       },
       latitude: 0,
       longitude: 0,
-      markers: [{
-        id: 1,
-        longitude: 51.0478,
-        latitude: -114.0593,
-        title: 'title',
-        description: "description"
-      }],
-    }
-    this.socket = new WebSocket("ws://172.16.203.34:8000/");;
+      markers: [
+        {
+          id: 1,
+          longitude: 51.0478,
+          latitude: -114.0593,
+          title: "title",
+          description: "description"
+        }
+      ]
+    };
+    this.socket = new WebSocket("ws://172.16.203.34:8000/");
   }
 
   onRegionChange(region) {
@@ -32,12 +36,15 @@ export default class App extends React.Component {
   }
 
   createMarkers() {
-    this.state.markers.map((marker) => {
-      console.log('marker console log', marker);
+    this.state.markers.map(marker => {
+      console.log("marker console log", marker);
       return (
         <Marker
           key={marker.id}
-          coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
+          coordinate={{
+            latitude: marker.latitude,
+            longitude: marker.longitude
+          }}
           title={marker.title}
           description={marker.description}
         />
@@ -46,13 +53,12 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.onopen = (event) => {
-    };
+    this.socket.onopen = event => {};
 
-    this.socket.onmessage = (event) => {
+    this.socket.onmessage = event => {
       const data = JSON.parse(event.data);
       // this.setState({markers: data});
-    }
+    };
 
     navigator.geolocation.getCurrentPosition(function(e) {
       this.setState({
