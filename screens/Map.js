@@ -8,8 +8,40 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: [],
-      cardPressed: false,
+      markers: [
+      {
+        id: 1,
+        latitude: 51.0478,
+        longitude: -114.0593,
+        title: 'title',
+        description: "description",
+        price: 1.00
+      },
+      {
+        id : 2,
+        latitude: 51.0278,
+        longitude: -114.0493,
+        title: 'title',
+        description: "description",
+        price: 2.00
+      },
+      {
+        id: 3,
+        latitude: 51.0538,
+        longitude: -114.0123,
+        "title": 'title',
+        "description": "description",
+        price: 1.25
+      },
+      {
+        id: 4,
+        latitude: 51.0522,
+        longitude: -114.0519,
+        title: 'title',
+        description: "description",
+        price: 1.75
+      }
+    ],
       parkPressed: false,
       spotInfo: {
         price: 1.25,
@@ -17,6 +49,8 @@ class Map extends Component {
       }
     }
     this.markerPressed = this.markerPressed.bind(this);
+    this.parkButtonPressed = this.parkButtonPressed.bind(this);
+    this.resetCard = this.resetCard.bind(this);
   }
 
   showCard(data) {
@@ -35,10 +69,17 @@ class Map extends Component {
   markerPressed(data) {
     this.popupDialog.show()
   }
-
-  parkPressed() {
+  
+  parkButtonPressed() {
     console.log('park pressed');
   }
+
+  resetCard() {
+    this.setState({
+      parkPressed: false
+    });
+  }
+
 
   render() {
     const slideAnimation = new SlideAnimation({
@@ -73,8 +114,9 @@ class Map extends Component {
           <PopupDialog 
             ref={(popupDialog) => { this.popupDialog = popupDialog; }} 
             dialogAnimation={slideAnimation} 
-            dialogStyle={styles.dialog}>
-            <InfoCard info={this.state.spotInfo} parkPressed={this.parkPressed}/>
+            dialogStyle={styles.dialog}
+            onDismissed={this.resetCard}>
+            <InfoCard info={this.state.spotInfo} parkPressed={this.state.parkPressed} parkButtonPressed={this.parkButtonPressed} />
           </PopupDialog>
         </View>
       

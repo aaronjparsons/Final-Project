@@ -6,6 +6,15 @@ class InfoCard extends React.Component {
     super(props);
   }
 
+
+  confirmPressed() {
+    console.log('CONFIRM!!');
+  }
+
+  componentDidMount() {
+    console.log('card rendered');
+  }
+
   render() {
     return (
       <View style={styles.popup}>
@@ -13,7 +22,7 @@ class InfoCard extends React.Component {
         {this.props.info.info.map((desc, index) => {
           return <Text key={index} style={styles.info}>{desc}</Text>
         })}
-        <Button style={styles.button} title='PARK HERE' onPress={() => console.log('pressed')}></Button>
+        <Button style={styles.parkButton} title='PARK HERE' onPress={this.props.parkButtonPressed} />
       </View>
     );
   }
@@ -35,6 +44,9 @@ const styles = StyleSheet.create({
   info: {
     marginBottom: 10
   },
-  button: {
+  parkButton: {
+  },
+  confirmButton: {
+    backgroundColor: 'green'
   }
 });
