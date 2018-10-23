@@ -1,8 +1,9 @@
-import React from 'react';
-import { Text, View, Image, Button } from 'react-native';
-import {  List, ListItem } from 'react-native-elements';
-import styles from '../config/styles.js'
-
+import React from "react";
+import { Text, View, Image, Button } from "react-native";
+import { List, ListItem } from "react-native-elements";
+import styles from "../config/styles.js";
+import HeaderNavigation from "../Components/HeaderNavigation.js";
+import { Container } from "native-base";
 
 export default class Dashboard extends React.Component {
   
@@ -36,64 +37,72 @@ export default class Dashboard extends React.Component {
     
     const list = [
       {
-        title: 'Order History',
-        icon: 'receipt',
-        navigate: 'OrderHistory'
+        title: "Order History",
+        icon: "receipt",
+        navigate: "OrderHistory"
       },
       {
-        title: 'Rent History',
-        icon: '',
-        navigate: 'RentHistory'
+        title: "Rent History",
+        icon: "",
+        navigate: "RentHistory"
       },
       {
-        title: 'My Spots',
-        icon: '',
-        navigate: 'MySpots'
+        title: "My Spots",
+        icon: "",
+        navigate: "MySpots"
       },
       {
         title: 'Add a spot',
         icon: '',
         navigate: 'AddASpot'
       },
+      {
+        title: 'Payment Info',
+        icon: '',
+        navigate: 'PaymentInfo'
+      }
+      
     ]
-    
-
 
     return (
-      <View style={styles.container}>
-        
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <Text style={styles.name}>{users.first_name} {users.last_name}</Text>
-            <Text style={styles.userInfo}>{users.email}</Text>
-            <Text style={styles.userInfo}>{users.phone_number}</Text>
-            <Text style={styles.userInfo}>License Plate: {users.license_plate}</Text>
-            <Image style={styles.avatar} source={{uri: this.vehicleSize(users.car_size)}} />
-            <Button
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate('EditProfile')}
-              title="Edit Profile"
-              color="blue"
-              accessibilityLabel="Change User Profile"
-            />
+      <Container>
+        <HeaderNavigation navigation={this.props.navigation} />
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <View style={styles.headerContent}>
+              <Text style={styles.name}>
+                {users.first_name} {users.last_name}
+              </Text>
+              <Text style={styles.userInfo}>{users.email}</Text>
+              <Text style={styles.userInfo}>{users.phone_number}</Text>
+              <Text style={styles.userInfo}>
+                License Plate: {users.license_plate}
+              </Text>
+              <Image style={styles.avatar} source={{uri: this.vehicleSize(users.car_size)}} />
+              <Button
+                style={styles.button}
+                onPress={() => this.props.navigation.navigate('EditProfile')}
+                title="Edit Profile"
+                color="blue"
+                accessibilityLabel="Change User Profile"
+              />
+            </View>
+          </View>
+
+          <View style={styles.body}>
+            <List>
+              {list.map(item => (
+                <ListItem
+                  key={item.title}
+                  title={item.title}
+                  onPress={() => this.props.navigation.navigate(item.navigate)}
+                  // leftIcon={{name: item.icon}}
+                />
+              ))}
+            </List>
           </View>
         </View>
-
-        <View style={styles.body}>
-          <List>
-            {
-              list.map((item) => (
-              <ListItem
-                key={item.title}
-                title={item.title}
-                onPress={() => this.props.navigation.navigate(item.navigate)}
-                // leftIcon={{name: item.icon}}
-              />
-              ))
-            }
-          </List>  
-        </View> 
-      </View>
+      </Container>
     );
   }
 }

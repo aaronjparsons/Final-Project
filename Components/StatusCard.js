@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, Button } from 'react-native';
 
-class InfoCard extends React.Component {
+class StatusCard extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -9,17 +9,18 @@ class InfoCard extends React.Component {
   render() {
     return (
       <View style={styles.popup}>
-        <Text style={styles.popupPrice}>{`$${this.props.info.price}/hour`}</Text>
+        <Text style={styles.popupPrice}>Current Parking Session</Text>
+        <Text>X Minutes Parked</Text>
         {this.props.info.info.map((desc, index) => {
           return <Text key={index} style={styles.info}>{desc}</Text>
         })}
-        <Button style={styles.parkButton} title='PARK HERE' onPress={this.props.parkButtonPressed} />
+        <Button title='CHECKOUT' onPress={() => console.log('CHECKOUT PRESSED')}></Button>
       </View>
     );
-  }
+    }
 }
-
-export default InfoCard;
+  
+export default StatusCard;
 
 const styles = StyleSheet.create({
   popup: {
@@ -35,9 +36,4 @@ const styles = StyleSheet.create({
   info: {
     marginBottom: 10
   },
-  parkButton: {
-  },
-  confirmButton: {
-    backgroundColor: 'green'
-  }
 });
