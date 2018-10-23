@@ -7,31 +7,84 @@ import {
   PROJECT_ID,STORAGE_BUCKET,
   MESSAGING_SENDER_ID } from 'react-native-dotenv'
 
-  
+
+usernameRegex = RegExp(/^[A-Za-z]+$/);  
+emailRegex = RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);  
+phoneRegex = RegExp(/^[2-9]\d{2}-\d{3}-\d{4}$/);
+
 export default class Register extends React.Component {
   constructor(){
     super()
     this.state = {
       first_name:'', last_name:'',
       email:'', phone_number: '',
-      password:'',password_conf:''
+      password:'',password_conf:'',
+      border_color:'gray'
     }
-    this.registerUser = this.registerUser.bind(this)
-    this.getUserInfo = this.getUserInfo.bind(this)
+    this.registerUser = this.registerUser.bind(this);
+    this.getRegisterFormData = this.getRegisterFormData.bind(this);
+    this.displayErr = this.displayErr.bind(this);
+    this.validateData = this.validateData.bind(this);
+    this.showErrorBorder = this.showErrorBorder.bind(this)
   }
 
   registerUser(){
-    firebase.database().ref("users").push(this.getUserInfo())
+    console.log("data" , this.getRegisterFormData() )
+    if(this.getRegisterFormData()){
+      firebase.database().ref("users").push(this.getRegisterFormData())
+    }else{
+      console.log('hmm');
+      console.log("---------------------------------------------------------")
+    }
   }
 
-  getUserInfo(){
+  showErrorBorder(){
+    this.setState({border_color:'red'})
+  }
+
+  getRegisterFormData(){
     let user = new Object()
-    user.first_name = this.state.first_name;
-    user.last_name = this.state.last_name;
-    user.email = this.state.email;
-    user.phone_number = this.state.phone_number;
-    user.password_digest = this.state.password;
+    user.first_name = this.validateData(this.state.first_name, 'name') ? this.state.first_name : this.displayErr("First Name");
+    user.last_name = this.validateData(this.state.last_name, 'name') ? this.state.last_name : this.displayErr("Last Name");
+    user.email = this.validateData(this.state.email, 'email') ? this.state.email : this.displayErr("email");
+    user.phone_number = this.validateData(this.state.phone_number,'phone_number') ? this.state.phone_number : this.displayErr("Phone number");
+    user.password_digest = this.validateData(this.state.password,'password') ? this.state.password : this.displayErr('Password')
+   for(var prop in user){
+      if(!user[prop]){
+        return false;
+      }
+   }
     return user;
+  }
+
+  displayErr(inputType){
+    console.log("Invalid " + inputType);
+    return false;
+  }
+
+  validateData(input, type){
+    if(type === 'name') {
+      if(input.length === 0 || !usernameRegex.test(input)) 
+        this.showErrorBorder()
+        return false;
+    } 
+    else if (type === 'email') {
+      if(input.length === 0 || !emailRegex.test(input))
+        return false;
+    } 
+    else if (type ==='phone_number'){
+      if(input.length === 0 || !phoneRegex.test(input))
+        return false;
+    }
+    else if (type === 'password'){
+      if(this.state.password!== this.state.password_conf ||input.length === 0 || input.length < 6)
+      {
+        return false;
+      }
+    } 
+    else{
+      return true;
+    }
   }
   componentWillMount(){
 
@@ -49,7 +102,7 @@ export default class Register extends React.Component {
   render(){
     return (
       <View style={styles.container}>
-        <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="First Name"
+        <TextInput underlineColorAndroid='transparent' style={[styles.debug, {borderColor : this.state.border_color}]} placeholder="First Name"
         onChangeText = {(first_name)=> {this.setState({first_name})}}/>
         <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="Last Name"
         onChangeText = {(last_name)=> {this.setState({last_name})}}/>
