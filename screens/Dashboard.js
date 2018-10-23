@@ -8,7 +8,7 @@ export default class Dashboard extends React.Component {
   
   render() {
     
-    let users = [
+    let users = 
       {
         id: 1,
         first_name: 'Some',
@@ -19,7 +19,7 @@ export default class Dashboard extends React.Component {
         car_size: 'medium',
         password: 'something',
       }
-    ]
+    
     const list = [
       {
         title: 'Order History',
@@ -73,7 +73,7 @@ export default class Dashboard extends React.Component {
                    source={{uri: 'https://png.icons8.com/office/40/000000/sedan.png'}}/>
             <Button
               style={styles.button}
-              onPress={(e) => console.log('pressed')}
+              onPress={() => this.props.navigation.navigate('EditProfile')}
               title="Edit Profile"
               color="blue"
               accessibilityLabel="Change User Profile"

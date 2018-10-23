@@ -1,14 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Image, StatusBar, Button } from 'react-native';
+// import { StyleSheet, View, Image, StatusBar, Button } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 
 let orders = [
   {
     id: 1,
-    duration: 60,
+    duration: 120,
     address: '123 Fake Street',
     date: 'Jan. 20th, 2018',
-    price: 5
+    price: 10
   },
   {
     id: 2,
@@ -41,6 +41,10 @@ let orders = [
 ]
 
 export default class OrderHistory extends React.Component {
+  orderTotal(duration, price) {
+    return (duration / 60) * price
+  }
+  
   render() {
     let orderHistory = orders.map((order) => {
       return(
@@ -57,7 +61,7 @@ export default class OrderHistory extends React.Component {
             </Body>
           </CardItem>
           <CardItem footer bordered>
-            <Text>Price: ${order.price / 1.00}</Text>
+            <Text>Total: ${this.orderTotal(order.duration, order.price)}</Text>
           </CardItem>
         </Card>
       )
@@ -65,7 +69,6 @@ export default class OrderHistory extends React.Component {
 
     return (
       <Container>
-        <Header />
         <Content padder>
           {orderHistory}
         </Content>
