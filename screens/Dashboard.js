@@ -41,6 +41,11 @@ export default class Dashboard extends React.Component {
         icon: '',
         navigate: 'AddASpot'
       },
+      {
+        title: 'Payment Info',
+        icon: '',
+        navigate: 'PaymentInfo'
+      }
       
     ]
     // vehicleSize(size) {
