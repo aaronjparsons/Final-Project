@@ -10,6 +10,7 @@ import AddASpot from '../screens/AddASpot.js';
 import RentHistory from '../screens/RentHistory.js'
 import Map from '../screens/Map.js';
 import Login from '../Components/Login.js';
+import EditProfile from '../screens/EditProfile.js'
 
 // import HomeScreen from '../screens/HomeScreen.js';
 // import { StackNavigator } from 'react-native-navigation';
@@ -48,7 +49,10 @@ export const RootStack = createStackNavigator(
     },
     AddASpot: {
       screen: AddASpot,
-    }
+    },
+    EditProfile: {
+      screen: EditProfile,
+    },
   },
   {
     initialRouteName: 'Home',

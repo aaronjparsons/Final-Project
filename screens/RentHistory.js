@@ -1,16 +1,78 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, StatusBar, Button } from 'react-native';
+// import { StyleSheet, View, Image, StatusBar, Button } from 'react-native';
+import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 
+let orders = [
+  {
+    id: 1,
+    duration: 60,
+    address: '123 Fake Street',
+    date: 'Jan. 20th, 2018',
+    price: 5
+  },
+  {
+    id: 2,
+    duration: 60,
+    address: '123 Fake Street',
+    date: 'Jan. 20th, 2018',
+    price: 2
+  },
+  {
+    id: 3,
+    duration: 120,
+    address: '123 Fake Street',
+    date: 'Jan. 20th, 2018',
+    price: 5
+  },
+  {
+    id: 4,
+    duration: 60,
+    address: '123 Fake Street',
+    date: 'Jan. 20th, 2018',
+    price: 5
+  },
+  {
+    id: 5,
+    duration: 60,
+    address: '123 Fake Street',
+    date: 'Jan. 20th, 2018',
+    price: 5
+  }
+]
 
-
-export default class RentHistory extends React.Component {
+export default class OrderHistory extends React.Component {
+  orderTotal(duration, price) {
+    return (duration / 60) * price
+  }
 
   render() {
+    let orderHistory = orders.map((order) => {
+      return(
+        <Card>
+          <CardItem header bordered>
+            <Text>Order # {order.id}</Text>
+          </CardItem>
+          <CardItem bordered>
+            <Body>
+              <Text>
+                Address: {order.address}{'\n'}
+                Duration: {order.duration}
+              </Text>
+            </Body>
+          </CardItem>
+          <CardItem footer bordered>
+            <Text>Price: ${this.orderTotal(order.duration, order.price)}</Text>
+          </CardItem>
+        </Card>
+      )
+    });
 
     return (
-      <View>
-        <Text>Rent History Page</Text>
-      </View>
+      <Container>
+        <Content padder>
+          {orderHistory}
+        </Content>
+      </Container>
     );
   }
 }
