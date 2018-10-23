@@ -1,5 +1,5 @@
-import React from 'react';
-import { MyApp } from './config/router.js'
+import React from "react";
+import { MyApp } from "./config/router.js";
 import { View } from "react-native";
 
 // import {  Text, View, StatusBar } from 'react-native';
@@ -21,7 +21,6 @@ import { View } from "react-native";
 // import HeaderNavigation from './src/Components/Home.js'
 
 export default class App extends React.Component {
-
   render() {
     return (
       <View style={{ width: "100%", height: "100%" }}>

@@ -1,7 +1,11 @@
-import React from 'react';
-import { createDrawerNavigator, DrawerItems,createStackNavigator } from 'react-navigation';
-import { StyleSheet } from 'react-native';
-import { Container, Content, Header, Body, Image } from "native-base";
+import React from "react";
+import {
+  createDrawerNavigator,
+  DrawerItems,
+  createStackNavigator
+} from "react-navigation";
+import { StyleSheet, Image } from "react-native";
+import { Container, Content, Header, Body, Icon } from "native-base";
 
 import Dashboard from '../screens/Dashboard.js';
 import OrderHistory from '../screens/OrderHistory.js';
@@ -17,35 +21,19 @@ import PaymentInfo from '../screens/PaymentInfo.js';
 // import { Dashboard } from './Dashboard';
 // import { OrderHistory } from './OrderHistory';
 
-const CustomDrawerContentComponent = props => (
-  <Container>
-    <Header style={{ height: 200 }}>
-      <Body>
-        <Image
-          // style={styles.drawerImage}
-          source={require("../assets/peter.jpg")}
-        />
-      </Body>
-    </Header>
-    <Content>
-      <DrawerItems {...props} />
-    </Content>
-  </Container>
-);
-
 export const RootStack = createStackNavigator(
   {
     Home: {
-      screen: Map,
+      screen: Map
     },
     OrderHistory: {
-      screen: OrderHistory,
+      screen: OrderHistory
     },
     RentHistory: {
-      screen: RentHistory,
+      screen: RentHistory
     },
     MySpots: {
-      screen: MySpots,
+      screen: MySpots
     },
     AddASpot: {
       screen: AddASpot,
@@ -56,8 +44,24 @@ export const RootStack = createStackNavigator(
   },
   {
     initialRouteName: 'Home',
-    // headerMode: 'none'
+    headerMode: 'none'
   }
+);
+
+const CustomDrawerContentComponent = props => (
+  <Container>
+    <Header style={{ height: 200 }}>
+      <Body>
+        <Image
+          style={styles.drawerImage}
+          source={require("../assets/peter.jpg")}
+        />
+      </Body>
+    </Header>
+    <Content>
+      <DrawerItems {...props} />
+    </Content>
+  </Container>
 );
 
 export const MyApp = createDrawerNavigator(
@@ -65,16 +69,16 @@ export const MyApp = createDrawerNavigator(
     Home: {
       screen: RootStack
     },
-    Logout: {
-      screen: Login
-    },
     Dashboard: {
       screen: Dashboard
+    },
+    Logout: {
+      screen: Login
     }
   },
   {
-    InitalRouteName: "Account",
-    // contentComponent: CustomDrawerContentComponent,
+    InitalRouteName: "Home",
+    contentComponent: CustomDrawerContentComponent,
     drawerOpenRoute: "DrawerOpen",
     drawerCloseRoute: "DrawerClose",
     drawerToggleRoute: "DrawerToggle"
@@ -86,6 +90,6 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     borderRadius: 75,
-    marginLeft: 45
+    marginLeft: 50
   }
 });
