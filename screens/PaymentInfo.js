@@ -27,7 +27,6 @@ export default class PaymentInfo extends React.Component {
 
   submitPaymentInfo() {
     console.log('Card added');
-    this._loadStripe();
   }
 
   render() {
