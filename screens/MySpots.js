@@ -41,8 +41,10 @@ export default class MySpots extends React.Component {
             <Text>Parking Spot Id # {spot.id}</Text>
           </CardItem>
           <CardItem bordered>
+            <Image style={styles.picture} source={spot.picture_url} />
+          </CardItem>
+          <CardItem bordered>
             <Body>
-              <Image style={styles.picture} source={spot.picture_url} />
               <Text>
                 Address: {spot.address}{'\n'}
                 Description: {spot.description}
