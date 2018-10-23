@@ -6,7 +6,12 @@ export default class HeaderNavigation extends Component {
   render() {
     return (
       <Header style={styles.header}>
-        <Text style={styles.title}>Peter Parker</Text>
+        <Text
+          onPress={() => this.props.navigation.navigate("Home")}
+          style={styles.title}
+        >
+          Peter Parker
+        </Text>
         <Button
           style={styles.button}
           onPress={() => this.props.navigation.openDrawer()}
