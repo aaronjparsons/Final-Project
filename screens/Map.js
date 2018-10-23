@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, TouchableHighlight } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import InfoCard from '../Components/InfoCard';
 import ConfirmCard from '../Components/ConfirmCard';
+import StatusCard from '../Components/StatusCard';
 import CurrentRental from '../Components/CurrentRental';
 
 class Map extends Component {
@@ -54,6 +55,7 @@ class Map extends Component {
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
     this.parkingConfirmComplete = this.parkingConfirmComplete.bind(this);
+    this.statusPressed = this.statusPressed.bind(this);
   }
 
   showCard(data) {
@@ -90,6 +92,11 @@ class Map extends Component {
     })
   }
 
+  statusPressed() {
+    console.log('status pressed');
+    this.statusPopup.show();
+  }
+
   render() {
     const slideAnimation = new SlideAnimation({
       slideFrom: 'top',
@@ -118,8 +125,13 @@ class Map extends Component {
           );
         })}
         </MapView>
-
-        <View style={styles.currentRental}>{this.state.spotRented && <CurrentRental />}</View>
+        
+        <View style={styles.currentRental}>
+          {this.state.spotRented && 
+            <TouchableHighlight onPress={this.statusPressed}>
+              <CurrentRental />
+            </TouchableHighlight>}         
+        </View>
 
         <View style={styles.popupContainer}>
           <PopupDialog 
@@ -133,6 +145,12 @@ class Map extends Component {
             dialogAnimation={slideAnimation} 
             dialogStyle={styles.dialog}>
             <ConfirmCard info={this.state.spotInfo} parkingConfirmComplete={this.parkingConfirmComplete}/>
+          </PopupDialog>
+          <PopupDialog 
+            ref={(statusPopup) => { this.statusPopup = statusPopup; }} 
+            dialogAnimation={slideAnimation} 
+            dialogStyle={styles.statusDialog}>
+            <StatusCard info={this.state.spotInfo} />
           </PopupDialog>
         </View>
       
@@ -156,6 +174,9 @@ const styles = StyleSheet.create({
     top: '4%', 
     width: '90%', 
     height: '38%'
+  },
+  statusDialog: {
+
   },
   currentRental: {
     position: 'absolute',
