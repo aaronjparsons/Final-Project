@@ -73,30 +73,30 @@ export default class EditProfile extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  // body:{
-  //   backgroundColor: "#778899",
-  //   height:500,
-  //   alignItems:'center',
-  // },
-  // inputField: {
-  //   height: 40, 
-  //   width: 250, 
-  //   borderColor: 'black', 
-  //   borderWidth: 1,
-  //   borderRadius: 10,
-  //   alignItems: 'center',
-  //   margin: 10,
-  // },
-  // button: {
-  //   width: 300,
-  //   color: 'blue',
-
-  // },
-  // headerContent:{
-  //   padding:30,
-  //   fontSize: 10,
-  //   alignItems: 'center',
-  // },
+  body:{
+    backgroundColor: "white",
+    height:800,
+    alignItems:'center',
+  },
+  inputField: {
+    height: 40, 
+    width: 250, 
+    borderColor: 'black', 
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    margin: 10,
+    padding: 5
+  },
+  button: {
+    width: 300,
+    color: 'blue',
+  },
+  headerContent:{
+    padding:30,
+    // fontSize: 10,
+    alignItems: 'center',
+  },
   // content: {
   //   flex:1,
   //   alignItems:'flex-start',
