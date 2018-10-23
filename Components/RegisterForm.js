@@ -1,10 +1,25 @@
 import React from "react"
 import {TextInput, Text, View, StyleSheet, Dimensions, TouchableOpacity} from "react-native"
-
+import firebase from 'firebase';
+import { 
+  API_KEY,
+  AUTH_DOMAIN,DATABASE_URL,
+  PROJECT_ID,STORAGE_BUCKET,
+  MESSAGING_SENDER_ID } from 'react-native-dotenv'
 export default class Register extends React.Component {
   constructor(){
     super()
-
+    this.componentWillMount(){
+      var config = {
+        apiKey: API_KEY,
+        authDomain:AUTH_DOMAIN,
+        databaseURL: DATABASE_URL,
+        projectId: PROJECT_ID,
+        storageBucket:STORAGE_BUCKET,
+        messagingSenderId: MESSAGING_SENDER_ID
+      };
+      firebase.initializeApp(config);
+    }
     this.state = {
       first_name:'', last_name:'',
       email:'', phone_number: '',
@@ -14,7 +29,15 @@ export default class Register extends React.Component {
     this.getUserInfo = this.getUserInfo.bind(this)
   }
   registerUser(){
-    this.getUserInfo()
+    dummyUser = this.getUserInfo()
+    knex("users")
+    .insert({
+      first_name:dummyUser.first_name,
+      last_name:dummyUser.last_name,
+      email:dummyUser.email,
+      phone_number:dummyUser.phone_number,
+      password_digest:dummyUser.password,
+    })
   }
   getUserInfo(){
     let dummyUser = new Object()
@@ -24,6 +47,7 @@ export default class Register extends React.Component {
     dummyUser.phone_number = this.state.phone_number;
     dummyUser.password = this.state.password;
     console.log(dummyUser)
+    return dummyUser;
   }
   render(){
     return (
