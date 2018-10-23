@@ -6,6 +6,8 @@ import {
   AUTH_DOMAIN,DATABASE_URL,
   PROJECT_ID,STORAGE_BUCKET,
   MESSAGING_SENDER_ID } from 'react-native-dotenv'
+
+  
 export default class Register extends React.Component {
   constructor(){
     super()
@@ -17,26 +19,22 @@ export default class Register extends React.Component {
     this.registerUser = this.registerUser.bind(this)
     this.getUserInfo = this.getUserInfo.bind(this)
   }
+
   registerUser(){
-    user = this.getUserInfo()
-    firebase.database().ref('users/001').set(
-      {
-        name:"test",
-        age: 21
-      }
-    ).then(console.log("inserted")).catch((error)=> {console.log("ERROR: " + error)})
+    firebase.database().ref("users").push(this.getUserInfo())
   }
+
   getUserInfo(){
     let user = new Object()
     user.first_name = this.state.first_name;
     user.last_name = this.state.last_name;
     user.email = this.state.email;
     user.phone_number = this.state.phone_number;
-    user.password = this.state.password;
-    console.log(user)
+    user.password_digest = this.state.password;
     return user;
   }
   componentWillMount(){
+
     var config = {
       apiKey: API_KEY,
       authDomain:AUTH_DOMAIN,
@@ -46,6 +44,7 @@ export default class Register extends React.Component {
       messagingSenderId: MESSAGING_SENDER_ID
     };
     firebase.initializeApp(config);
+    this.userFirebase = firebase.database().ref('users')
   }
   render(){
     return (
