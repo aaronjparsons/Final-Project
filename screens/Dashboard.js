@@ -6,6 +6,20 @@ import styles from '../config/styles.js'
 
 export default class Dashboard extends React.Component {
   
+  vehicleSize(size) {
+    switch (size) {
+      case 'small':
+        return 'https://png.icons8.com/nolan/40/000000/motorcycle.png';
+      case 'medium':
+        return 'https://png.icons8.com/office/40/000000/sedan.png';
+      case 'large':
+        return 'https://png.icons8.com/nolan/40/000000/truck.png';
+      default:
+        return 'https://png.icons8.com/office/40/000000/sedan.png';
+    }
+  }
+
+
   render() {
     
     let users = 
@@ -16,7 +30,7 @@ export default class Dashboard extends React.Component {
         email: 'test@test.ca',
         phone_number: '403-111-1111',
         license_plate: 'BJW-1819',
-        car_size: 'medium',
+        car_size: 'small',
         password: 'something',
       }
     
@@ -41,23 +55,8 @@ export default class Dashboard extends React.Component {
         icon: '',
         navigate: 'AddASpot'
       },
-      
     ]
-    // vehicleSize(size) {
-    //   switch (size) {
-    //     case 'small':
-    //       <Image style={styles.icon} source={{uri: ''}} />
-    //       break;
-    //     case 'medium':
-    //       <Image style={styles.icon} source={{uri: ''}} />
-    //       break;
-    //     case 'large':
-    //       <Image style={styles.icon} source={{uri: ''}} />
-    //       break;
-    //     default:
-    //       <Image style={styles.icon} source={{uri: ''}} />
-    //   };
-    // }
+    
 
 
     return (
@@ -69,8 +68,7 @@ export default class Dashboard extends React.Component {
             <Text style={styles.userInfo}>{users.email}</Text>
             <Text style={styles.userInfo}>{users.phone_number}</Text>
             <Text style={styles.userInfo}>License Plate: {users.license_plate}</Text>
-            <Image style={styles.avatar}
-                   source={{uri: 'https://png.icons8.com/office/40/000000/sedan.png'}}/>
+            <Image style={styles.avatar} source={{uri: this.vehicleSize(users.car_size)}} />
             <Button
               style={styles.button}
               onPress={() => this.props.navigation.navigate('EditProfile')}
