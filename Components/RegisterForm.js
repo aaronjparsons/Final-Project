@@ -9,17 +9,6 @@ import {
 export default class Register extends React.Component {
   constructor(){
     super()
-    this.componentWillMount(){
-      var config = {
-        apiKey: API_KEY,
-        authDomain:AUTH_DOMAIN,
-        databaseURL: DATABASE_URL,
-        projectId: PROJECT_ID,
-        storageBucket:STORAGE_BUCKET,
-        messagingSenderId: MESSAGING_SENDER_ID
-      };
-      firebase.initializeApp(config);
-    }
     this.state = {
       first_name:'', last_name:'',
       email:'', phone_number: '',
@@ -29,25 +18,34 @@ export default class Register extends React.Component {
     this.getUserInfo = this.getUserInfo.bind(this)
   }
   registerUser(){
-    dummyUser = this.getUserInfo()
-    knex("users")
-    .insert({
-      first_name:dummyUser.first_name,
-      last_name:dummyUser.last_name,
-      email:dummyUser.email,
-      phone_number:dummyUser.phone_number,
-      password_digest:dummyUser.password,
-    })
+    user = this.getUserInfo()
+    firebase.database().ref('users/001').set(
+      {
+        name:"test",
+        age: 21
+      }
+    ).then(console.log("inserted")).catch((error)=> {console.log("ERROR: " + error)})
   }
   getUserInfo(){
-    let dummyUser = new Object()
-    dummyUser.first_name = this.state.first_name;
-    dummyUser.last_name = this.state.last_name;
-    dummyUser.email = this.state.email;
-    dummyUser.phone_number = this.state.phone_number;
-    dummyUser.password = this.state.password;
-    console.log(dummyUser)
-    return dummyUser;
+    let user = new Object()
+    user.first_name = this.state.first_name;
+    user.last_name = this.state.last_name;
+    user.email = this.state.email;
+    user.phone_number = this.state.phone_number;
+    user.password = this.state.password;
+    console.log(user)
+    return user;
+  }
+  componentWillMount(){
+    var config = {
+      apiKey: API_KEY,
+      authDomain:AUTH_DOMAIN,
+      databaseURL: DATABASE_URL,
+      projectId: PROJECT_ID,
+      storageBucket:STORAGE_BUCKET,
+      messagingSenderId: MESSAGING_SENDER_ID
+    };
+    firebase.initializeApp(config);
   }
   render(){
     return (
