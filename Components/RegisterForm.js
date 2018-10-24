@@ -29,11 +29,13 @@ export default class Register extends React.Component {
   }
 
   registerUser(){
-    console.log("data" , this.getRegisterFormData() )
     if(this.getRegisterFormData()){
-      firebase.database().ref("users").push(this.getRegisterFormData())
+      firebase.database().ref("users").push(this.getRegisterFormData());
+      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{},(error)=>{
+        alert(error.message)
+      })
     }else{
-      console.log('hmm');
+
       console.log("---------------------------------------------------------")
     }
   }
@@ -44,7 +46,10 @@ export default class Register extends React.Component {
 
   getRegisterFormData(){
     let user = new Object()
-    user.first_name = this.validateData(this.state.first_name, 'name') ? this.state.first_name : this.displayErr("First Name");
+
+    user.first_name = this.validateData(this.state.first_name, 'name') 
+      ? this.state.first_name 
+      : this.displayErr("First Name");
     user.last_name = this.validateData(this.state.last_name, 'name') ? this.state.last_name : this.displayErr("Last Name");
     user.email = this.validateData(this.state.email, 'email') ? this.state.email : this.displayErr("email");
     user.phone_number = this.validateData(this.state.phone_number,'phone_number') ? this.state.phone_number : this.displayErr("Phone number");
@@ -63,28 +68,30 @@ export default class Register extends React.Component {
   }
 
   validateData(input, type){
+ 
+  console.log("its false? ", !usernameRegex.test(input))
     if(type === 'name') {
-      if(input.length === 0 || !usernameRegex.test(input)) 
+      console.log("input to validate" ,input)
+      if(!usernameRegex.test(input)) {
         this.showErrorBorder()
+        console.log("FLAG INSIDE")
         return false;
-    } 
-    else if (type === 'email') {
-      if(input.length === 0 || !emailRegex.test(input))
+      }
+    } else if (type === 'email') {
+      console.log("regex validate", !emailRegex.test(input));
+      if(!emailRegex.test(input))
         return false;
     } 
     else if (type ==='phone_number'){
-      if(input.length === 0 || !phoneRegex.test(input))
+      input = input.slice(0,3) + "-" + input.slice(3,6) + "-" + input.slice(6,10);
+      if(!phoneRegex.test(input))
         return false;
     }
     else if (type === 'password'){
-      if(this.state.password!== this.state.password_conf ||input.length === 0 || input.length < 6)
-      {
+      if(this.state.password!== this.state.password_conf)
         return false;
-      }
     } 
-    else{
-      return true;
-    }
+    return true;
   }
   componentWillMount(){
 
