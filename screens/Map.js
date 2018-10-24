@@ -9,45 +9,25 @@ import CurrentRental from '../Components/CurrentRental';
 import HeaderNavigation from "../Components/HeaderNavigation.js";
 import { Container } from "native-base";
 
+import { API_KEY, AUTH_DOMAIN,DATABASE_URL, PROJECT_ID,STORAGE_BUCKET, MESSAGING_SENDER_ID } from 'react-native-dotenv';
+import firebase from 'firebase';
+
+const config = {
+  apiKey: API_KEY,
+  authDomain:AUTH_DOMAIN,
+  databaseURL: DATABASE_URL,
+  projectId: PROJECT_ID,
+  storageBucket:STORAGE_BUCKET,
+  messagingSenderId: MESSAGING_SENDER_ID
+};
+firebase.initializeApp(config);
+
 
 class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: [
-      {
-        id: 1,
-        latitude: 51.0478,
-        longitude: -114.0593,
-        title: 'title',
-        description: "description",
-        price: 1.00
-      },
-      {
-        id : 2,
-        latitude: 51.0278,
-        longitude: -114.0493,
-        title: 'title',
-        description: "description",
-        price: 2.00
-      },
-      {
-        id: 3,
-        latitude: 51.0538,
-        longitude: -114.0123,
-        "title": 'title',
-        "description": "description",
-        price: 1.25
-      },
-      {
-        id: 4,
-        latitude: 51.0522,
-        longitude: -114.0519,
-        title: 'title',
-        description: "description",
-        price: 1.75
-      }
-    ],
+      markers: [],
       parkPressed: false,
       spotInfo: {
         price: 1.25,
@@ -98,6 +78,21 @@ class Map extends Component {
   statusPressed() {
     console.log('status pressed');
     this.statusPopup.show();
+  }
+
+  componentDidMount() {
+    const self = this;
+    firebase.database().ref('/spots/').once('value').then(function(data) {
+      let spots = [];
+      data.forEach(function(childSnapshot) {
+        let item = childSnapshot.val();
+        item.id = childSnapshot.key;
+        spots.push(item);
+      });
+      self.setState({
+        markers: spots
+      });
+    });
   }
 
   render() {
