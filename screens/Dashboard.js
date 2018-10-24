@@ -5,6 +5,9 @@ import styles from "../config/styles.js";
 import HeaderNavigation from "../Components/HeaderNavigation.js";
 import { Container } from "native-base";
 
+import firebase from 'firebase';
+import { API_KEY, AUTH_DOMAIN,DATABASE_URL, PROJECT_ID,STORAGE_BUCKET, MESSAGING_SENDER_ID } from 'react-native-dotenv'
+
 export default class Dashboard extends React.Component {
   
   vehicleSize(size) {
@@ -20,6 +23,9 @@ export default class Dashboard extends React.Component {
     }
   }
 
+  componentDidMount() {
+
+  }
 
   render() {
     
@@ -38,7 +44,7 @@ export default class Dashboard extends React.Component {
     const list = [
       {
         title: "Order History",
-        icon: "receipt",
+        icon: "",
         navigate: "OrderHistory"
       },
       {

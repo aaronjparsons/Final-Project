@@ -13,11 +13,13 @@ import MySpots from '../screens/MySpots.js';
 import AddASpot from '../screens/AddASpot.js';
 import RentHistory from '../screens/RentHistory.js'
 import Map from '../screens/Map.js';
-import Login from '../Components/Login.js';
 import EditProfile from '../screens/EditProfile.js'
 import PaymentInfo from '../screens/PaymentInfo.js';
+import Help from '../screens/Help.js';
 
+import Login from '../Components/Login.js';
 import Register from '../Components/RegisterForm'
+
 // import HomeScreen from '../screens/HomeScreen.js';
 // import { StackNavigator } from 'react-native-navigation';
 // import { Dashboard } from './Dashboard';
@@ -82,6 +84,9 @@ export const MyApp = createDrawerNavigator(
     },
     Register: {
       screen: Register
+    },
+    Help: {
+      screen: Help
     }
   },
   {

@@ -104,7 +104,7 @@ export default class Register extends React.Component {
       messagingSenderId: MESSAGING_SENDER_ID
     };
     firebase.initializeApp(config);
-    this.userFirebase = firebase.database().ref('users')
+    
   }
   render(){
     return (

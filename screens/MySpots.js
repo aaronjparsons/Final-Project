@@ -1,7 +1,7 @@
 import React from 'react';
 // import { StyleSheet, View, Image, StatusBar, Button } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
-import { Image, StyleSheet }  from 'react-native';
+import { Image, StyleSheet, Button }  from 'react-native';
 
 let spots = [
   {
@@ -52,8 +52,15 @@ export default class MySpots extends React.Component {
             </Body>
           </CardItem>
           <CardItem footer bordered>
-            <Text>Price: ${spot.price}</Text>
+            <Text>Price: ${spot.price}/hr</Text>
           </CardItem>
+          <Button
+                // style={styles.button}
+                onPress={() => this.props.navigation.navigate('AddASpot')}
+                title="Edit Spot"
+                color="blue"
+                accessibilityLabel="Edit Parking Spot"
+              />
         </Card>
       )
     });
@@ -70,7 +77,10 @@ export default class MySpots extends React.Component {
 
 const styles = StyleSheet.create({
   picture: {
+    flex: 1,
+    flexDirection: 'column',
     width: 100,
-    height: 100
+    height: 100,
+    justifyContent: 'flex-end'
   }
 })
