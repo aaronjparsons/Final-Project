@@ -31,7 +31,7 @@ export default class Register extends React.Component {
   registerUser(){
     if(this.getRegisterFormData()){
       firebase.database().ref("users").push(this.getRegisterFormData());
-      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{},(error)=>{
+      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{alert("Registration Success")},(error)=>{
         alert(error.message)
       })
     }else{
