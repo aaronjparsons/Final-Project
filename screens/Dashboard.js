@@ -6,19 +6,35 @@ import HeaderNavigation from "../Components/HeaderNavigation.js";
 import { Container } from "native-base";
 
 export default class Dashboard extends React.Component {
+  
+  vehicleSize(size) {
+    switch (size) {
+      case 'small':
+        return 'https://png.icons8.com/nolan/40/000000/motorcycle.png';
+      case 'medium':
+        return 'https://png.icons8.com/office/40/000000/sedan.png';
+      case 'large':
+        return 'https://png.icons8.com/nolan/40/000000/truck.png';
+      default:
+        return 'https://png.icons8.com/office/40/000000/sedan.png';
+    }
+  }
+
+
   render() {
-    let users = [
+    
+    let users = 
       {
         id: 1,
-        first_name: "Some",
-        last_name: "Guy",
-        email: "test@test.ca",
-        phone_number: "403-111-1111",
-        license_plate: "BJW-1819",
-        car_size: "medium",
-        password: "something"
+        first_name: 'Some',
+        last_name: 'Guy',
+        email: 'test@test.ca',
+        phone_number: '403-111-1111',
+        license_plate: 'BJW-1819',
+        car_size: 'small',
+        password: 'something',
       }
-    ];
+    
     const list = [
       {
         title: "Order History",
@@ -36,26 +52,17 @@ export default class Dashboard extends React.Component {
         navigate: "MySpots"
       },
       {
-        title: "Add a spot",
-        icon: "",
-        navigate: "AddASpot"
+        title: 'Add a spot',
+        icon: '',
+        navigate: 'AddASpot'
+      },
+      {
+        title: 'Payment Info',
+        icon: '',
+        navigate: 'PaymentInfo'
       }
-    ];
-    // vehicleSize(size) {
-    //   switch (size) {
-    //     case 'small':
-    //       <Image style={styles.icon} source={{uri: ''}} />
-    //       break;
-    //     case 'medium':
-    //       <Image style={styles.icon} source={{uri: ''}} />
-    //       break;
-    //     case 'large':
-    //       <Image style={styles.icon} source={{uri: ''}} />
-    //       break;
-    //     default:
-    //       <Image style={styles.icon} source={{uri: ''}} />
-    //   };
-    // }
+      
+    ]
 
     return (
       <Container>
@@ -71,15 +78,10 @@ export default class Dashboard extends React.Component {
               <Text style={styles.userInfo}>
                 License Plate: {users.license_plate}
               </Text>
-              <Image
-                style={styles.avatar}
-                source={{
-                  uri: "https://png.icons8.com/office/40/000000/sedan.png"
-                }}
-              />
+              <Image style={styles.avatar} source={{uri: this.vehicleSize(users.car_size)}} />
               <Button
                 style={styles.button}
-                onPress={e => console.log("pressed")}
+                onPress={() => this.props.navigation.navigate('EditProfile')}
                 title="Edit Profile"
                 color="blue"
                 accessibilityLabel="Change User Profile"
