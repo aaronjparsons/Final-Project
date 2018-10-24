@@ -77,13 +77,11 @@ export const MyApp = createDrawerNavigator(
     Dashboard: {
       screen: Dashboard
     },
-<<<<<<< HEAD
     Logout: {
       screen: Login
-=======
+    },
     Register: {
       screen: Register
->>>>>>> feature/register-page
     }
   },
   {
