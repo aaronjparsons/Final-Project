@@ -30,8 +30,10 @@ export default class Register extends React.Component {
 
   registerUser(){
     if(this.getRegisterFormData()){
-      firebase.database().ref("users").push(this.getRegisterFormData());
-      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{alert("Registration Success")},(error)=>{
+      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{
+        alert("Registration Success")
+        firebase.database().ref("users").push(this.getRegisterFormData());
+      },(error)=>{
         alert(error.message)
       })
     }else{
@@ -104,7 +106,6 @@ export default class Register extends React.Component {
       messagingSenderId: MESSAGING_SENDER_ID
     };
     firebase.initializeApp(config);
-    this.userFirebase = firebase.database().ref('users')
   }
   render(){
     return (
