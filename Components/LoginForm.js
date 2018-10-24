@@ -6,7 +6,12 @@ import {
   TouchableOpacity,
   Text
 } from "react-native";
-
+import firebase from 'firebase';
+import { 
+  API_KEY,
+  AUTH_DOMAIN,DATABASE_URL,
+  PROJECT_ID,STORAGE_BUCKET,
+  MESSAGING_SENDER_ID } from 'react-native-dotenv'
 export default class LoginForm extends Component {
   constructor() {
     super();
@@ -17,14 +22,30 @@ export default class LoginForm extends Component {
   }
   validate = () => {
     const { email, password } = this.state;
-    if (email == "") {
-      this.setState({ Error: "Please provide a Valid Email" });
-    } else if (password == "") {
-      this.setState({ Error: "Please provide a valid password" });
-    } else {
-      this.setState({});
-    }
+
+    firebase.auth().signInWithEmailAndPassword(email,password).then(
+      ()=>{
+        //If login successful
+        alert("login success")},
+      (error)=>{
+        //If login failed
+        alert(error.message);
+      }
+    )
   };
+  
+  componentWillMount(){
+    var config = {
+      apiKey: API_KEY,
+      authDomain:AUTH_DOMAIN,
+      databaseURL: DATABASE_URL,
+      projectId: PROJECT_ID,
+      storageBucket:STORAGE_BUCKET,
+      messagingSenderId: MESSAGING_SENDER_ID
+    };
+    firebase.initializeApp(config);
+  }
+
   render() {
     return (
       <View style={styles.container}>
