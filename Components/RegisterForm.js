@@ -1,11 +1,8 @@
 import React from "react"
 import {TextInput, Text, View, StyleSheet, Dimensions, TouchableOpacity} from "react-native"
 import firebase from 'firebase';
-import { 
-  API_KEY,
-  AUTH_DOMAIN,DATABASE_URL,
-  PROJECT_ID,STORAGE_BUCKET,
-  MESSAGING_SENDER_ID } from 'react-native-dotenv'
+import startFirebase from '../config/startFirebase'
+
 
 
 usernameRegex = RegExp(/^[A-Za-z]+$/);  
@@ -19,7 +16,7 @@ export default class Register extends React.Component {
       first_name:'', last_name:'',
       email:'', phone_number: '',
       password:'',password_conf:'',
-      border_color:'gray'
+      border_color:'gray',
     }
     this.registerUser = this.registerUser.bind(this);
     this.getRegisterFormData = this.getRegisterFormData.bind(this);
@@ -30,15 +27,12 @@ export default class Register extends React.Component {
 
   registerUser(){
     if(this.getRegisterFormData()){
+      firebase.database().ref("users").push(this.getRegisterFormData());
       firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{
-        alert("Registration Success")
-        firebase.database().ref("users").push(this.getRegisterFormData());
+       this.props.navigation.navigate("Home")
       },(error)=>{
         alert(error.message)
       })
-    }else{
-
-      console.log("---------------------------------------------------------")
     }
   }
 
@@ -71,16 +65,12 @@ export default class Register extends React.Component {
 
   validateData(input, type){
  
-  console.log("its false? ", !usernameRegex.test(input))
     if(type === 'name') {
-      console.log("input to validate" ,input)
       if(!usernameRegex.test(input)) {
         this.showErrorBorder()
-        console.log("FLAG INSIDE")
         return false;
       }
     } else if (type === 'email') {
-      console.log("regex validate", !emailRegex.test(input));
       if(!emailRegex.test(input))
         return false;
     } 
@@ -96,16 +86,7 @@ export default class Register extends React.Component {
     return true;
   }
   componentWillMount(){
-
-    var config = {
-      apiKey: API_KEY,
-      authDomain:AUTH_DOMAIN,
-      databaseURL: DATABASE_URL,
-      projectId: PROJECT_ID,
-      storageBucket:STORAGE_BUCKET,
-      messagingSenderId: MESSAGING_SENDER_ID
-    };
-    firebase.initializeApp(config);
+    startFirebase(firebase)
   }
   render(){
     return (

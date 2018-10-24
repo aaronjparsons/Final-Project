@@ -7,12 +7,7 @@ import {
   Text
 } from "react-native";
 import firebase from 'firebase';
-import { 
-  API_KEY,
-  AUTH_DOMAIN,DATABASE_URL,
-  PROJECT_ID,STORAGE_BUCKET,
-  MESSAGING_SENDER_ID } from 'react-native-dotenv'
-  var provider = new firebase.auth.GoogleAuthProvider();
+import startFirebase from "../config/startFirebase"
 
 export default class LoginForm extends Component {
   constructor() {
@@ -26,35 +21,19 @@ export default class LoginForm extends Component {
   }
   validate = () => {
     const { email, password } = this.state;
-
-    firebase.auth().signInWithRedirect(provider).then(function(result) {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = result.credential.accessToken;
-      // The signed-in user info.
-      var user = result.user;
-      // ...
-    }).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    });
+    firebase.auth().signInWithEmailAndPassword(email,password).then(
+      ()=>{
+        //If login successful
+        alert("login success")},
+      (error)=>{
+        //If login failed
+        alert(error.message);
+      }
+    )
   };
   
   componentWillMount(){
-    var config = {
-      apiKey: API_KEY,
-      authDomain:AUTH_DOMAIN,
-      databaseURL: DATABASE_URL,
-      projectId: PROJECT_ID,
-      storageBucket:STORAGE_BUCKET,
-      messagingSenderId: MESSAGING_SENDER_ID
-    };
-    firebase.initializeApp(config);
+    startFirebase(firebase)
   }
 
   render() {
