@@ -17,6 +17,7 @@ import Login from '../Components/Login.js';
 import EditProfile from '../screens/EditProfile.js'
 import PaymentInfo from '../screens/PaymentInfo.js';
 
+import Register from '../Components/RegisterForm'
 // import HomeScreen from '../screens/HomeScreen.js';
 // import { StackNavigator } from 'react-native-navigation';
 // import { Dashboard } from './Dashboard';
@@ -76,8 +77,13 @@ export const MyApp = createDrawerNavigator(
     Dashboard: {
       screen: Dashboard
     },
+<<<<<<< HEAD
     Logout: {
       screen: Login
+=======
+    Register: {
+      screen: Register
+>>>>>>> feature/register-page
     }
   },
   {
