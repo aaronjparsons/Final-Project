@@ -34,8 +34,9 @@ export default class App extends React.Component {
     this.authenticate = this.authenticate.bind(this)
     this.logout = this.logout.bind(this)
   }
-  authenticate(user){
-      this.setState({currentUser:firebase.auth().currentUser, userObject:user})
+  authenticate(userObject){
+      this.setState({currentUser:firebase.auth().currentUser, userObject:userObject})
+      console.log(this.state.userObject)
   }
 
   logout (){
@@ -52,7 +53,7 @@ export default class App extends React.Component {
     console.log("Rendering main")
     return (
       <View style={{ width: "100%", height: "100%" }}>
-        {this.state.currentUser ? <MyApp screenProps={this.logout}/> : <LoggedOutApp screenProps={this.authenticate}/> }    
+        {this.state.currentUser ? <MyApp screenProps={this.logout} userObject = {this.state.userObject}  /> : <LoggedOutApp screenProps={this.authenticate}/> }    
       </View>
     );
   }

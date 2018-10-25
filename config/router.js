@@ -78,6 +78,16 @@ const CustomDrawerContentComponent = props => (
             if(route.route.key === 'Logout'){
               props.screenProps();
             }
+            else if(route.route.key === 'Home'){
+              props.navigation.navigate("Home")
+            }
+            else if(route.route.key === 'Dashboard'){
+              props.navigation.navigate("Dashboard")
+            }
+            else if(route.route.key === 'Help'){
+              props.navigation.navigate("Help")
+            }
+            
           }
           }/>    
       </Content>
@@ -103,7 +113,7 @@ const CustomDrawerContentComponentLoggedOut = props => (
 export const MyApp = createDrawerNavigator(
  
   {
-    Main: {
+    Home: {
       screen: RootStack
     },
     Dashboard: {

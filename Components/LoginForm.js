@@ -31,7 +31,7 @@ export default class LoginForm extends Component {
             }
            }
           }, ()=>{})
-        this.props.authenticate(true,userObject);
+        this.props.authenticate(userObject);
         this.props.login();
       },
       (error)=>{
