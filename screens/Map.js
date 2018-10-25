@@ -48,7 +48,14 @@ class Map extends Component {
   }
 
   markerPressed(data) {
-    this.infoPopup.show()
+    this.setState({
+      spotInfo: {
+        price: data.price,
+        info: [data.title, data.description]
+      }
+    }, function() {
+      this.infoPopup.show();
+    });
   }
 
   parkButtonPressed() {

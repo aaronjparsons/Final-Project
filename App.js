@@ -20,6 +20,10 @@ import { View } from "react-native";
 // import { Container, Content, Header, Body } from "native-base";
 // import HeaderNavigation from './src/Components/Home.js'
 
+console.ignoredYellowBox = [
+  "Setting a timer"
+]
+
 export default class App extends React.Component {
   render() {
     return (

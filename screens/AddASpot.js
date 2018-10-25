@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import ScreenHeader from "../Components/ScreenHeader";
 import { Container } from "native-base";
+import MapView from 'react-native-maps';
 
 export default class AddASpot extends React.Component {
   constructor(props) {
