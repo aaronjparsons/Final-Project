@@ -33,12 +33,16 @@ class Map extends Component {
         price: 1.25,
         info: ['Plug available', '12345 12 Street']
       },
-      spotRented: false
+      spotRented: false,
     }
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
     this.parkingConfirmComplete = this.parkingConfirmComplete.bind(this);
     this.statusPressed = this.statusPressed.bind(this);
+  }
+
+  _onMapReady = () => {
+    console.log('map ready');
   }
 
   showCard(data) {

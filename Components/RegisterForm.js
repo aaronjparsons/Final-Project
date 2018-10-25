@@ -94,7 +94,7 @@ export default class Register extends React.Component {
     return true;
   }
   componentWillMount(){
-
+    console.log(firebase);
     var config = {
       apiKey: API_KEY,
       authDomain:AUTH_DOMAIN,
