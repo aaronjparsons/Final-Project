@@ -22,10 +22,16 @@ export default class LoginForm extends Component {
     firebase.auth().signInWithEmailAndPassword(email,password).then(
       ()=>{
         //If login successful
-        let user = new Object();
-        user.name = "Test user";
-        user.email = "test@gmail.com";
-        this.props.authenticate(true,user);
+        let userObject = new Object();
+        firebase.database().ref("users").on('value', (data)=>{
+           for(let keys in data.val()){
+            if(firebase.auth().currentUser.email === data.val()[keys].email){
+              userObject = data.val()[keys];
+              console.log(userObject)
+            }
+           }
+          }, ()=>{})
+        this.props.authenticate(true,userObject);
         this.props.login();
       },
       (error)=>{
