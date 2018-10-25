@@ -19,7 +19,7 @@ export default class Login extends React.Component {
   }
   login()
   {
-    this.props.navigation.navigate("Home",{user:firebase.auth().currentUser})
+    this.props.navigation.navigate("Home")
   }
   render() {
     return (
@@ -29,7 +29,7 @@ export default class Login extends React.Component {
           <Text style={styles.title}>Park Yo Shit</Text>
         </View>
         <View style={styles.formContainer} />
-        <LoginForm login={this.login} />
+        <LoginForm login={this.login}authenticate = {this.props.authenticate} />
       </KeyboardAvoidingView>
     );
   }

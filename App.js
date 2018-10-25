@@ -21,6 +21,7 @@ import {LoggedOutApp} from "./config/router.js";
 // import HeaderNavigation from './src/Components/Home.js'
 import firebase from 'firebase'
 import startFirebase from './config/startFirebase'
+
 export default class App extends React.Component {
   constructor(props){
     startFirebase(firebase);
@@ -29,21 +30,35 @@ export default class App extends React.Component {
       user : firebase.auth().currentUser,
       isAuthenticated: false,
     }
+    this.authenticate = this.authenticate.bind(this)
+    this.logout = this.logout.bind(this)
+  }
+  authenticate(isAuthenticated, user){
+    console.log("WEEE HERE BOII")
+    this.setState({user:firebase.auth().currentUser, isAuthenticated:isAuthenticated})
   }
 
-  shouldComponentUpdate()
+  logout (){
+    firebase.auth().signOut();
+    this.setState({user:firebase.auth().currentUser})
+  }
+  componentDidUpdate()
   {
-    this.forceUpdate()
+    let _isMounted = true;
+    console.log("We here")
   }
 
+  componentWillUnmount(){
+   //suppress warning code here
+  }
 
   render() {
-    console.log("We here")
-    console.log(firebase.auth().currentUser)
-    
+    console.log("CURRENT USER " , this.state.user)
+    console.log("CURRENT FIREBASE USER : " , firebase.auth().currentUser)
     return (
       <View style={{ width: "100%", height: "100%" }}>
-        {firebase.auth().currentUser ? <MyApp/> : <LoggedOutApp/>}
+        {this.state.user ? <MyApp screenProps={this.logout}/> : <LoggedOutApp screenProps={this.authenticate}/> }
+        {/* <MyApp screenProps={this.logout}/> */}
       </View>
     );
   }

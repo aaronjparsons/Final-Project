@@ -5,7 +5,7 @@ import {
   createStackNavigator
 } from "react-navigation";
 import { StyleSheet, Image } from "react-native";
-import { Container, Content, Header, Body, Icon } from "native-base";
+import { Container, Content, Header, Body, Icon, Root } from "native-base";
 
 import Dashboard from '../screens/Dashboard.js';
 import OrderHistory from '../screens/OrderHistory.js';
@@ -22,7 +22,9 @@ import Register from '../Components/RegisterForm'
 // import { StackNavigator } from 'react-native-navigation';
 // import { Dashboard } from './Dashboard';
 // import { OrderHistory } from './OrderHistory';
-
+import firebase from 'firebase'
+import startFirebase from './startFirebase'
+startFirebase(firebase);
 export const RootStack = createStackNavigator(
   {
     Home: {
@@ -64,8 +66,36 @@ const CustomDrawerContentComponent = props => (
       </Body>
     </Header>
     <Content>
-      <DrawerItems {...props} />
-    </Content>
+    <DrawerItems
+        {...props}
+        onItemPress = {
+          ( route, focused ) =>       
+          {    
+            props.onItemPress({ route, focused })
+            console.log("route.route.key is ", route.route.key)
+            props.screenProps = null;
+            if(route.route.key === 'Logout'){
+              props.screenProps();
+            }
+          }
+          }/>    
+      </Content>
+  </Container>
+);
+
+const CustomDrawerContentComponentLoggedOut = props => (
+  <Container>
+    <Header style={{ height: 200 }}>
+      <Body>
+        <Image
+          style={styles.drawerImage}
+          source={require("../assets/peter.jpg")}
+        />
+      </Body>
+    </Header>
+    <Content>
+    <DrawerItems {...props}/>    
+      </Content>
   </Container>
 );
 
@@ -100,7 +130,7 @@ export const LoggedOutApp = createDrawerNavigator(
       screen: RootStack
     },
     Login: {
-      screen: Login
+      screen: props => <Login {...props} authenticate = {props.screenProps}/>
     },
     Register: {
       screen:Register
@@ -108,7 +138,7 @@ export const LoggedOutApp = createDrawerNavigator(
   },
   {
     InitalRouteName: "Home",
-    contentComponent: CustomDrawerContentComponent,
+    contentComponent: CustomDrawerContentComponentLoggedOut,
     drawerOpenRoute: "DrawerOpen",
     drawerCloseRoute: "DrawerClose",
     drawerToggleRoute: "DrawerToggle"

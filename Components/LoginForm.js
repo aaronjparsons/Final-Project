@@ -26,8 +26,9 @@ export default class LoginForm extends Component {
         let user = new Object();
         user.name = "Test user";
         user.email = "test@gmail.com";
+        this.props.authenticate(true,user);
         this.props.login();
-        
+
       },
       (error)=>{
         //If login failed
