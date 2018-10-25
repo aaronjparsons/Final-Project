@@ -6,10 +6,23 @@ import {
   Image,
   KeyboardAvoidingView
 } from "react-native";
+import firebase from 'firebase'
 import LoginForm from "./LoginForm";
 
 
 export default class Login extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      isAuthenticated: false,
+      user : {}
+    }
+    this.login = this.login.bind(this);
+  }
+  login()
+  {
+    this.props.navigation.navigate("Home")
+  }
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -18,7 +31,7 @@ export default class Login extends React.Component {
           <Text style={styles.title}>Park Yo Shit</Text>
         </View>
         <View style={styles.formContainer} />
-        <LoginForm />
+        <LoginForm login={this.login}authenticate = {this.props.authenticate} />
       </KeyboardAvoidingView>
     );
   }
