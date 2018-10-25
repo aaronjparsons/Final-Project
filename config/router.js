@@ -70,6 +70,7 @@ const CustomDrawerContentComponent = props => (
 );
 
 export const MyApp = createDrawerNavigator(
+ 
   {
     Home: {
       screen: RootStack
@@ -78,11 +79,32 @@ export const MyApp = createDrawerNavigator(
       screen: Dashboard
     },
     Logout: {
+      screen: RootStack
+    }
+  },
+  {
+    InitalRouteName: "Home",
+    contentComponent: CustomDrawerContentComponent,
+    drawerOpenRoute: "DrawerOpen",
+    drawerCloseRoute: "DrawerClose",
+    drawerToggleRoute: "DrawerToggle"
+  }
+);
+
+
+
+export const LoggedOutApp = createDrawerNavigator(
+ 
+  {
+    Home: {
+      screen: RootStack
+    },
+    Login: {
       screen: Login
     },
     Register: {
-      screen: Register
-    }
+      screen:Register
+    },
   },
   {
     InitalRouteName: "Home",

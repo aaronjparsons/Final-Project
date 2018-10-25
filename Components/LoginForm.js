@@ -12,11 +12,10 @@ import startFirebase from "../config/startFirebase"
 export default class LoginForm extends Component {
   constructor() {
     super();
-    var provider = new firebase.auth.GoogleAuthProvider();
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
     };
   }
   validate = () => {
@@ -24,7 +23,12 @@ export default class LoginForm extends Component {
     firebase.auth().signInWithEmailAndPassword(email,password).then(
       ()=>{
         //If login successful
-        alert("login success")},
+        let user = new Object();
+        user.name = "Test user";
+        user.email = "test@gmail.com";
+        this.props.login();
+        
+      },
       (error)=>{
         //If login failed
         alert(error.message);
@@ -33,7 +37,6 @@ export default class LoginForm extends Component {
   };
   
   componentWillMount(){
-    startFirebase(firebase)
   }
 
   render() {

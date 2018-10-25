@@ -14,6 +14,8 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isAuthenticated:false,
+      user: {},
       markers: [
       {
         id: 1,
