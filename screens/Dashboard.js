@@ -24,7 +24,21 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
+    console.log(firebase.apps.length);
+    var config = {
+      apiKey: API_KEY,
+      authDomain:AUTH_DOMAIN,
+      databaseURL: DATABASE_URL,
+      projectId: PROJECT_ID,
+      storageBucket:STORAGE_BUCKET,
+      messagingSenderId: MESSAGING_SENDER_ID
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
+    console.log(firebase.apps.length);
 
+    console.log(firebase.auth());
   }
 
   render() {

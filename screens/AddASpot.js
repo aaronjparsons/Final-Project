@@ -1,16 +1,40 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, StatusBar, Button, TextInput } from 'react-native';
-
-
+import { StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 export default class AddASpot extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      marker: [],
+    }
+  }
+  
   render() {
     return (
-      <View style={styles.body}>
+      <KeyboardAvoidingView behavior="padding" style={styles.body}>
         <View style={styles.headerContent}>
           <Text>Add a Parking Spot</Text>
         </View>
         <View style={styles.content}>
+        <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: 51.0478,
+                longitude: -114.0593,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1
+              }}
+              showsMyLocationButton={true}
+              showsUserLocation={true}
+              // onPress={this.removeCard}
+            >
+            <Marker
+              coordinate={{latitude: 51.0478,
+                longitude: -114.0593}}
+                draggable
+             />
+            </MapView>
           <TextInput
             style={styles.inputField}
             onChangeText={(text) => this.setState({input: text})}
@@ -39,7 +63,7 @@ export default class AddASpot extends React.Component {
           // color="blue"
           accessibilityLabel="Change User Profile"
         />
-      </View>
+      </KeyboardAvoidingView>
       
     )
   }
@@ -70,6 +94,12 @@ const styles = StyleSheet.create({
     // fontSize: 10,
     alignItems: 'center',
   },
+  map: {
+    width: 300,
+    height: 300,
+    // flex: 1,
+    // justifyContent: 'center'
+  }
   // content: {
   //   flex:1,
   //   alignItems:'flex-start',

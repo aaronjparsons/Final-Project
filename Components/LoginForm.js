@@ -43,7 +43,9 @@ export default class LoginForm extends Component {
       storageBucket:STORAGE_BUCKET,
       messagingSenderId: MESSAGING_SENDER_ID
     };
-    firebase.initializeApp(config);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
   }
 
   render() {

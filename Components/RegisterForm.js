@@ -94,7 +94,7 @@ export default class Register extends React.Component {
     return true;
   }
   componentWillMount(){
-
+    console.log('register form', firebase.apps.length);
     var config = {
       apiKey: API_KEY,
       authDomain:AUTH_DOMAIN,
@@ -103,7 +103,9 @@ export default class Register extends React.Component {
       storageBucket:STORAGE_BUCKET,
       messagingSenderId: MESSAGING_SENDER_ID
     };
-    firebase.initializeApp(config);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
     
   }
   render(){

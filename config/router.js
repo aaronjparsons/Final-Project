@@ -79,7 +79,7 @@ export const MyApp = createDrawerNavigator(
     Dashboard: {
       screen: Dashboard
     },
-    Logout: {
+    Login: {
       screen: Login
     },
     Register: {
