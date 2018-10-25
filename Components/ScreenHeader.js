@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text } from "react-native";
 import { Icon, Button, Container, Header, Content, Left } from "native-base";
-//import styles from "../config/styles";
 
 export default class ScreenHeader extends Component {
   render() {
