@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, Image, StatusBar, Button } from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import ScreenHeader from "../Components/ScreenHeader";
 import { Container } from "native-base";
+
+import Stripe from 'react-native-stripe-api';
+
 export default class PaymentInfo extends React.Component {
   constructor() {
     super();
