@@ -5,6 +5,9 @@ import styles from "../config/styles.js";
 import HeaderNavigation from "../Components/HeaderNavigation.js";
 import { Container } from "native-base";
 
+import firebase from 'firebase';
+import { API_KEY, AUTH_DOMAIN,DATABASE_URL, PROJECT_ID,STORAGE_BUCKET, MESSAGING_SENDER_ID } from 'react-native-dotenv'
+
 export default class Dashboard extends React.Component {
   
   vehicleSize(size) {
@@ -20,6 +23,23 @@ export default class Dashboard extends React.Component {
     }
   }
 
+  componentDidMount() {
+    console.log(firebase.apps.length);
+    var config = {
+      apiKey: API_KEY,
+      authDomain:AUTH_DOMAIN,
+      databaseURL: DATABASE_URL,
+      projectId: PROJECT_ID,
+      storageBucket:STORAGE_BUCKET,
+      messagingSenderId: MESSAGING_SENDER_ID
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
+    console.log(firebase.apps.length);
+
+    console.log(firebase.auth());
+  }
 
   render() {
     
@@ -38,7 +58,7 @@ export default class Dashboard extends React.Component {
     const list = [
       {
         title: "Order History",
-        icon: "receipt",
+        icon: "",
         navigate: "OrderHistory"
       },
       {

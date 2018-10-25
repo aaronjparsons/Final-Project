@@ -7,17 +7,19 @@ import {
 import { StyleSheet, Image } from "react-native";
 import { Container, Content, Header, Body, Icon } from "native-base";
 
-import Dashboard from '../screens/Dashboard.js';
-import OrderHistory from '../screens/OrderHistory.js';
-import MySpots from '../screens/MySpots.js';
-import AddASpot from '../screens/AddASpot.js';
-import RentHistory from '../screens/RentHistory.js'
-import Map from '../screens/Map.js';
-import Login from '../Components/Login.js';
-import EditProfile from '../screens/EditProfile.js'
-import PaymentInfo from '../screens/PaymentInfo.js';
+import Dashboard from "../screens/Dashboard.js";
+import OrderHistory from "../screens/OrderHistory.js";
+import MySpots from "../screens/MySpots.js";
+import AddASpot from "../screens/AddASpot.js";
+import RentHistory from "../screens/RentHistory.js";
+import Map from "../screens/Map.js";
+import EditProfile from "../screens/EditProfile.js";
+import PaymentInfo from "../screens/PaymentInfo.js";
+import Help from "../screens/Help.js";
 
-import Register from '../Components/RegisterForm'
+import Login from "../Components/Login.js";
+import Register from "../Components/RegisterForm";
+
 // import HomeScreen from '../screens/HomeScreen.js';
 // import { StackNavigator } from 'react-native-navigation';
 // import { Dashboard } from './Dashboard';
@@ -38,18 +40,18 @@ export const RootStack = createStackNavigator(
       screen: MySpots
     },
     AddASpot: {
-      screen: AddASpot,
+      screen: AddASpot
     },
     EditProfile: {
-      screen: EditProfile,
+      screen: EditProfile
     },
     PaymentInfo: {
-      screen: PaymentInfo,
+      screen: PaymentInfo
     }
   },
   {
-    initialRouteName: 'Home',
-    headerMode: 'none'
+    initialRouteName: "Home",
+    headerMode: "none"
   }
 );
 
@@ -71,17 +73,20 @@ const CustomDrawerContentComponent = props => (
 
 export const MyApp = createDrawerNavigator(
   {
-    Home: {
+    Main: {
       screen: RootStack
     },
     Dashboard: {
       screen: Dashboard
     },
-    Logout: {
+    Login: {
       screen: Login
     },
     Register: {
       screen: Register
+    },
+    Help: {
+      screen: Help
     }
   },
   {

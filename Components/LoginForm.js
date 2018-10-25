@@ -6,13 +6,7 @@ import {
   TouchableOpacity,
   Text
 } from "react-native";
-import firebase from 'firebase';
-import { 
-  API_KEY,
-  AUTH_DOMAIN,DATABASE_URL,
-  PROJECT_ID,STORAGE_BUCKET,
-  MESSAGING_SENDER_ID } from 'react-native-dotenv'
-  var provider = new firebase.auth.GoogleAuthProvider();
+import firebase from '../Firebase';
 
 export default class LoginForm extends Component {
   constructor() {
@@ -44,18 +38,6 @@ export default class LoginForm extends Component {
       // ...
     });
   };
-  
-  componentWillMount(){
-    var config = {
-      apiKey: API_KEY,
-      authDomain:AUTH_DOMAIN,
-      databaseURL: DATABASE_URL,
-      projectId: PROJECT_ID,
-      storageBucket:STORAGE_BUCKET,
-      messagingSenderId: MESSAGING_SENDER_ID
-    };
-    firebase.initializeApp(config);
-  }
 
   render() {
     return (
