@@ -1,23 +1,24 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
-
+import React from "react";
+import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import { Container } from "native-base";
+import ScreenHeader from "../Components/ScreenHeader";
 export default class EditProfile extends React.Component {
   render() {
-    let users = 
-    {
+    let users = {
       id: 1,
-      first_name: 'Some',
-      last_name: 'Guy',
-      email: 'test@test.ca',
-      phone_number: '403-111-1111',
-      license_plate: 'BJW-1819',
-      car_size: 'medium',
-      password: 'something',
-      address: '123 Fake St'
-    }
+      first_name: "Some",
+      last_name: "Guy",
+      email: "test@test.ca",
+      phone_number: "403-111-1111",
+      license_plate: "BJW-1819",
+      car_size: "medium",
+      password: "something",
+      address: "123 Fake St"
+    };
 
     return (
-      
+      <Container>
+        <ScreenHeader navigation={this.props.navigation} />
         <View style={styles.body}>
           <View style={styles.headerContent}>
             <Text>Edit Profile</Text>
@@ -25,81 +26,81 @@ export default class EditProfile extends React.Component {
           <View style={styles.content}>
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({input: text})}
+              onChangeText={text => this.setState({ input: text })}
               placeholder={users.first_name}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({input: text})}
+              onChangeText={text => this.setState({ input: text })}
               placeholder={users.last_name}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({input: text})}
+              onChangeText={text => this.setState({ input: text })}
               placeholder={users.email}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({input: text})}
+              onChangeText={text => this.setState({ input: text })}
               placeholder={users.phone_number}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({input: text})}
+              onChangeText={text => this.setState({ input: text })}
               placeholder={users.license_plate}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({input: text})}
+              onChangeText={text => this.setState({ input: text })}
               placeholder={users.car_size}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({input: text})}
+              onChangeText={text => this.setState({ input: text })}
               placeholder={users.address}
             />
           </View>
           <Button
             style={styles.button}
-            onPress={(e) => console.log(e)}
+            onPress={e => console.log(e)}
             title="Save Changes"
             // color="blue"
             accessibilityLabel="Change User Profile"
           />
         </View>
-      
-    )
+      </Container>
+    );
   }
 }
 
 const styles = StyleSheet.create({
-  body:{
+  body: {
     backgroundColor: "white",
-    height:800,
-    alignItems:'center',
+    height: 800,
+    alignItems: "center"
   },
   inputField: {
-    height: 40, 
-    width: 250, 
-    borderColor: 'black', 
+    height: 40,
+    width: 250,
+    borderColor: "black",
     borderWidth: 1,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
     margin: 10,
     padding: 5
   },
   button: {
     width: 300,
-    color: 'blue',
+    color: "blue"
   },
-  headerContent:{
-    padding:30,
+  headerContent: {
+    padding: 30,
     // fontSize: 10,
-    alignItems: 'center',
-  },
+    alignItems: "center"
+  }
   // content: {
   //   flex:1,
   //   alignItems:'flex-start',
   //   paddingLeft:5
   // }
-})
+});

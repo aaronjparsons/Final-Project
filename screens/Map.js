@@ -9,56 +9,29 @@ import CurrentRental from '../Components/CurrentRental';
 import HeaderNavigation from "../Components/HeaderNavigation.js";
 import { Container } from "native-base";
 
+import firebase from '../Firebase.js';
+
 
 class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: [
-      {
-        id: 1,
-        latitude: 51.0478,
-        longitude: -114.0593,
-        title: 'title',
-        description: "description",
-        price: 1.00
-      },
-      {
-        id : 2,
-        latitude: 51.0278,
-        longitude: -114.0493,
-        title: 'title',
-        description: "description",
-        price: 2.00
-      },
-      {
-        id: 3,
-        latitude: 51.0538,
-        longitude: -114.0123,
-        "title": 'title',
-        "description": "description",
-        price: 1.25
-      },
-      {
-        id: 4,
-        latitude: 51.0522,
-        longitude: -114.0519,
-        title: 'title',
-        description: "description",
-        price: 1.75
-      }
-    ],
+      markers: [],
       parkPressed: false,
       spotInfo: {
         price: 1.25,
         info: ['Plug available', '12345 12 Street']
       },
-      spotRented: false
+      spotRented: false,
     }
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
     this.parkingConfirmComplete = this.parkingConfirmComplete.bind(this);
     this.statusPressed = this.statusPressed.bind(this);
+  }
+
+  _onMapReady = () => {
+    console.log('map ready');
   }
 
   showCard(data) {
@@ -98,6 +71,21 @@ class Map extends Component {
   statusPressed() {
     console.log('status pressed');
     this.statusPopup.show();
+  }
+
+  componentDidMount() {
+    const self = this;
+    firebase.database().ref('/spots/').once('value').then(function(data) {
+      let spots = [];
+      data.forEach(function(childSnapshot) {
+        let item = childSnapshot.val();
+        item.id = childSnapshot.key;
+        spots.push(item);
+      });
+      self.setState({
+        markers: spots
+      });
+    });
   }
 
   render() {

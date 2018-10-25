@@ -1,11 +1,6 @@
 import React from "react"
 import {TextInput, Text, View, StyleSheet, Dimensions, TouchableOpacity} from "react-native"
-import firebase from 'firebase';
-import { 
-  API_KEY,
-  AUTH_DOMAIN,DATABASE_URL,
-  PROJECT_ID,STORAGE_BUCKET,
-  MESSAGING_SENDER_ID } from 'react-native-dotenv'
+import firebase from '../Firebase.js';
 
 
 usernameRegex = RegExp(/^[A-Za-z]+$/);  
@@ -94,19 +89,7 @@ export default class Register extends React.Component {
     return true;
   }
   componentWillMount(){
-    console.log('register form', firebase.apps.length);
-    var config = {
-      apiKey: API_KEY,
-      authDomain:AUTH_DOMAIN,
-      databaseURL: DATABASE_URL,
-      projectId: PROJECT_ID,
-      storageBucket:STORAGE_BUCKET,
-      messagingSenderId: MESSAGING_SENDER_ID
-    };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(config);
-    }
-    
+    this.userFirebase = firebase.database().ref('users')
   }
   render(){
     return (
