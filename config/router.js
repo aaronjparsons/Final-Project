@@ -72,8 +72,7 @@ const CustomDrawerContentComponent = props => (
           ( route, focused ) =>       
           {    
             props.onItemPress({ route, focused })
-            console.log("route.route.key is ", route.route.key)
-            props.screenProps = null;
+
             if(route.route.key === 'Logout'){
               props.screenProps();
             }

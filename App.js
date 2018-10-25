@@ -39,26 +39,23 @@ export default class App extends React.Component {
   }
 
   logout (){
-    firebase.auth().signOut();
-    this.setState({user:firebase.auth().currentUser})
-  }
-  componentDidUpdate()
-  {
-    let _isMounted = true;
-    console.log("We here")
+    firebase.auth().signOut().then(()=>{console.log("Signed out")}, ()=>{})
+    this.setState({user:null});
+
   }
 
   componentWillUnmount(){
-   //suppress warning code here
+
   }
 
   render() {
-    console.log("CURRENT USER " , this.state.user)
-    console.log("CURRENT FIREBASE USER : " , firebase.auth().currentUser)
+    console.log("Rendering main")
     return (
+      
       <View style={{ width: "100%", height: "100%" }}>
         {this.state.user ? <MyApp screenProps={this.logout}/> : <LoggedOutApp screenProps={this.authenticate}/> }
         {/* <MyApp screenProps={this.logout}/> */}
+        { console.log("Rendering in") }
       </View>
     );
   }
