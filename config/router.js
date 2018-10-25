@@ -72,7 +72,7 @@ const CustomDrawerContentComponent = props => (
           ( route, focused ) =>       
           {    
             props.onItemPress({ route, focused })
-
+            //If the presses item is Logout, call the props
             if(route.route.key === 'Logout'){
               props.screenProps();
             }
@@ -128,7 +128,7 @@ export const LoggedOutApp = createDrawerNavigator(
     Home: {
       screen: RootStack
     },
-    Login: {
+    Login: {  
       screen: props => <Login {...props} authenticate = {props.screenProps}/>
     },
     Register: {
