@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import firebase from 'firebase'
 import LoginForm from "./LoginForm";
-
+// import firebase from '../Firebase.js'
 
 export default class Login extends React.Component {
   constructor(props){

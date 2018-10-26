@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, View, Image, Button } from "react-native";
 import { List, ListItem } from "react-native-elements";
-import styles from "../config/styles.js";
-import HeaderNavigation from "../Components/HeaderNavigation.js";
 import { Container } from "native-base";
+import HeaderNavigation from "../Components/HeaderNavigation.js";
+import styles from "../config/styles.js";
 
-import firebase from 'firebase';
-import { API_KEY, AUTH_DOMAIN,DATABASE_URL, PROJECT_ID,STORAGE_BUCKET, MESSAGING_SENDER_ID } from 'react-native-dotenv'
+// import firebase from '../Firebase.js';
+// import { API_KEY, AUTH_DOMAIN,DATABASE_URL, PROJECT_ID,STORAGE_BUCKET, MESSAGING_SENDER_ID } from 'react-native-dotenv'
 
 export default class Dashboard extends React.Component {
   
@@ -24,36 +24,13 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    console.log(firebase.apps.length);
-    var config = {
-      apiKey: API_KEY,
-      authDomain:AUTH_DOMAIN,
-      databaseURL: DATABASE_URL,
-      projectId: PROJECT_ID,
-      storageBucket:STORAGE_BUCKET,
-      messagingSenderId: MESSAGING_SENDER_ID
-    };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(config);
-    }
-    console.log(firebase.apps.length);
+ 
+    // console.log(firebase.apps.length);
 
-    console.log(firebase.auth());
+    // console.log(firebase.auth());
   }
 
   render() {
-    
-    let users = 
-      {
-        id: 1,
-        first_name: 'Some',
-        last_name: 'Guy',
-        email: 'test@test.ca',
-        phone_number: '403-111-1111',
-        license_plate: 'BJW-1819',
-        car_size: 'small',
-        password: 'something',
-      }
     
     const list = [
       {

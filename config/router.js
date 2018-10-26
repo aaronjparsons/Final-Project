@@ -1,12 +1,9 @@
 import React from "react";
-import {
-  createDrawerNavigator,
-  DrawerItems,
-  createStackNavigator
-} from "react-navigation";
+import { createDrawerNavigator, DrawerItems, createStackNavigator } from "react-navigation";
 import { StyleSheet, Image } from "react-native";
 import { Container, Content, Header, Body,Text, Icon, Root } from "native-base";
 
+// importing screens/components
 import Dashboard from "../screens/Dashboard.js";
 import OrderHistory from "../screens/OrderHistory.js";
 import MySpots from "../screens/MySpots.js";
@@ -16,17 +13,14 @@ import Map from "../screens/Map.js";
 import EditProfile from "../screens/EditProfile.js";
 import PaymentInfo from "../screens/PaymentInfo.js";
 import Help from "../screens/Help.js";
-
 import Login from "../Components/Login.js";
 import Register from "../Components/RegisterForm";
 
-// import HomeScreen from '../screens/HomeScreen.js';
-// import { StackNavigator } from 'react-native-navigation';
-// import { Dashboard } from './Dashboard';
-// import { OrderHistory } from './OrderHistory';
+// database connection
 import firebase from 'firebase'
 import startFirebase from './startFirebase'
 startFirebase(firebase);
+
 export const RootStack = createStackNavigator(
   {
     Home: {
@@ -157,6 +151,31 @@ export const LoggedOutApp = createDrawerNavigator(
   {
     InitalRouteName: "Home",
     contentComponent: CustomDrawerContentComponentLoggedOut,
+    drawerOpenRoute: "DrawerOpen",
+    drawerCloseRoute: "DrawerClose",
+    drawerToggleRoute: "DrawerToggle"
+  }
+);
+
+export const SignedIn = createDrawerNavigator(
+  
+  {
+    Home: {
+      screen: RootStack
+    },
+    Dashboard: {
+      screen: Dashboard
+    },
+    Signout: {
+      screen: Login
+    },
+    Help: {
+      screen: Help
+    }
+  },
+  {
+    InitalRouteName: "Home",
+    contentComponent: CustomDrawerContentComponent,
     drawerOpenRoute: "DrawerOpen",
     drawerCloseRoute: "DrawerClose",
     drawerToggleRoute: "DrawerToggle"
