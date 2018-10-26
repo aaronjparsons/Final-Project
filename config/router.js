@@ -18,12 +18,9 @@ import PaymentInfo from '../screens/PaymentInfo.js';
 import Help from '../screens/Help.js';
 
 import Login from '../Components/Login.js';
-import Register from '../Components/RegisterForm'
+import Register from '../Components/RegisterForm';
 
-// import HomeScreen from '../screens/HomeScreen.js';
-// import { StackNavigator } from 'react-native-navigation';
-// import { Dashboard } from './Dashboard';
-// import { OrderHistory } from './OrderHistory';
+import firebase from '../Firebase.js';
 
 export const RootStack = createStackNavigator(
   {
@@ -71,7 +68,33 @@ const CustomDrawerContentComponent = props => (
   </Container>
 );
 
-export const MyApp = createDrawerNavigator(
+export const SignedOut = createDrawerNavigator(
+  
+  {
+    Home: {
+      screen: RootStack
+    },
+    Login: {
+      screen: Login
+    },
+    Register: {
+      screen: Register
+    },
+    Help: {
+      screen: Help
+    }
+  },
+  {
+    InitalRouteName: "Home",
+    contentComponent: CustomDrawerContentComponent,
+    drawerOpenRoute: "DrawerOpen",
+    drawerCloseRoute: "DrawerClose",
+    drawerToggleRoute: "DrawerToggle"
+  }
+);
+
+export const SignedIn = createDrawerNavigator(
+  
   {
     Home: {
       screen: RootStack
@@ -79,11 +102,8 @@ export const MyApp = createDrawerNavigator(
     Dashboard: {
       screen: Dashboard
     },
-    Login: {
+    Signout: {
       screen: Login
-    },
-    Register: {
-      screen: Register
     },
     Help: {
       screen: Help

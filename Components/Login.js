@@ -7,9 +7,18 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 import LoginForm from "./LoginForm";
-
+import firebase from '../Firebase.js'
 
 export default class Login extends React.Component {
+  
+  componentDidMount() {
+    firebase.auth().signOut().then(function() {
+      console.log('Signed Out');
+    }, function(error) {
+      console.error('Sign Out Error', error);
+    });
+  }
+  
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
