@@ -6,19 +6,21 @@ import {
   Image,
   StatusBar,
   Button,
-  TextInput
+  TextInput,
+  KeyboardAvoidingView
 } from "react-native";
 import ScreenHeader from "../Components/ScreenHeader";
 import { Container } from "native-base";
+import MapView, { Marker } from "react-native-maps";
 
 export default class AddASpot extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      marker: [],
-    }
+      marker: []
+    };
   }
-  
+
   render() {
     return (
       <Container>
@@ -28,23 +30,25 @@ export default class AddASpot extends React.Component {
             <Text>Add a Parking Spot</Text>
           </View>
           <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: 51.0478,
-                longitude: -114.0593,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1
-              }}
-              showsMyLocationButton={true}
-              showsUserLocation={true}
-              // onPress={this.removeCard}
-            >
+            style={styles.map}
+            initialRegion={{
+              latitude: 51.0478,
+              longitude: -114.0593,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1
+            }}
+            showsMyLocationButton={true}
+            showsUserLocation={true}
+            // onPress={this.removeCard}
+          >
             <Marker
-              coordinate={{latitude: 51.0478,
-                longitude: -114.0593}}
-                draggable
-             />
-            </MapView>
+              coordinate={{
+                latitude: 51.0478,
+                longitude: -114.0593
+              }}
+              draggable
+            />
+          </MapView>
           <View style={styles.content}>
             <TextInput
               style={styles.inputField}
@@ -103,11 +107,11 @@ const styles = StyleSheet.create({
   headerContent: {
     padding: 30,
     // fontSize: 10,
-    alignItems: 'center',
+    alignItems: "center"
   },
   map: {
     width: 300,
-    height: 300,
+    height: 300
     // flex: 1,
     // justifyContent: 'center'
   }
