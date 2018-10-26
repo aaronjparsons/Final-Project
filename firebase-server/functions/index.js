@@ -18,7 +18,7 @@ app.post('/doPayment/', (req, res) => {
     .create({
       amount: req.body.amount, // Unit: cents
       currency: 'cad',
-      source: req.body.tokenId,
+      customer: req.body.customer,
       description: 'Test payment',
     })
     .then(result => res.status(200).json(result));

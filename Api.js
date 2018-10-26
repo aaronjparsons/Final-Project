@@ -22,11 +22,11 @@ export const createCust = (tokenId, accessToken) => {
     // });
 };
 
-export const doPayment = (amount, tokenId, accessToken) => {
+export const doPayment = (amount, customer, accessToken) => {
   console.log('api.js doPayment called');
   const body = {
     amount: amount,
-    tokenId: tokenId,
+    customer: customer,
   };
   return MyApiClient
     .post('/doPayment', body)
