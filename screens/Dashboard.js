@@ -5,9 +5,6 @@ import { Container } from "native-base";
 import HeaderNavigation from "../Components/HeaderNavigation.js";
 import styles from "../config/styles.js";
 
-// import firebase from '../Firebase.js';
-// import { API_KEY, AUTH_DOMAIN,DATABASE_URL, PROJECT_ID,STORAGE_BUCKET, MESSAGING_SENDER_ID } from 'react-native-dotenv'
-
 export default class Dashboard extends React.Component {
   
   vehicleSize(size) {

@@ -58,8 +58,16 @@ class Map extends Component {
   }
 
   markerPressed(data) {
-    this.infoPopup.show();
+    this.setState({
+      spotInfo: {
+        price: data.price,
+        info: [data.title, data.description]
+      }
+    }, function() {
+      this.infoPopup.show();
+    });
   }
+  
   writeOrderData() {
     const order = firebase
       .database()
@@ -129,6 +137,7 @@ class Map extends Component {
     this._isMounted = true;
 
     const self = this;
+<<<<<<< HEAD
     firebase
       .database()
       .ref("/spots/")
@@ -142,7 +151,19 @@ class Map extends Component {
         self.setState({
           markers: spots
         });
+=======
+    firebase.database().ref('/spots/').on('value', function(data) {
+      let spots = [];
+      data.forEach(function(childSnapshot) {
+        let item = childSnapshot.val();
+        item.id = childSnapshot.key;
+        spots.push(item);
       });
+      self.setState({
+        markers: spots
+>>>>>>> d7bd922681ef9540ddf9e071b7a77194e4227ef6
+      });
+    });
   }
 
   componentWillUnmount() {
