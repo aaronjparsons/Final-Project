@@ -14,7 +14,7 @@ export default class Register extends React.Component {
       first_name:'', last_name:'',
       email:'', phone_number: '',
       password:'',password_conf:'',
-      border_color:'gray'
+      border_color:'gray',
     }
     this.registerUser = this.registerUser.bind(this);
     this.getRegisterFormData = this.getRegisterFormData.bind(this);
@@ -26,12 +26,11 @@ export default class Register extends React.Component {
   registerUser(){
     if(this.getRegisterFormData()){
       firebase.database().ref("users").push(this.getRegisterFormData());
-      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{alert("Registration Success")},(error)=>{
+      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{
+       this.props.navigation.navigate("Home")
+      },(error)=>{
         alert(error.message)
       })
-    }else{
-
-      console.log("---------------------------------------------------------")
     }
   }
 
@@ -64,16 +63,12 @@ export default class Register extends React.Component {
 
   validateData(input, type){
  
-  console.log("its false? ", !usernameRegex.test(input))
     if(type === 'name') {
-      console.log("input to validate" ,input)
       if(!usernameRegex.test(input)) {
         this.showErrorBorder()
-        console.log("FLAG INSIDE")
         return false;
       }
     } else if (type === 'email') {
-      console.log("regex validate", !emailRegex.test(input));
       if(!emailRegex.test(input))
         return false;
     } 
@@ -88,9 +83,7 @@ export default class Register extends React.Component {
     } 
     return true;
   }
-  componentWillMount(){
-    this.userFirebase = firebase.database().ref('users')
-  }
+
   render(){
     return (
       <View style={styles.container}>
