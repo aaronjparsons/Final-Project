@@ -14,7 +14,7 @@ export default class AddASpot extends React.Component {
       user: 'test@gmail.com',
       description: '',
       price: 0,
-      latitude: 51.0522,
+      latitude: 51.06,
       longitude: -114.050,
       is_rented: false
     }

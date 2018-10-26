@@ -9,14 +9,16 @@ import {
 import firebase from '../Firebase';
 
 export default class LoginForm extends Component {
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
 
     this.state = {
       email: "",
       password: "",
     };
   }
+
   validate = () => {
     const { email, password } = this.state;
     firebase.auth().signInWithEmailAndPassword(email,password).then(

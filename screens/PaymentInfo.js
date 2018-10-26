@@ -13,22 +13,34 @@ export default class PaymentInfo extends React.Component {
     this.formOnChange = this.formOnChange.bind(this);
   }
 
+  _isMounted = false;
+
   formOnChange(form) {
-    if (form.valid === true) {
-      console.log("Form valid, ready to submit");
-      this.setState({
-        submitButtonDisabled: false
-      });
-    }
-    if (form.valid === false && this.state.submitButtonDisabled === false) {
-      this.setState({
-        submitButtonDisabled: true
-      });
+    if (this._isMounted) {
+      if (form.valid === true) {
+        console.log("Form valid, ready to submit");
+        this.setState({
+          submitButtonDisabled: false
+        });
+      }
+      if (form.valid === false && this.state.submitButtonDisabled === false) {
+        this.setState({
+          submitButtonDisabled: true
+        });
+      }
     }
   }
 
   submitPaymentInfo() {
     console.log("Card added");
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

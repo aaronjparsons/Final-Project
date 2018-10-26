@@ -20,18 +20,29 @@ export default class App extends React.Component {
     this.authenticate = this.authenticate.bind(this)
     this.logout = this.logout.bind(this)
   }
-  
+
+  _isMounted = false;
+
   authenticate(userObject){
-    this.setState({currentUser:firebase.auth().currentUser,userObject:userObject})
+    if (this._isMounted) {
+      this.setState({currentUser:firebase.auth().currentUser,userObject:userObject})
+    }  
   }
 
   logout (){
-    firebase.auth().signOut().then(()=>{console.log("Signed out")}, ()=>{})
-    this.setState({currentUser:null});
+    if (this._isMounted) {
+      firebase.auth().signOut().then(()=>{console.log("Signed out")}, ()=>{})
+      this.setState({currentUser:null});
+    }
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
   }
 
   componentWillUnmount(){
-  //Warning fix 
+    //Warning fix 
+    this._isMounted = false;
   }
 
 
@@ -39,7 +50,7 @@ export default class App extends React.Component {
     console.log("Rendering main")
     
     return (
-      <View style={{ width: "100%", height: "100%" }}>
+      <View style={{ width: "100%", height: "100%", marginTop: 24 }}>
         {this.state.currentUser ? <MyApp screenProps={{logout:this.logout,userObject:this.state.userObject}} /> : <LoggedOutApp screenProps={this.authenticate}/> }    
       </View>
     );

@@ -30,21 +30,25 @@ class Map extends Component {
     this.statusPressed = this.statusPressed.bind(this);
   }
 
+  _isMounted = false;
+
   _onMapReady = () => {
     console.log('map ready');
   }
 
   showCard(data) {
-    this.state.markers.find(marker => {
-      if (data.id === marker.id) {
-        this.setState({
-          spotInfo: {
-            price: marker.price,
-            info: ["Plug available", "12345 12 Street"]
-          }
-        });
-      }
-    });
+    if (this._isMounted) {
+      this.state.markers.find(marker => {
+        if (data.id === marker.id) {
+          this.setState({
+            spotInfo: {
+              price: marker.price,
+              info: ["Plug available", "12345 12 Street"]
+            }
+          });
+        }
+      });
+    }
   }
 
   markerPressed(data) {
@@ -52,20 +56,24 @@ class Map extends Component {
   }
 
   parkButtonPressed() {
-    console.log('park pressed');
-    this.infoPopup.dismiss(() => {
-      setTimeout(() => {
-        this.confirmPopup.show();
-      },200);
-    });    
+    if (this._isMounted) {
+      console.log('park pressed');
+      this.infoPopup.dismiss(() => {
+        setTimeout(() => {
+          this.confirmPopup.show();
+        },200);
+      });    
+    }
   }
 
   parkingConfirmComplete() {
-    console.log('PAYMENT COMPLETE');
-    this.confirmPopup.dismiss();
-    this.setState({
-      spotRented: true
-    })
+    if (this._isMounted) {
+      console.log('PAYMENT COMPLETE');
+      this.confirmPopup.dismiss();
+      this.setState({
+        spotRented: true
+      })
+    }
   }
 
   statusPressed() {
@@ -74,8 +82,10 @@ class Map extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     const self = this;
-    firebase.database().ref('/spots/').once('value').then(function(data) {
+    firebase.database().ref('/spots/').on(('value'), function(data) {
       let spots = [];
       data.forEach(function(childSnapshot) {
         let item = childSnapshot.val();
@@ -86,6 +96,10 @@ class Map extends Component {
         markers: spots
       });
     });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

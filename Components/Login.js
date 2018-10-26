@@ -11,6 +11,7 @@ import LoginForm from "./LoginForm";
 // import firebase from '../Firebase.js'
 
 export default class Login extends React.Component {
+
   constructor(props){
     super(props);
     this.state = {
@@ -19,10 +20,12 @@ export default class Login extends React.Component {
     }
     this.login = this.login.bind(this);
   }
+  
   login()
   {
     this.props.navigation.navigate("Home")
   }
+  
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -31,7 +34,7 @@ export default class Login extends React.Component {
           <Text style={styles.title}>Park Yo Shit</Text>
         </View>
         <View style={styles.formContainer} />
-        <LoginForm login={this.login}authenticate = {this.props.authenticate} />
+        <LoginForm login={this.login} authenticate ={this.props.authenticate} />
       </KeyboardAvoidingView>
     );
   }

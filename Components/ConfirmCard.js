@@ -10,13 +10,25 @@ class ConfimCard extends React.Component {
     this.confirmButtonPressed = this.confirmButtonPressed.bind(this);
   }
 
+  _isMounted = false;
+
   confirmButtonPressed() {
-    this.setState({
-      confirmPressed: true
-    });
-    setTimeout(() => {
-      this.props.parkingConfirmComplete()
-    }, 1500);
+    if (this._isMounted) {
+      this.setState({
+        confirmPressed: true
+      });
+      setTimeout(() => {
+        this.props.parkingConfirmComplete()
+      }, 1500);
+    }
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
