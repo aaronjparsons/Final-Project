@@ -104,12 +104,12 @@ class Map extends Component {
         total: "60"
       });
     if (this._isMounted) {
-      console.log('park pressed');
+      console.log("park pressed");
       this.infoPopup.dismiss(() => {
         setTimeout(() => {
           this.confirmPopup.show();
-        },200);
-      });    
+        }, 200);
+      });
     }
   }
   parkingConfirmComplete() {
@@ -120,11 +120,11 @@ class Map extends Component {
       spotRented: true
     });
     if (this._isMounted) {
-      console.log('PAYMENT COMPLETE');
+      console.log("PAYMENT COMPLETE");
       this.confirmPopup.dismiss();
       this.setState({
         spotRented: true
-      })
+      });
     }
   }
 
@@ -137,6 +137,21 @@ class Map extends Component {
     this._isMounted = true;
 
     const self = this;
+<<<<<<< HEAD
+    firebase
+      .database()
+      .ref("/spots/")
+      .on("value", function(data) {
+        let spots = [];
+        data.forEach(function(childSnapshot) {
+          let item = childSnapshot.val();
+          item.id = childSnapshot.key;
+          spots.push(item);
+        });
+        self.setState({
+          markers: spots
+        });
+=======
     firebase.database().ref('/spots/').on('value', function(data) {
       let spots = [];
       data.forEach(function(childSnapshot) {
@@ -146,6 +161,7 @@ class Map extends Component {
       });
       self.setState({
         markers: spots
+>>>>>>> d7bd922681ef9540ddf9e071b7a77194e4227ef6
       });
     });
   }

@@ -1,23 +1,42 @@
+<<<<<<< HEAD
+import React from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  StatusBar,
+  Button,
+  TextInput,
+  KeyboardAvoidingView,
+  Container
+} from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import ScreenHeader from "../Components/ScreenHeader";
+import firebase from "../Firebase.js";
+=======
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import ScreenHeader from "../Components/ScreenHeader";
 import firebase from '../Firebase.js';
+>>>>>>> d7bd922681ef9540ddf9e071b7a77194e4227ef6
 
 export default class AddASpot extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       marker: [],
-      address: '',
-      picture_url: '',
-      user: 'test@gmail.com',
-      description: '',
+      address: "",
+      picture_url: "",
+      user: "test@gmail.com",
+      description: "",
       price: 0,
       latitude: 51.06,
-      longitude: -114.050,
+      longitude: -114.05,
       is_rented: false
-    }
+    };
 
     this.addSpot = this.addSpot.bind(this);
     this.getSpot = this.getSpot.bind(this);
@@ -32,7 +51,7 @@ export default class AddASpot extends React.Component {
       user: this.state.user,
       longitude: this.state.longitude,
       latitude: this.state.latitude
-    }
+    };
     return spot;
   }
 
@@ -41,6 +60,20 @@ export default class AddASpot extends React.Component {
   }
 
   addSpot(spot) {
+<<<<<<< HEAD
+    firebase
+      .database()
+      .ref("spots")
+      .push(spot)
+      .then(data => {
+        //success callback
+        console.log("data ", data);
+      })
+      .catch(error => {
+        //error callback
+        console.log("error ", error);
+      });
+=======
     firebase.database().ref("spots").push(spot).then((data)=>{
       //success callback
       console.log('data ' , data)
@@ -48,6 +81,7 @@ export default class AddASpot extends React.Component {
       //error callback
       console.log('error ' , error)
     })
+>>>>>>> d7bd922681ef9540ddf9e071b7a77194e4227ef6
   }
   
   render() {
@@ -59,43 +93,51 @@ export default class AddASpot extends React.Component {
             <Text>Add a Parking Spot</Text>
           </View>
           <View style={styles.content}>
+<<<<<<< HEAD
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: 51.0478,
+                longitude: -114.0593,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1
+              }}
+              showsMyLocationButton={true}
+              showsUserLocation={true}
+              // onPress={this.removeCard}
+            >
+              <Marker
+                coordinate={{
+=======
           <MapView
                 style={styles.map}
                 initialRegion={{
+>>>>>>> d7bd922681ef9540ddf9e071b7a77194e4227ef6
                   latitude: 51.0478,
-                  longitude: -114.0593,
-                  latitudeDelta: 0.1,
-                  longitudeDelta: 0.1
+                  longitude: -114.0593
                 }}
-                showsMyLocationButton={true}
-                showsUserLocation={true}
-                // onPress={this.removeCard}
-              >
-              <Marker
-                coordinate={{latitude: 51.0478,
-                  longitude: -114.0593}}
-                  draggable
+                draggable
               />
-              </MapView>
+            </MapView>
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({address: text})}
-              placeholder={'Address'}
+              onChangeText={text => this.setState({ address: text })}
+              placeholder={"Address"}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({picture_url: text})}
-              placeholder={'Picture URL'}
+              onChangeText={text => this.setState({ picture_url: text })}
+              placeholder={"Picture URL"}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({description: text})}
-              placeholder={'Description'}
+              onChangeText={text => this.setState({ description: text })}
+              placeholder={"Description"}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({price: text})}
-              placeholder={'Price'}
+              onChangeText={text => this.setState({ price: text })}
+              placeholder={"Price"}
             />
           </View>
           <Button
@@ -107,7 +149,7 @@ export default class AddASpot extends React.Component {
           />
         </KeyboardAvoidingView>
       </ScrollView>
-    )
+    );
   }
 }
 
