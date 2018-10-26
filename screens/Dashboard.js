@@ -91,14 +91,14 @@ export default class Dashboard extends React.Component {
           <View style={styles.header}>
             <View style={styles.headerContent}>
               <Text style={styles.name}>
-                {users.first_name} {users.last_name}
+                {this.props.user.first_name} {this.props.user.last_name}
               </Text>
-              <Text style={styles.userInfo}>{users.email}</Text>
-              <Text style={styles.userInfo}>{users.phone_number}</Text>
+              <Text style={styles.userInfo}>{this.props.user.email}</Text>
+              <Text style={styles.userInfo}>{this.props.user.phone_number}</Text>
               <Text style={styles.userInfo}>
-                License Plate: {users.license_plate}
+                License Plate: {this.props.user.license_plate}
               </Text>
-              <Image style={styles.avatar} source={{uri: this.vehicleSize(users.car_size)}} />
+              <Image style={styles.avatar} source={{uri: this.vehicleSize(this.props.user.car_size)}} />
               <Button
                 style={styles.button}
                 onPress={() => this.props.navigation.navigate('EditProfile')}

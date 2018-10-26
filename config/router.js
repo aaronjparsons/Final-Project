@@ -118,7 +118,7 @@ export const MyApp = createDrawerNavigator(
       screen: RootStack
     },
     Dashboard: {
-      screen: Dashboard
+      screen:props => <Dashboard {...props} user = {props.screenProps.userObject}/>
     },
     Logout: {
       screen: RootStack
