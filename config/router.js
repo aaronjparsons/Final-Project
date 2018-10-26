@@ -5,7 +5,7 @@ import {
   createStackNavigator
 } from "react-navigation";
 import { StyleSheet, Image } from "react-native";
-import { Container, Content, Header, Body, Icon, Root } from "native-base";
+import { Container, Content, Header, Body,Text, Icon, Root } from "native-base";
 
 import Dashboard from "../screens/Dashboard.js";
 import OrderHistory from "../screens/OrderHistory.js";
@@ -65,6 +65,7 @@ const CustomDrawerContentComponent = props => (
           style={styles.drawerImage}
           source={require("../assets/peter.jpg")}
         />
+        <Text style={{color:"white",alignSelf:"center"}}>Welcome! {props.screenProps.userObject.first_name}</Text>
       </Body>
     </Header>
     <Content>
@@ -76,7 +77,7 @@ const CustomDrawerContentComponent = props => (
             props.onItemPress({ route, focused })
             //If the presses item is Logout, call the props
             if(route.route.key === 'Logout'){
-              props.screenProps();
+              props.screenProps.logout()
             }
             else if(route.route.key === 'Home'){
               props.navigation.navigate("Home")
