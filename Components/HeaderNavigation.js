@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text } from "react-native";
-import { Icon, Button, Container, Header, Content, Left } from "native-base";
+import { Icon, Button, Header } from "native-base";
 
 export default class HeaderNavigation extends Component {
   render() {

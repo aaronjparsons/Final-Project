@@ -1,83 +1,113 @@
-import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  StatusBar,
-  Button,
-  TextInput
-} from "react-native";
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import ScreenHeader from "../Components/ScreenHeader";
-import { Container } from "native-base";
-import MapView from 'react-native-maps';
+import firebase from '../Firebase.js';
 
 export default class AddASpot extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       marker: [],
+      address: '',
+      picture_url: '',
+      user: 'test@gmail.com',
+      description: '',
+      price: 0,
+      latitude: 51.06,
+      longitude: -114.050,
+      is_rented: false
     }
+
+    this.addSpot = this.addSpot.bind(this);
+    this.getSpot = this.getSpot.bind(this);
+  }
+
+  getSpot() {
+    let spot = {
+      title: this.state.address,
+      picture_url: this.state.picture_url,
+      description: this.state.description,
+      price: this.state.price,
+      user: this.state.user,
+      longitude: this.state.longitude,
+      latitude: this.state.latitude
+    }
+    return spot;
+  }
+
+  getCoordinates() {
+    // get coordinates from marker
+  }
+
+  addSpot(spot) {
+    firebase.database().ref("spots").push(spot).then((data)=>{
+      //success callback
+      console.log('data ' , data)
+    }).catch((error)=>{
+      //error callback
+      console.log('error ' , error)
+    })
   }
   
   render() {
     return (
-      <Container>
+      <ScrollView>
         <ScreenHeader navigation={this.props.navigation} />
-        <View style={styles.body}>
+        <KeyboardAvoidingView behavior="padding" style={styles.body}>
           <View style={styles.headerContent}>
             <Text>Add a Parking Spot</Text>
           </View>
-          <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: 51.0478,
-                longitude: -114.0593,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1
-              }}
-              showsMyLocationButton={true}
-              showsUserLocation={true}
-              // onPress={this.removeCard}
-            >
-            <Marker
-              coordinate={{latitude: 51.0478,
-                longitude: -114.0593}}
-                draggable
-             />
-            </MapView>
           <View style={styles.content}>
+          <MapView
+                style={styles.map}
+                initialRegion={{
+                  latitude: 51.0478,
+                  longitude: -114.0593,
+                  latitudeDelta: 0.1,
+                  longitudeDelta: 0.1
+                }}
+                showsMyLocationButton={true}
+                showsUserLocation={true}
+                // onPress={this.removeCard}
+              >
+              <Marker
+                coordinate={{latitude: 51.0478,
+                  longitude: -114.0593}}
+                  draggable
+              />
+              </MapView>
             <TextInput
               style={styles.inputField}
-              onChangeText={text => this.setState({ input: text })}
-              placeholder={"Address"}
+              onChangeText={(text) => this.setState({address: text})}
+              placeholder={'Address'}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={text => this.setState({ input: text })}
-              placeholder={"Picture URL"}
+              onChangeText={(text) => this.setState({picture_url: text})}
+              placeholder={'Picture URL'}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={text => this.setState({ input: text })}
-              placeholder={"Description"}
+              onChangeText={(text) => this.setState({description: text})}
+              placeholder={'Description'}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={text => this.setState({ input: text })}
-              placeholder={"Price"}
+              onChangeText={(text) => this.setState({price: text})}
+              placeholder={'Price'}
             />
           </View>
           <Button
             style={styles.button}
-            onPress={e => console.log(e)}
+            onPress={() => this.addSpot(this.getSpot())}
             title="Save Changes"
             // color="blue"
-            accessibilityLabel="Change User Profile"
+            accessibilityLabel="Add a parking spot"
           />
-        </View>
-      </Container>
-    );
+        </KeyboardAvoidingView>
+      </ScrollView>
+    )
   }
 }
 

@@ -10,6 +10,7 @@ import {
   Body
 } from "native-base";
 import ScreenHeader from "../Components/ScreenHeader";
+
 let orders = [
   {
     id: 1,
@@ -52,7 +53,6 @@ export default class OrderHistory extends React.Component {
   orderTotal(duration, price) {
     return (duration / 60) * price;
   }
-
   render() {
     let orderHistory = orders.map(order => {
       return (

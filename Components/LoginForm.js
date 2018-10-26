@@ -9,20 +9,33 @@ import {
 import firebase from '../Firebase';
 
 export default class LoginForm extends Component {
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
+
     this.state = {
       email: "",
-      password: ""
+      password: "",
     };
   }
+
   validate = () => {
     const { email, password } = this.state;
-
     firebase.auth().signInWithEmailAndPassword(email,password).then(
       ()=>{
         //If login successful
-        alert("login success")},
+        
+        firebase.database().ref("users").on('value', (data)=>{
+           for(let keys in data.val()){
+            if(firebase.auth().currentUser.email === data.val()[keys].email){
+              userObject = data.val()[keys];
+              this.props.authenticate(userObject);
+            }
+           }
+          }, ()=>{})
+
+        this.props.login();
+      },
       (error)=>{
         //If login failed
         alert(error.message);

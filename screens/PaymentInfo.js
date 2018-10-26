@@ -21,18 +21,22 @@ export default class PaymentInfo extends React.Component {
     this.formOnChange = this.formOnChange.bind(this);
   }
 
+  _isMounted = false;
+
   formOnChange(form) {
-    if (form.valid === true) {
-      formData = form;
-      console.log("Form valid, ready to submit", formData);
-      this.setState({
-        submitButtonDisabled: false
-      });
-    }
-    if (form.valid === false && this.state.submitButtonDisabled === false) {
-      this.setState({
-        submitButtonDisabled: true
-      });
+    if (this._isMounted) {
+      if (form.valid === true) {
+        formData = form;
+        console.log("Form valid, ready to submit");
+        this.setState({
+          submitButtonDisabled: false
+        });
+      }
+      if (form.valid === false && this.state.submitButtonDisabled === false) {
+        this.setState({
+          submitButtonDisabled: true
+        });
+      }
     }
   }
 
@@ -51,6 +55,14 @@ export default class PaymentInfo extends React.Component {
     }).catch((e) => {
       console.log('ERROR', e);
     });
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

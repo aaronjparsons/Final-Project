@@ -1,46 +1,44 @@
 import React from "react";
-// import { StyleSheet, View, Image, StatusBar, Button } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 import { Image, StyleSheet, Button }  from 'react-native';
 import ScreenHeader from "../Components/ScreenHeader";
 
-let spots = [
-  {
-    id: 1,
-    address: "123 Fake Street",
-    description: "Regular street parking spot.",
-    date_added: "Jan. 20th, 2018",
-    picture_url: require("../assets/spot.jpg"),
-    price: 5
-  },
-  {
-    id: 2,
-    address: "123 Fake Street",
-    description: "Regular street parking spot.",
-    date_added: "Jan. 20th, 2018",
-    picture_url: require("../assets/spot.jpg"),
-    price: 2
-  },
-  {
-    id: 3,
-    address: "123 Fake Street",
-    description: "Regular street parking spot.",
-    date_added: "Jan. 20th, 2018",
-    picture_url: require("../assets/spot.jpg"),
-    price: 3
-  }
-];
+import firebase from '../Firebase.js';
 
 export default class MySpots extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      spots: []
+    }
+  }
+
+  componentDidMount() {
+    firebase.database().ref('/spots/').on(('value'), (data) => {
+      let spots = [];
+      // grab spot data from db
+      data.forEach((spot) => {
+        let newSpot = spot.val();
+        newSpot.key = spot.key;
+        spots.push(newSpot);
+      });
+      this.setState({spots: spots});
+    })
+  }
+  
   render() {
-    let mySpots = spots.map(spot => {
+    
+    let id = 0;
+    let mySpots = this.state.spots.map(spot => {
+      id++;
       return (
-        <Card>
+        <Card key={spot.key}>
           <CardItem header bordered>
-            <Text>Parking Spot Id # {spot.id}</Text>
+            <Text>Parking Spot Id # {id}</Text>
           </CardItem>
           <CardItem bordered>
-            <Image style={styles.picture} source={spot.picture_url} />
+            {spot.picture_url ? <Image style={styles.picture} source={spot.picture_url} /> : <Image style={styles.picture} source={require("../assets/spot.jpg")} />}
           </CardItem>
           <CardItem bordered>
             <Body>
