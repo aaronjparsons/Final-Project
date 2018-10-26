@@ -4,11 +4,13 @@ import { CreditCardInput } from "react-native-credit-card-input";
 import ScreenHeader from "../Components/ScreenHeader";
 import { Container } from "native-base";
 
-import { doPayment, testGet } from '../Api.js';
+import { createCust } from '../Api.js';
 import { STRIPE_PKEY } from 'react-native-dotenv';
 import Stripe from 'react-native-stripe-api';
 
 const client = new Stripe(STRIPE_PKEY);
+
+let formData = null;
 
 export default class PaymentInfo extends React.Component {
   constructor() {
@@ -21,7 +23,8 @@ export default class PaymentInfo extends React.Component {
 
   formOnChange(form) {
     if (form.valid === true) {
-      console.log("Form valid, ready to submit");
+      formData = form;
+      console.log("Form valid, ready to submit", formData);
       this.setState({
         submitButtonDisabled: false
       });
@@ -34,21 +37,20 @@ export default class PaymentInfo extends React.Component {
   }
 
   submitPaymentInfo() {
-    testGet();
-    // Create a Stripe token with new card infos
-    // const token = client.createToken({
-    //   number: '4242424242424242' ,
-    //   exp_month: '12', 
-    //   exp_year: '22', 
-    //   cvc: '111',
-    // }).then((response) => {
-    //   console.log(response);
-    //   return doPayment(100, response.id);
-    // }).then(() => {
-    //   console.log('PAYMENT SUCCESS');
-    // }).catch((e) => {
-    //   console.log('ERROR', e);
-    // });
+    // Create a Stripe token with new card info & create a customer
+    const token = client.createToken({
+      number: formData.values.number,
+      exp_month: formData.values.expiry.slice(0,2), 
+      exp_year: formData.values.expiry.slice(3,5), 
+      cvc: formData.values.cvc,
+    }).then((response) => {
+      console.log(response);
+      return createCust(response.id);
+    }).then((data) => {
+      console.log('CUSTOMER SUCCESSFULLY CREATED', data.id);
+    }).catch((e) => {
+      console.log('ERROR', e);
+    });
   }
 
   render() {

@@ -1,11 +1,26 @@
 import axios from 'axios';
 
 const MyApiClient = axios.create({
-  baseURL: 'https://parker-7a5ba.firebaseapp.com',
-  timeout: 1000,
-  headers: {'X-Custom-Header': 'foobar'}
+  baseURL: 'https://park-server.firebaseapp.com',
+  timeout: 5000,
+  headers: {'Content-Type': 'application/json'}
 });
 
+export const createCust = (tokenId, accessToken) => {
+  console.log('create customer api called');
+  const body = {
+    tokenId: tokenId,
+  };
+  return MyApiClient
+    .post('/createCust', body)
+    .then(({ data }) => {
+      console.log(data);
+      return data;
+    })
+    // .catch(error => {
+    //   return Promise.reject('Error in making payment', error);
+    // });
+};
 
 export const doPayment = (amount, tokenId, accessToken) => {
   console.log('api.js doPayment called');
@@ -13,21 +28,13 @@ export const doPayment = (amount, tokenId, accessToken) => {
     amount: amount,
     tokenId: tokenId,
   };
-  // const headers = {
-  //   'Content-Type': 'application/json',
-  // };
   return MyApiClient
     .post('/doPayment', body)
     .then(({ data }) => {
+      // console.log(data);
       return data;
     })
-    .catch(error => {
-      return Promise.reject('Error in making payment', error);
-    });
+    // .catch(error => {
+    //   return Promise.reject('Error in making payment', error);
+    // });
 };
-
-export const testGet = () => {
-  MyApiClient.get('/test').then((res) => {
-    console.log(res);
-  });
-}

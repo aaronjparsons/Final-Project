@@ -82,7 +82,7 @@ class Map extends Component {
 
   componentDidMount() {
     const self = this;
-    firebase.database().ref('/spots/').once('value').then(function(data) {
+    firebase.database().ref('/spots/').on('value', function(data) {
       let spots = [];
       data.forEach(function(childSnapshot) {
         let item = childSnapshot.val();

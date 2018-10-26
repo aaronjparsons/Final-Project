@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config({path: '../.env'});
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -7,16 +7,17 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const PORT = process.env.PORT;
 const STRIPE_KEY = process.env.STRIPE_SKEY;
 const stripe = require('stripe')(STRIPE_KEY);
 
 
-app.post('/api/doPayment/', (req, res) => {
-  console.log('api/doPayment called');
+app.post('/doPayment/', (req, res) => {
+  console.log('/doPayment called');
   return stripe.charges
     .create({
       amount: req.body.amount, // Unit: cents
-      currency: 'eur',
+      currency: 'cad',
       source: req.body.tokenId,
       description: 'Test payment',
     })
@@ -28,6 +29,6 @@ app.get('/api/test', (req, res) => {
 });
 
 
-app.listen(3001, () => {
-  console.log(`server listening on port: 3001`);
+app.listen(PORT, () => {
+  console.log(`server listening on port: ${PORT}`);
 });
