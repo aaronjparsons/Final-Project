@@ -1,6 +1,6 @@
-<<<<<<< HEAD
 import React from "react";
 import {
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -8,37 +8,27 @@ import {
   StatusBar,
   Button,
   TextInput,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Container
 } from "react-native";
-import ScreenHeader from "../Components/ScreenHeader";
-import { Container } from "native-base";
 import MapView, { Marker } from "react-native-maps";
-=======
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import ScreenHeader from "../Components/ScreenHeader";
-import firebase from '../Firebase.js';
->>>>>>> 7ef5961a97a735018348c166a854211fef6c86c6
+import firebase from "../Firebase.js";
 
 export default class AddASpot extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-<<<<<<< HEAD
-      marker: []
-    };
-=======
       marker: [],
-      address: '',
-      picture_url: '',
-      user: 'test@gmail.com',
-      description: '',
+      address: "",
+      picture_url: "",
+      user: "test@gmail.com",
+      description: "",
       price: 0,
       latitude: 51.06,
-      longitude: -114.050,
+      longitude: -114.05,
       is_rented: false
-    }
+    };
 
     this.addSpot = this.addSpot.bind(this);
     this.getSpot = this.getSpot.bind(this);
@@ -53,7 +43,7 @@ export default class AddASpot extends React.Component {
       user: this.state.user,
       longitude: this.state.longitude,
       latitude: this.state.latitude
-    }
+    };
     return spot;
   }
 
@@ -62,14 +52,18 @@ export default class AddASpot extends React.Component {
   }
 
   addSpot(spot) {
-    firebase.database().ref("spots").push(spot).then((data)=>{
-      //success callback
-      console.log('data ' , data)
-    }).catch((error)=>{
-      //error callback
-      console.log('error ' , error)
-    })
->>>>>>> 7ef5961a97a735018348c166a854211fef6c86c6
+    firebase
+      .database()
+      .ref("spots")
+      .push(spot)
+      .then(data => {
+        //success callback
+        console.log("data ", data);
+      })
+      .catch(error => {
+        //error callback
+        console.log("error ", error);
+      });
   }
 
   render() {
@@ -80,67 +74,46 @@ export default class AddASpot extends React.Component {
           <View style={styles.headerContent}>
             <Text>Add a Parking Spot</Text>
           </View>
-<<<<<<< HEAD
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: 51.0478,
-              longitude: -114.0593,
-              latitudeDelta: 0.1,
-              longitudeDelta: 0.1
-            }}
-            showsMyLocationButton={true}
-            showsUserLocation={true}
-            // onPress={this.removeCard}
-          >
-            <Marker
-              coordinate={{
-                latitude: 51.0478,
-                longitude: -114.0593
-              }}
-              draggable
-            />
-          </MapView>
-=======
->>>>>>> 7ef5961a97a735018348c166a854211fef6c86c6
           <View style={styles.content}>
-          <MapView
-                style={styles.map}
-                initialRegion={{
-                  latitude: 51.0478,
-                  longitude: -114.0593,
-                  latitudeDelta: 0.1,
-                  longitudeDelta: 0.1
-                }}
-                showsMyLocationButton={true}
-                showsUserLocation={true}
-                // onPress={this.removeCard}
-              >
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: 51.0478,
+                longitude: -114.0593,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1
+              }}
+              showsMyLocationButton={true}
+              showsUserLocation={true}
+              // onPress={this.removeCard}
+            >
               <Marker
-                coordinate={{latitude: 51.0478,
-                  longitude: -114.0593}}
-                  draggable
+                coordinate={{
+                  latitude: 51.0478,
+                  longitude: -114.0593
+                }}
+                draggable
               />
-              </MapView>
+            </MapView>
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({address: text})}
-              placeholder={'Address'}
+              onChangeText={text => this.setState({ address: text })}
+              placeholder={"Address"}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({picture_url: text})}
-              placeholder={'Picture URL'}
+              onChangeText={text => this.setState({ picture_url: text })}
+              placeholder={"Picture URL"}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({description: text})}
-              placeholder={'Description'}
+              onChangeText={text => this.setState({ description: text })}
+              placeholder={"Description"}
             />
             <TextInput
               style={styles.inputField}
-              onChangeText={(text) => this.setState({price: text})}
-              placeholder={'Price'}
+              onChangeText={text => this.setState({ price: text })}
+              placeholder={"Price"}
             />
           </View>
           <Button
@@ -152,7 +125,7 @@ export default class AddASpot extends React.Component {
           />
         </KeyboardAvoidingView>
       </ScrollView>
-    )
+    );
   }
 }
 

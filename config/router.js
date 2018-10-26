@@ -1,7 +1,19 @@
 import React from "react";
-import { createDrawerNavigator, DrawerItems, createStackNavigator } from "react-navigation";
+import {
+  createDrawerNavigator,
+  DrawerItems,
+  createStackNavigator
+} from "react-navigation";
 import { StyleSheet, Image } from "react-native";
-import { Container, Content, Header, Body,Text, Icon, Root } from "native-base";
+import {
+  Container,
+  Content,
+  Header,
+  Body,
+  Text,
+  Icon,
+  Root
+} from "native-base";
 
 // importing screens/components
 import Dashboard from "../screens/Dashboard.js";
@@ -17,8 +29,8 @@ import Login from "../Components/Login.js";
 import Register from "../Components/RegisterForm";
 
 // database connection
-import firebase from 'firebase'
-import startFirebase from './startFirebase'
+import firebase from "firebase";
+import startFirebase from "./startFirebase";
 startFirebase(firebase);
 
 export const RootStack = createStackNavigator(
@@ -59,33 +71,29 @@ const CustomDrawerContentComponent = props => (
           style={styles.drawerImage}
           source={require("../assets/peter.jpg")}
         />
-        <Text style={{color:"white",alignSelf:"center"}}>Welcome! {props.screenProps.userObject.first_name}</Text>
+        <Text style={{ color: "white", alignSelf: "center" }}>
+          Welcome! {props.screenProps.userObject.first_name}
+        </Text>
       </Body>
     </Header>
     <Content>
-    <DrawerItems
+      <DrawerItems
         {...props}
-        onItemPress = {
-          ( route, focused ) =>       
-          {    
-            props.onItemPress({ route, focused })
-            //If the presses item is Logout, call the props
-            if(route.route.key === 'Logout'){
-              props.screenProps.logout()
-            }
-            else if(route.route.key === 'Home'){
-              props.navigation.navigate("Home")
-            }
-            else if(route.route.key === 'Dashboard'){
-              props.navigation.navigate("Dashboard")
-            }
-            else if(route.route.key === 'Help'){
-              props.navigation.navigate("Help")
-            }
-            
+        onItemPress={(route, focused) => {
+          props.onItemPress({ route, focused });
+          //If the presses item is Logout, call the props
+          if (route.route.key === "Logout") {
+            props.screenProps.logout();
+          } else if (route.route.key === "Map") {
+            props.navigation.navigate("Home");
+          } else if (route.route.key === "Dashboard") {
+            props.navigation.navigate("Dashboard");
+          } else if (route.route.key === "Help") {
+            props.navigation.navigate("Help");
           }
-          }/>    
-      </Content>
+        }}
+      />
+    </Content>
   </Container>
 );
 
@@ -100,25 +108,26 @@ const CustomDrawerContentComponentLoggedOut = props => (
       </Body>
     </Header>
     <Content>
-    <DrawerItems {...props}/>    
-      </Content>
+      <DrawerItems {...props} />
+    </Content>
   </Container>
 );
 
 export const MyApp = createDrawerNavigator(
- 
   {
-    Home: {
+    Map: {
       screen: RootStack
     },
     Dashboard: {
-      screen:props => <Dashboard {...props} user = {props.screenProps.userObject}/>
+      screen: props => (
+        <Dashboard {...props} user={props.screenProps.userObject} />
+      )
     },
     Logout: {
       screen: RootStack
     },
-    Help : {
-      screen : Help
+    Help: {
+      screen: Help
     }
   },
   {
@@ -130,22 +139,19 @@ export const MyApp = createDrawerNavigator(
   }
 );
 
-
-
 export const LoggedOutApp = createDrawerNavigator(
- 
   {
     Home: {
       screen: RootStack
     },
-    Login: {  
-      screen: props => <Login {...props} authenticate = {props.screenProps}/>
+    Login: {
+      screen: props => <Login {...props} authenticate={props.screenProps} />
     },
     Register: {
-      screen:Register
+      screen: Register
     },
-    Help : {
-      screen : Help
+    Help: {
+      screen: Help
     }
   },
   {
@@ -158,7 +164,6 @@ export const LoggedOutApp = createDrawerNavigator(
 );
 
 export const SignedIn = createDrawerNavigator(
-  
   {
     Home: {
       screen: RootStack
