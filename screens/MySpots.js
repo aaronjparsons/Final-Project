@@ -1,37 +1,9 @@
 import React from "react";
-// import { StyleSheet, View, Image, StatusBar, Button } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 import { Image, StyleSheet, Button }  from 'react-native';
 import ScreenHeader from "../Components/ScreenHeader";
 
 import firebase from '../Firebase.js';
-
-// let spots = [
-//   {
-//     id: 1,
-//     address: "123 Fake Street",
-//     description: "Regular street parking spot.",
-//     date_added: "Jan. 20th, 2018",
-//     picture_url: require("../assets/spot.jpg"),
-//     price: 5
-//   },
-//   {
-//     id: 2,
-//     address: "123 Fake Street",
-//     description: "Regular street parking spot.",
-//     date_added: "Jan. 20th, 2018",
-//     picture_url: require("../assets/spot.jpg"),
-//     price: 2
-//   },
-//   {
-//     id: 3,
-//     address: "123 Fake Street",
-//     description: "Regular street parking spot.",
-//     date_added: "Jan. 20th, 2018",
-//     picture_url: require("../assets/spot.jpg"),
-//     price: 3
-//   }
-// ];
 
 export default class MySpots extends React.Component {
   
@@ -56,7 +28,7 @@ export default class MySpots extends React.Component {
   }
   
   render() {
-    // this.state.spots.length
+    
     let id = 0;
     let mySpots = this.state.spots.map(spot => {
       id++;
