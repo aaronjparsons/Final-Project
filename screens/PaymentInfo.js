@@ -4,7 +4,11 @@ import { CreditCardInput } from "react-native-credit-card-input";
 import ScreenHeader from "../Components/ScreenHeader";
 import { Container } from "native-base";
 
+import { doPayment, testGet } from '../Api.js';
+import { STRIPE_PKEY } from 'react-native-dotenv';
 import Stripe from 'react-native-stripe-api';
+
+const client = new Stripe(STRIPE_PKEY);
 
 export default class PaymentInfo extends React.Component {
   constructor() {
@@ -30,7 +34,21 @@ export default class PaymentInfo extends React.Component {
   }
 
   submitPaymentInfo() {
-    console.log("Card added");
+    testGet();
+    // Create a Stripe token with new card infos
+    // const token = client.createToken({
+    //   number: '4242424242424242' ,
+    //   exp_month: '12', 
+    //   exp_year: '22', 
+    //   cvc: '111',
+    // }).then((response) => {
+    //   console.log(response);
+    //   return doPayment(100, response.id);
+    // }).then(() => {
+    //   console.log('PAYMENT SUCCESS');
+    // }).catch((e) => {
+    //   console.log('ERROR', e);
+    // });
   }
 
   render() {

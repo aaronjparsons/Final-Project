@@ -1,76 +1,33 @@
+require('dotenv').config()
+
 const express = require('express');
-const WebSocket = require('ws');
+const bodyParser = require('body-parser');
 
-const spotsArray = [
-  {
-    id: 1,
-    latitude: 51.0478,
-    longitude: -114.0593,
-    title: 'title',
-    description: "description",
-    price: 1.00
-  },
-  {
-    id : 2,
-    latitude: 51.0278,
-    longitude: -114.0493,
-    title: 'title',
-    description: "description",
-    price: 2.00
-  },
-  {
-    id: 3,
-    latitude: 51.0538,
-    longitude: -114.0123,
-    "title": 'title',
-    "description": "description",
-    price: 1.25
-  },
-  {
-    id: 4,
-    latitude: 51.0522,
-    longitude: -114.0519,
-    title: 'title',
-    description: "description",
-    price: 1.75
-  }
-];
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-// Set the port to 3001
-const PORT = 3001;
+const STRIPE_KEY = process.env.STRIPE_SKEY;
+const stripe = require('stripe')(STRIPE_KEY);
 
-// Create a new express server
-const server = express()
-   // Make the express server serve static assets (html, javascript, css) from the /public folder
-  .use(express.static('public'))
-  .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 
-// Create the WebSockets server
-const wss = new WebSocket.Server({ server });
+app.post('/api/doPayment/', (req, res) => {
+  console.log('api/doPayment called');
+  return stripe.charges
+    .create({
+      amount: req.body.amount, // Unit: cents
+      currency: 'eur',
+      source: req.body.tokenId,
+      description: 'Test payment',
+    })
+    .then(result => res.status(200).json(result));
+});
 
-// Broadcast to all users function
-wss.broadcast = function broadcast(data) {
-  wss.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
-    }
-  });
-};
+app.get('/api/test', (req, res) => {
+  res.send('test get');
+});
 
-function getSpots() {
-  wss.broadcast(JSON.stringify(spotsArray));
-}
 
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
-wss.on('connection', (ws) => {
-  console.log('Client connected');
-  // Get all markers
-  getSpots();
-
-  // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => {
-    console.log('Client disconnected')
-  });
+app.listen(3001, () => {
+  console.log(`server listening on port: 3001`);
 });
