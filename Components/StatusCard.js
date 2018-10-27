@@ -1,9 +1,14 @@
 import React from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
+import { doPayment } from '../Api.js';
 
 class StatusCard extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  chargeCard() {
+    doPayment(100, 'cus_DrK1r7Kz4ZxbDn').then((data) => {console.log(data)});
   }
 
   render() {
@@ -20,7 +25,7 @@ class StatusCard extends React.Component {
         })}
         <Button
           title="CHECKOUT"
-          onPress={() => console.log("CHECKOUT PRESSED")}
+          onPress={() => this.chargeCard()}
         />
       </View>
     );

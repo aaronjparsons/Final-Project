@@ -1,8 +1,27 @@
+<<<<<<< HEAD
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import ScreenHeader from "../Components/ScreenHeader";
 import firebase from '../Firebase.js';
+=======
+import React from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  StatusBar,
+  Button,
+  TextInput,
+  KeyboardAvoidingView,
+  Container
+} from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import ScreenHeader from "../Components/ScreenHeader";
+import firebase from "../Firebase.js";
+>>>>>>> bfbec4c503d414fcef91a4c157b17648d6522c08
 
 export default class AddASpot extends React.Component {
   constructor(props) {
@@ -43,13 +62,22 @@ export default class AddASpot extends React.Component {
   }
 
   addSpot(spot) {
+<<<<<<< HEAD
     if (this._isMounted) {
       firebase.database().ref("spots").push(spot)
       .then((data)=>{
+=======
+    firebase
+      .database()
+      .ref("spots")
+      .push(spot)
+      .then(data => {
+>>>>>>> bfbec4c503d414fcef91a4c157b17648d6522c08
         //success callback
         console.log('data ' , data)
       }).catch((error)=>{
         //error callback
+<<<<<<< HEAD
         console.log('error ' , error)
       })
     }
@@ -64,6 +92,10 @@ export default class AddASpot extends React.Component {
     this._isMounted = false;
     console.log(this._isMounted);
     firebase.database().ref.off();
+=======
+        console.log("error ", error);
+      });
+>>>>>>> bfbec4c503d414fcef91a4c157b17648d6522c08
   }
   
   render() {

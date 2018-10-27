@@ -137,9 +137,16 @@ class Map extends Component {
     this._isMounted = true;
 
     const self = this;
+<<<<<<< HEAD
     console.log('did mount', this._isMounted);
     if (this._isMounted) {
       firebase.database().ref('/spots/').on('value', function(data) {
+=======
+    firebase
+      .database()
+      .ref("/spots/")
+      .on("value", function(data) {
+>>>>>>> bfbec4c503d414fcef91a4c157b17648d6522c08
         let spots = [];
         data.forEach(function(childSnapshot) {
           let item = childSnapshot.val();
@@ -150,7 +157,10 @@ class Map extends Component {
           markers: spots
         });
       });
+<<<<<<< HEAD
     }
+=======
+>>>>>>> bfbec4c503d414fcef91a4c157b17648d6522c08
   }
 
   componentWillUnmount() {
