@@ -14,9 +14,13 @@ class InfoCard extends React.Component {
         {this.props.info.info.map((desc, index) => {
           return <Text key={index} style={styles.info}>{desc}</Text>
         })}
-        {firebase.auth().currentUser ? 
-          <Button style={styles.parkButton} title='PARK HERE' onPress={this.props.parkButtonPressed} />
-          : <Button style={styles.parkButton} title='PLEASE LOGIN' disabled={true} onPress={() => {}} />
+        {this.props.info.is_rented ? 
+          <Button style={styles.parkButton} title='UNAVAILABLE' disabled={true} onPress={() => {}} />
+          :
+            firebase.auth().currentUser ? 
+            <Button style={styles.parkButton} title='PARK HERE' onPress={this.props.parkButtonPressed} />
+            : 
+            <Button style={styles.parkButton} title='PLEASE LOGIN' disabled={true} onPress={() => {}} />
         }
       </View>
     );

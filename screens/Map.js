@@ -25,7 +25,9 @@ class Map extends Component {
       parkPressed: false,
       spotInfo: {
         price: 1.25,
-        info: ["Plug available", "12345 12 Street"]
+        info: ["Plug available", "12345 12 Street"],
+        is_rented: null,
+
       },
       spotRented: false
     };
@@ -58,11 +60,13 @@ class Map extends Component {
   }
 
   markerPressed(data) {
-    console.log(firebase.auth().currentUser)
+    console.log(data);
     this.setState({
       spotInfo: {
         price: data.price,
-        info: [data.title, data.description]
+        info: [data.title, data.description],
+        is_rented: data.is_rented,
+        id: data.id
       }
     }, function() {
       this.infoPopup.show();
@@ -96,6 +100,7 @@ class Map extends Component {
       }, 200);
     });
   }
+
   updateOrderData(key) {
     firebase
       .database()
@@ -189,6 +194,7 @@ class Map extends Component {
                     longitude: marker.longitude
                   }}
                   onPress={() => this.markerPressed(marker)}
+                  pinColor={marker.is_rented ? 'red' : 'indigo'}
                 />
               );
             })}

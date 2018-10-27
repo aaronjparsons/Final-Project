@@ -15,7 +15,7 @@ export default class AddASpot extends React.Component {
       description: "",
       price: 0,
       latitude: 51.06,
-      longitude: -114.05,
+      longitude: -114.04,
       is_rented: false
     };
 
@@ -33,7 +33,8 @@ export default class AddASpot extends React.Component {
       price: this.state.price,
       user: this.state.user,
       longitude: this.state.longitude,
-      latitude: this.state.latitude
+      latitude: this.state.latitude,
+      is_rented: this.state.is_rented
     };
     return spot;
   }
