@@ -36,6 +36,7 @@ class Map extends Component {
     this.parkingConfirmComplete = this.parkingConfirmComplete.bind(this);
     this.statusPressed = this.statusPressed.bind(this);
     this.writeOrderData = this.writeOrderData.bind(this);
+    this.checkout = this.checkout.bind(this);
   }
 
   _isMounted = false;
@@ -119,24 +120,28 @@ class Map extends Component {
     }
   }
   parkingConfirmComplete() {
-    console.log("PAYMENT COMPLETE");
-    this.writeOrderData();
-    this.confirmPopup.dismiss();
-    this.setState({
-      spotRented: true
-    });
     if (this._isMounted) {
-      console.log("PAYMENT COMPLETE");
+      console.log(`SPOT #${this.state.spotInfo.id} RENTED`);
+      // this.writeOrderData();
       this.confirmPopup.dismiss();
       this.setState({
         spotRented: true
       });
+      firebase.database().ref(`spots/${this.state.spotInfo.id}/is_rented`).set(true);
     }
   }
 
   statusPressed() {
     console.log("status pressed");
     this.statusPopup.show();
+  }
+
+  checkout() {
+    this.statusPopup.dismiss();
+    firebase.database().ref(`spots/${this.state.spotInfo.id}/is_rented`).set(false);
+    this.setState({
+      spotRented: false
+    });
   }
 
   componentDidMount() {
@@ -240,7 +245,7 @@ class Map extends Component {
               dialogAnimation={slideAnimation}
               dialogStyle={styles.statusDialog}
             >
-              <StatusCard info={this.state.spotInfo} />
+              <StatusCard info={this.state.spotInfo} checkout={this.checkout}/>
             </PopupDialog>
           </View>
         </View>

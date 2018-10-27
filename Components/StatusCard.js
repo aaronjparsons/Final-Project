@@ -7,8 +7,12 @@ class StatusCard extends React.Component {
     super(props);
   }
 
-  chargeCard() {
-    doPayment(100, 'cus_DrK1r7Kz4ZxbDn').then((data) => {console.log(data)});
+  checkout() {
+    doPayment(100, 'cus_DrK1r7Kz4ZxbDn')
+    .then((data) => {
+      console.log(data)
+      this.props.checkout();
+    });
   }
 
   render() {
@@ -25,7 +29,7 @@ class StatusCard extends React.Component {
         })}
         <Button
           title="CHECKOUT"
-          onPress={() => this.chargeCard()}
+          onPress={() => this.checkout()}
         />
       </View>
     );
