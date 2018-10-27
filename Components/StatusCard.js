@@ -1,11 +1,24 @@
 import React from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
-
+import Map from "../screens/Map.js";
+import firebase from "../Firebase.js";
 class StatusCard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      key: this.key
+    };
   }
-
+  updateOrderData(key) {
+    firebase
+      .database()
+      .ref("orders/" + key)
+      .update({
+        address: "123 fake st",
+        duration: "60",
+        total: "60"
+      });
+  }
   render() {
     return (
       <View style={styles.popup}>
@@ -20,7 +33,9 @@ class StatusCard extends React.Component {
         })}
         <Button
           title="CHECKOUT"
-          onPress={() => console.log("CHECKOUT PRESSED")}
+          onPress={() => {
+            console.log("CHECKOUT PRESSED"), this.updateOrderData();
+          }}
         />
       </View>
     );

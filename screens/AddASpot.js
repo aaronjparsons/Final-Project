@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from "react";
 import {
   ScrollView,
@@ -15,17 +14,10 @@ import {
 import MapView, { Marker } from "react-native-maps";
 import ScreenHeader from "../Components/ScreenHeader";
 import firebase from "../Firebase.js";
-=======
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import ScreenHeader from "../Components/ScreenHeader";
-import firebase from '../Firebase.js';
->>>>>>> d7bd922681ef9540ddf9e071b7a77194e4227ef6
 
 export default class AddASpot extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       marker: [],
       address: "",
@@ -60,7 +52,6 @@ export default class AddASpot extends React.Component {
   }
 
   addSpot(spot) {
-<<<<<<< HEAD
     firebase
       .database()
       .ref("spots")
@@ -73,17 +64,8 @@ export default class AddASpot extends React.Component {
         //error callback
         console.log("error ", error);
       });
-=======
-    firebase.database().ref("spots").push(spot).then((data)=>{
-      //success callback
-      console.log('data ' , data)
-    }).catch((error)=>{
-      //error callback
-      console.log('error ' , error)
-    })
->>>>>>> d7bd922681ef9540ddf9e071b7a77194e4227ef6
   }
-  
+
   render() {
     return (
       <ScrollView>
@@ -93,7 +75,6 @@ export default class AddASpot extends React.Component {
             <Text>Add a Parking Spot</Text>
           </View>
           <View style={styles.content}>
-<<<<<<< HEAD
             <MapView
               style={styles.map}
               initialRegion={{
@@ -108,11 +89,6 @@ export default class AddASpot extends React.Component {
             >
               <Marker
                 coordinate={{
-=======
-          <MapView
-                style={styles.map}
-                initialRegion={{
->>>>>>> d7bd922681ef9540ddf9e071b7a77194e4227ef6
                   latitude: 51.0478,
                   longitude: -114.0593
                 }}
@@ -176,11 +152,11 @@ const styles = StyleSheet.create({
   headerContent: {
     padding: 30,
     // fontSize: 10,
-    alignItems: 'center',
+    alignItems: "center"
   },
   map: {
     width: 300,
-    height: 300,
+    height: 300
     // flex: 1,
     // justifyContent: 'center'
   }

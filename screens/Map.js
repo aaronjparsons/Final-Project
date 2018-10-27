@@ -21,6 +21,7 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      key: null,
       markers: [],
       parkPressed: false,
       spotInfo: {
@@ -58,18 +59,21 @@ class Map extends Component {
   }
 
   markerPressed(data) {
-    this.setState({
-      spotInfo: {
-        price: data.price,
-        info: [data.title, data.description]
+    this.setState(
+      {
+        spotInfo: {
+          price: data.price,
+          info: [data.title, data.description]
+        }
+      },
+      function() {
+        this.infoPopup.show();
       }
-    }, function() {
-      this.infoPopup.show();
-    });
+    );
   }
-  
+
   writeOrderData() {
-    const order = firebase
+    firebase
       .database()
       .ref("orders")
       .push({
@@ -78,6 +82,7 @@ class Map extends Component {
         total: ""
       })
       .then(data => {
+        this.setState({ key: data.key });
         //success callback
         console.log("data ", data);
       })
@@ -94,15 +99,6 @@ class Map extends Component {
         this.confirmPopup.show();
       }, 200);
     });
-  }
-  updateOrderData(key) {
-    firebase
-      .database()
-      .ref("orders" / key)
-      .update({
-        duration: "60",
-        total: "60"
-      });
     if (this._isMounted) {
       console.log("park pressed");
       this.infoPopup.dismiss(() => {
@@ -137,7 +133,6 @@ class Map extends Component {
     this._isMounted = true;
 
     const self = this;
-<<<<<<< HEAD
     firebase
       .database()
       .ref("/spots/")
@@ -151,19 +146,7 @@ class Map extends Component {
         self.setState({
           markers: spots
         });
-=======
-    firebase.database().ref('/spots/').on('value', function(data) {
-      let spots = [];
-      data.forEach(function(childSnapshot) {
-        let item = childSnapshot.val();
-        item.id = childSnapshot.key;
-        spots.push(item);
       });
-      self.setState({
-        markers: spots
->>>>>>> d7bd922681ef9540ddf9e071b7a77194e4227ef6
-      });
-    });
   }
 
   componentWillUnmount() {
