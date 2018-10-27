@@ -12,19 +12,28 @@ export default class MySpots extends React.Component {
     this.state = {
       spots: []
     }
+    firebase;
   }
 
   componentDidMount() {
+    let user_email = firebase.auth().currentUser.email;
+    // console.log(user_email);
+
     firebase.database().ref('/spots/').on(('value'), (data) => {
       let spots = [];
-      // grab spot data from db
       data.forEach((spot) => {
-        let newSpot = spot.val();
-        newSpot.key = spot.key;
-        spots.push(newSpot);
+        if (user_email === spot.val().user) {
+          let newSpot = spot.val();
+          newSpot.key = spot.key;
+          spots.push(newSpot);
+        }
       });
       this.setState({spots: spots});
     })
+  }
+
+  componentWillUnmount() { 
+    firebase.database().ref.off();
   }
   
   render() {

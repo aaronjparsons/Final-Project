@@ -24,6 +24,7 @@ export default class App extends React.Component {
   _isMounted = false;
 
   authenticate(userObject){
+    console.log('heyoooo')
     if (this._isMounted) {
       this.setState({currentUser:firebase.auth().currentUser,userObject:userObject})
     }  
@@ -43,6 +44,7 @@ export default class App extends React.Component {
   componentWillUnmount(){
     //Warning fix 
     this._isMounted = false;
+    
   }
 
 
