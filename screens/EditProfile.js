@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, Button } from "react-native";
 import { Container } from "native-base";
 import ScreenHeader from "../Components/ScreenHeader";
 export default class EditProfile extends React.Component {
+  
   render() {
     let users = {
       id: 1,

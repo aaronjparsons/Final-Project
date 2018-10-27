@@ -1,64 +1,48 @@
 import React from "react";
-// import { StyleSheet, View, Image, StatusBar, Button } from 'react-native';
-import {
-  Container,
-  Header,
-  Content,
-  Card,
-  CardItem,
-  Text,
-  Body
-} from "native-base";
+import { Container, Header, Content, Card, CardItem, Text, Body } from "native-base";
 import ScreenHeader from "../Components/ScreenHeader";
-let orders = [
-  {
-    id: 1,
-    duration: 60,
-    address: "123 Fake Street",
-    date: "Jan. 20th, 2018",
-    price: 5
-  },
-  {
-    id: 2,
-    duration: 60,
-    address: "123 Fake Street",
-    date: "Jan. 20th, 2018",
-    price: 2
-  },
-  {
-    id: 3,
-    duration: 120,
-    address: "123 Fake Street",
-    date: "Jan. 20th, 2018",
-    price: 5
-  },
-  {
-    id: 4,
-    duration: 60,
-    address: "123 Fake Street",
-    date: "Jan. 20th, 2018",
-    price: 5
-  },
-  {
-    id: 5,
-    duration: 60,
-    address: "123 Fake Street",
-    date: "Jan. 20th, 2018",
-    price: 5
-  }
-];
+
+import firebase from '../Firebase';
 
 export default class OrderHistory extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      orders: []
+    }
+    firebase;
+  }
+
   orderTotal(duration, price) {
     return (duration / 60) * price;
   }
+  
+  componentDidMount() {
+    let user_email = firebase.auth().currentUser.email;
+
+    firebase.database().ref('/orders/').on(('value'), (data) => {
+      let orders = [];
+      data.forEach((order) => {
+        if (user_email === order.val().user) {
+        }
+  
+        let newOrder = order.val();
+        newOrder.key = order.key;
+        orders.push(newOrder);
+      });
+      this.setState({orders: orders});
+    })
+  }
 
   render() {
-    let orderHistory = orders.map(order => {
+    let id = 0;
+    let orderHistory = this.state.orders.map(order => {
+      id++;
       return (
-        <Card>
+        <Card key={order.key}>
           <CardItem header bordered>
-            <Text>Order # {order.id}</Text>
+            <Text>Order # {id}</Text>
           </CardItem>
           <CardItem bordered>
             <Body>

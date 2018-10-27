@@ -1,8 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 import { LoggedOutApp, MyApp } from "./config/router.js";
-// import { SignedOut, SignedIn } from "./config/router.js";
-// import { MyApp } from "./config/router.js";
 
 import firebase from 'firebase'
 import startFirebase from './config/startFirebase'
@@ -18,33 +16,55 @@ export default class App extends React.Component {
       userObject: null,
         }
     this.authenticate = this.authenticate.bind(this)
-    this.logout = this.logout.bind(this)
+    this.logout = this.logout.bind(this);
+    this.isLoggedIn = this.isLoggedIn.bind(this);
   }
 
   _isMounted = false;
 
-  authenticate(userObject){
-    console.log('heyoooo')
+  authenticate(userObject) {
     if (this._isMounted) {
       this.setState({currentUser:firebase.auth().currentUser,userObject:userObject})
     }  
   }
 
-  logout (){
+  logout() {
     if (this._isMounted) {
       firebase.auth().signOut().then(()=>{console.log("Signed out")}, ()=>{})
       this.setState({currentUser:null});
     }
   }
 
+  isLoggedIn() {
+    firebase.database().ref("users").on('value', (data)=>{
+      for(let keys in data.val()){
+       if(firebase.auth().currentUser.email === data.val()[keys].email){
+         userObject = data.val()[keys];
+         this.authenticate(userObject);
+       }
+      }
+     }, ()=>{})
+  }
+
   componentDidMount() {
     this._isMounted = true;
+    let self = this;
+    // Call this function when app mounts
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // currentUser should be non null.
+        self.isLoggedIn();
+      } else {
+        // no user logged in. currentUser is null.
+
+      }
+    });
+
   }
 
   componentWillUnmount(){
     //Warning fix 
     this._isMounted = false;
-    
   }
 
 
@@ -53,7 +73,7 @@ export default class App extends React.Component {
     
     return (
       <View style={{ width: "100%", height: "100%", marginTop: 24 }}>
-        {this.state.currentUser ? <MyApp screenProps={{logout:this.logout,userObject:this.state.userObject}} /> : <LoggedOutApp screenProps={this.authenticate}/> }    
+        {firebase.auth().currentUser ? <MyApp screenProps={{logout:this.logout,userObject:this.state.userObject}} /> : <LoggedOutApp screenProps={this.authenticate}/> }    
       </View>
     );
   }

@@ -57,13 +57,13 @@ export default class AddASpot extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    console.log('did mount', this._isMounted)
+    // console.log('did mount', this._isMounted)
   }
 
   componentWillUnmount() { 
     this._isMounted = false;
-    console.log(this._isMounted);
     firebase.database().ref.off();
+    // console.log(this._isMounted);
   }
   
   render() {

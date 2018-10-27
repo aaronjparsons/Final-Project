@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  TouchableHighlight
-} from "react-native";
+import { StyleSheet, View, Text, Button, TouchableHighlight } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 import InfoCard from "../Components/InfoCard";

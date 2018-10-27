@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  KeyboardAvoidingView
-} from "react-native";
+import { Text, View, StyleSheet, Image, KeyboardAvoidingView } from "react-native";
 import firebase from 'firebase'
 import LoginForm from "./LoginForm";
 // import firebase from '../Firebase.js'
