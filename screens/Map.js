@@ -58,6 +58,7 @@ class Map extends Component {
   }
 
   markerPressed(data) {
+    console.log(firebase.auth().currentUser)
     this.setState({
       spotInfo: {
         price: data.price,

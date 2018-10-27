@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, Button } from 'react-native';
+import firebase from '../Firebase.js';
 
 class InfoCard extends React.Component {
   constructor(props) {
@@ -13,7 +14,10 @@ class InfoCard extends React.Component {
         {this.props.info.info.map((desc, index) => {
           return <Text key={index} style={styles.info}>{desc}</Text>
         })}
-        <Button style={styles.parkButton} title='PARK HERE' onPress={this.props.parkButtonPressed} />
+        {firebase.auth().currentUser ? 
+          <Button style={styles.parkButton} title='PARK HERE' onPress={this.props.parkButtonPressed} />
+          : <Button style={styles.parkButton} title='PLEASE LOGIN' disabled={true} onPress={() => {}} />
+        }
       </View>
     );
   }
