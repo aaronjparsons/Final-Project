@@ -14,12 +14,7 @@ class ConfimCard extends React.Component {
 
   confirmButtonPressed() {
     if (this._isMounted) {
-      this.setState({
-        confirmPressed: true
-      });
-      setTimeout(() => {
-        this.props.parkingConfirmComplete()
-      }, 1500);
+      this.props.parkingConfirmComplete()
     }
   }
 
@@ -38,8 +33,7 @@ class ConfimCard extends React.Component {
         {this.props.info.info.map((desc, index) => {
           return <Text key={index} style={styles.info}>{desc}</Text>
         })}
-        {!this.state.confirmPressed && <Button style={styles.parkButton} title='CONFIRM PARKING' onPress={this.confirmButtonPressed} />}
-        {this.state.confirmPressed && <Button style={styles.parkButton} title='COMPLETING PAYMENT...' onPress={this.confirmButtonPressed} />}
+        <Button style={styles.parkButton} title='CONFIRM PARKING' onPress={this.confirmButtonPressed} />
       </View>
     );
     }
