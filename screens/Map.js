@@ -194,7 +194,7 @@ class Map extends Component {
                     longitude: marker.longitude
                   }}
                   onPress={() => this.markerPressed(marker)}
-                  pinColor={marker.is_rented ? 'red' : 'indigo'}
+                  image={marker.is_rented ? require('../assets/GrayMarker.png') : require('../assets/GreenMarker.png')}
                 />
               );
             })}
