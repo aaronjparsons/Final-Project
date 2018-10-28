@@ -1,12 +1,23 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import React from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  StatusBar,
+  Button,
+  TextInput,
+  KeyboardAvoidingView,
+  Container
+} from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import ScreenHeader from "../Components/ScreenHeader";
-import firebase from '../Firebase.js';
+import firebase from "../Firebase.js";
 
 export default class AddASpot extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       marker: [],
       address: "",
@@ -45,28 +56,32 @@ export default class AddASpot extends React.Component {
 
   addSpot(spot) {
     if (this._isMounted) {
-      firebase.database().ref("spots").push(spot)
-      .then((data)=>{
-        //success callback
-        console.log('data ' , data)
-      }).catch((error)=>{
-        //error callback
-        console.log('error ' , error)
-      })
+      firebase
+        .database()
+        .ref("spots")
+        .push(spot)
+        .then(data => {
+          //success callback
+          console.log("data ", data);
+        })
+        .catch(error => {
+          //error callback
+          console.log("error ", error);
+        });
     }
   }
 
   componentDidMount() {
     this._isMounted = true;
-    console.log('did mount', this._isMounted)
+    // console.log('did mount', this._isMounted)
   }
 
-  componentWillUnmount() { 
+  componentWillUnmount() {
     this._isMounted = false;
-    console.log(this._isMounted);
     firebase.database().ref.off();
+    // console.log(this._isMounted);
   }
-  
+
   render() {
     return (
       <ScrollView>
@@ -153,11 +168,11 @@ const styles = StyleSheet.create({
   headerContent: {
     padding: 30,
     // fontSize: 10,
-    alignItems: 'center',
+    alignItems: "center"
   },
   map: {
     width: 300,
-    height: 300,
+    height: 300
     // flex: 1,
     // justifyContent: 'center'
   }

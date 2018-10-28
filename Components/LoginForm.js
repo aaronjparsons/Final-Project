@@ -6,41 +6,52 @@ import {
   TouchableOpacity,
   Text
 } from "react-native";
-import firebase from '../Firebase';
+import firebase from "../Firebase";
 
 export default class LoginForm extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       email: "",
-      password: "",
+      password: ""
     };
   }
 
   validate = () => {
     const { email, password } = this.state;
-    firebase.auth().signInWithEmailAndPassword(email,password).then(
-      ()=>{
-        //If login successful
-        
-        firebase.database().ref("users").on('value', (data)=>{
-           for(let keys in data.val()){
-            if(firebase.auth().currentUser.email === data.val()[keys].email){
-              userObject = data.val()[keys];
-              this.props.authenticate(userObject);
-            }
-           }
-          }, ()=>{})
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(
+        () => {
+          //If login successful
 
-        this.props.login();
-      },
-      (error)=>{
-        //If login failed
-        alert(error.message);
-      }
-    )
+          firebase
+            .database()
+            .ref("users")
+            .on(
+              "value",
+              data => {
+                for (let keys in data.val()) {
+                  if (
+                    firebase.auth().currentUser.email === data.val()[keys].email
+                  ) {
+                    userObject = data.val()[keys];
+                    this.props.authenticate(userObject);
+                  }
+                }
+              },
+              () => {}
+            );
+
+          this.props.login();
+        },
+        error => {
+          //If login failed
+          alert(error.message);
+        }
+      );
   };
 
   render() {

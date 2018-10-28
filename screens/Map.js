@@ -21,6 +21,7 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: null,
       markers: [],
       parkPressed: false,
       spotInfo: {
@@ -69,21 +70,23 @@ class Map extends Component {
         is_rented: data.is_rented,
         id: data.id
       }
-    }, function() {
+    },
+    function() {
+      console.log('show popup')
       this.infoPopup.show();
     });
   }
-  
+
   writeOrderData() {
-    const order = firebase
+    firebase
       .database()
-      .ref("orders")
+      .ref("orders/")
       .push({
         address: "123 fake street",
-        duration: "",
-        total: ""
+        start: Date.now()
       })
       .then(data => {
+        this.setState({ id: data.key });
         //success callback
         console.log("data ", data);
       })
@@ -122,7 +125,7 @@ class Map extends Component {
   parkingConfirmComplete() {
     if (this._isMounted) {
       console.log(`SPOT #${this.state.spotInfo.id} RENTED`);
-      // this.writeOrderData();
+      this.writeOrderData();
       this.confirmPopup.dismiss();
       this.setState({
         spotRented: true
@@ -148,25 +151,28 @@ class Map extends Component {
     this._isMounted = true;
 
     const self = this;
-    console.log('did mount', this._isMounted);
+    // console.log('did mount', this._isMounted);
     if (this._isMounted) {
-      firebase.database().ref('/spots/').on('value', function(data) {
-        let spots = [];
-        data.forEach(function(childSnapshot) {
-          let item = childSnapshot.val();
-          item.id = childSnapshot.key;
-          spots.push(item);
+      firebase
+        .database()
+        .ref("/spots/")
+        .on("value", function(data) {
+          let spots = [];
+          data.forEach(function(childSnapshot) {
+            let item = childSnapshot.val();
+            item.id = childSnapshot.key;
+            spots.push(item);
+          });
+          self.setState({
+            markers: spots
+          });
         });
-        self.setState({
-          markers: spots
-        });
-      });
     }
   }
 
   componentWillUnmount() {
     this._isMounted = false;
-    console.log('unmount', this._isMounted);
+    // console.log('unmount', this._isMounted);
     firebase.database().ref.off();
   }
 
@@ -245,7 +251,7 @@ class Map extends Component {
               dialogAnimation={slideAnimation}
               dialogStyle={styles.statusDialog}
             >
-              <StatusCard info={this.state.spotInfo} checkout={this.checkout}/>
+              <StatusCard info={this.state.spotInfo} id={this.state.id} checkout={this.checkout}/>
             </PopupDialog>
           </View>
         </View>

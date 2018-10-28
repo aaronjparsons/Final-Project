@@ -1,6 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
-import { doPayment } from '../Api.js';
+import Map from "../screens/Map.js";
+import firebase from "../Firebase.js";
+import { doPayment } from "../Api.js";
 
 class StatusCard extends React.Component {
   constructor(props) {
@@ -13,6 +15,21 @@ class StatusCard extends React.Component {
       console.log(data)
       this.props.checkout();
     });
+  }
+ 
+  chargeCard() {
+    doPayment(100, "cus_DrK1r7Kz4ZxbDn").then(data => {
+      console.log(data);
+    });
+  }
+
+  updateOrderData(id) {
+    firebase
+      .database()
+      .ref("/orders/" + id)
+      .update({
+        end: Date.now()
+      });
   }
 
   render() {
@@ -29,7 +46,12 @@ class StatusCard extends React.Component {
         })}
         <Button
           title="CHECKOUT"
-          onPress={() => this.checkout()}
+          onPress={() => {
+            console.log("CHECKOUT PRESSED");
+            this.checkout()
+            this.updateOrderData(this.props.id);
+            this.chargeCard();
+          }}
         />
       </View>
     );
