@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, StatusBar, Button } from "react-native";
+import { StyleSheet, Text, View, Image, StatusBar, Button, Keyboard } from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import ScreenHeader from "../Components/ScreenHeader";
 import { Container } from "native-base";
@@ -7,18 +7,24 @@ import { Container } from "native-base";
 import { createCust } from '../Api.js';
 import { STRIPE_PKEY } from 'react-native-dotenv';
 import Stripe from 'react-native-stripe-api';
+import firebase from '../Firebase.js';
 
 const client = new Stripe(STRIPE_PKEY);
 
 let formData = null;
+let userEmail = null;
 
 export default class PaymentInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      submitButtonDisabled: true
+      submitButtonDisabled: true,
+      keyboardUp: false
     };
     this.formOnChange = this.formOnChange.bind(this);
+    this.submitPaymentInfo = this.submitPaymentInfo.bind(this);
+    this._keyboardDidShow = this._keyboardDidShow.bind(this);
+    this._keyboardDidHide = this._keyboardDidHide.bind(this);
   }
 
   _isMounted = false;
@@ -52,17 +58,41 @@ export default class PaymentInfo extends React.Component {
       return createCust(response.id);
     }).then((data) => {
       console.log('CUSTOMER SUCCESSFULLY CREATED', data.id);
+      if (this.state.keyboardUp) {
+        Keyboard.dismiss();
+      }
+      alert('Credit card successfully added');
+      this.props.navigation.navigate('Dashboard');
+      // firebase.database().ref(`users`)
     }).catch((e) => {
       console.log('ERROR', e);
+      alert(e);
     });
   }
 
   componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this._isMounted = true;
+    userEmail = firebase.auth().currentUser.email;
   }
 
   componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
     this._isMounted = false;
+  }
+
+  _keyboardDidShow () {
+    this.setState({
+      keyboardUp: true
+    })
+  }
+
+  _keyboardDidHide () {
+    this.setState({
+      keyboardUp: false
+    })
   }
 
   render() {
