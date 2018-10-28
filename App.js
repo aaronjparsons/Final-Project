@@ -52,13 +52,14 @@ export default class App extends React.Component {
     this._isMounted = true;
     let self = this;
     // Call this function when app mounts
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // currentUser should be non null.
         self.isLoggedIn();
       } else {
         // no user logged in. currentUser is null.
-
+        console.log('yeah you definitely logged out')
+        this.setState({currentUser:null});
       }
     });
 
