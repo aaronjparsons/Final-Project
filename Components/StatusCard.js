@@ -5,18 +5,14 @@ import firebase from "../Firebase.js";
 class StatusCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      key: this.key
-    };
   }
-  updateOrderData(key) {
+
+  updateOrderData(id) {
     firebase
       .database()
-      .ref("orders/" + key)
+      .ref("/orders/" + id)
       .update({
-        address: "123 fake st",
-        duration: "60",
-        total: "60"
+        end: Date.now()
       });
   }
   render() {
@@ -34,7 +30,8 @@ class StatusCard extends React.Component {
         <Button
           title="CHECKOUT"
           onPress={() => {
-            console.log("CHECKOUT PRESSED"), this.updateOrderData();
+            console.log("CHECKOUT PRESSED");
+            this.updateOrderData(this.props.id);
           }}
         />
       </View>

@@ -21,7 +21,7 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      key: null,
+      id: null,
       markers: [],
       parkPressed: false,
       spotInfo: {
@@ -75,14 +75,13 @@ class Map extends Component {
   writeOrderData() {
     firebase
       .database()
-      .ref("orders")
+      .ref("orders/")
       .push({
         address: "123 fake street",
-        duration: "",
-        total: ""
+        start: Date.now()
       })
       .then(data => {
-        this.setState({ key: data.key });
+        this.setState({ id: data.key });
         //success callback
         console.log("data ", data);
       })
@@ -227,7 +226,7 @@ class Map extends Component {
               dialogAnimation={slideAnimation}
               dialogStyle={styles.statusDialog}
             >
-              <StatusCard info={this.state.spotInfo} />
+              <StatusCard info={this.state.spotInfo} id={this.state.id} />
             </PopupDialog>
           </View>
         </View>
