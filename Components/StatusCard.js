@@ -10,16 +10,19 @@ class StatusCard extends React.Component {
   }
 
   checkout() {
-    doPayment(100, 'cus_DrK1r7Kz4ZxbDn')
-    .then((data) => {
-      console.log(data)
-      this.props.checkout();
-    });
-  }
- 
-  chargeCard() {
-    doPayment(100, "cus_DrK1r7Kz4ZxbDn").then(data => {
-      console.log(data);
+    let userStripeId = null;
+    let currentUser = firebase.auth().currentUser;
+    firebase.database().ref('users').once('value', (users) => {
+      users.forEach((user) => {
+        if (user.val().email === currentUser.email) {
+          userStripeId = user.val().stripe_id;
+        }
+      });
+      doPayment(100, userStripeId)
+      .then((data) => {
+        console.log(data)
+        this.props.checkout();
+      });
     });
   }
 
@@ -50,7 +53,6 @@ class StatusCard extends React.Component {
             console.log("CHECKOUT PRESSED");
             this.checkout()
             this.updateOrderData(this.props.id);
-            this.chargeCard();
           }}
         />
       </View>
