@@ -1,19 +1,7 @@
 import React from "react";
-import {
-  createDrawerNavigator,
-  DrawerItems,
-  createStackNavigator
-} from "react-navigation";
+import { createDrawerNavigator, DrawerItems, createStackNavigator } from "react-navigation";
 import { StyleSheet, Image } from "react-native";
-import {
-  Container,
-  Content,
-  Header,
-  Body,
-  Text,
-  Icon,
-  Root
-} from "native-base";
+import { Container, Content, Header, Body, Text, Icon, Root } from "native-base";
 
 // importing screens/components
 import Dashboard from "../screens/Dashboard.js";

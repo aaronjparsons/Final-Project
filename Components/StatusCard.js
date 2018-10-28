@@ -2,6 +2,8 @@ import React from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
 import Map from "../screens/Map.js";
 import firebase from "../Firebase.js";
+import { doPayment } from "../Api.js";
+
 class StatusCard extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +17,12 @@ class StatusCard extends React.Component {
         end: Date.now()
       });
   }
+  chargeCard() {
+    doPayment(100, "cus_DrK1r7Kz4ZxbDn").then(data => {
+      console.log(data);
+    });
+  }
+
   render() {
     return (
       <View style={styles.popup}>
@@ -32,6 +40,7 @@ class StatusCard extends React.Component {
           onPress={() => {
             console.log("CHECKOUT PRESSED");
             this.updateOrderData(this.props.id);
+            this.chargeCard();
           }}
         />
       </View>

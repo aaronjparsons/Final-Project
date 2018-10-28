@@ -132,24 +132,29 @@ class Map extends Component {
     this._isMounted = true;
 
     const self = this;
-    firebase
-      .database()
-      .ref("/spots/")
-      .on("value", function(data) {
-        let spots = [];
-        data.forEach(function(childSnapshot) {
-          let item = childSnapshot.val();
-          item.id = childSnapshot.key;
-          spots.push(item);
+    // console.log('did mount', this._isMounted);
+    if (this._isMounted) {
+      firebase
+        .database()
+        .ref("/spots/")
+        .on("value", function(data) {
+          let spots = [];
+          data.forEach(function(childSnapshot) {
+            let item = childSnapshot.val();
+            item.id = childSnapshot.key;
+            spots.push(item);
+          });
+          self.setState({
+            markers: spots
+          });
         });
-        self.setState({
-          markers: spots
-        });
-      });
+    }
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+    // console.log('unmount', this._isMounted);
+    firebase.database().ref.off();
   }
 
   render() {

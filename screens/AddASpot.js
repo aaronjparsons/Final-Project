@@ -34,6 +34,8 @@ export default class AddASpot extends React.Component {
     this.getSpot = this.getSpot.bind(this);
   }
 
+  _isMounted = false;
+
   getSpot() {
     let spot = {
       title: this.state.address,
@@ -52,18 +54,31 @@ export default class AddASpot extends React.Component {
   }
 
   addSpot(spot) {
-    firebase
-      .database()
-      .ref("spots")
-      .push(spot)
-      .then(data => {
-        //success callback
-        console.log("data ", data);
-      })
-      .catch(error => {
-        //error callback
-        console.log("error ", error);
-      });
+    if (this._isMounted) {
+      firebase
+        .database()
+        .ref("spots")
+        .push(spot)
+        .then(data => {
+          //success callback
+          console.log("data ", data);
+        })
+        .catch(error => {
+          //error callback
+          console.log("error ", error);
+        });
+    }
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    // console.log('did mount', this._isMounted)
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+    firebase.database().ref.off();
+    // console.log(this._isMounted);
   }
 
   render() {
