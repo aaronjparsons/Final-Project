@@ -28,9 +28,10 @@ class Map extends Component {
         price: 1.25,
         info: ["Plug available", "12345 12 Street"],
         is_rented: null,
-
+        id: null
       },
-      spotRented: false
+      spotRented: false,
+      userId: null
     };
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
@@ -105,24 +106,8 @@ class Map extends Component {
     });
   }
 
-  updateOrderData(key) {
-    firebase
-      .database()
-      .ref("orders" / key)
-      .update({
-        duration: "60",
-        total: "60"
-      });
-    if (this._isMounted) {
-      console.log("park pressed");
-      this.infoPopup.dismiss(() => {
-        setTimeout(() => {
-          this.confirmPopup.show();
-        }, 200);
-      });
-    }
-  }
   parkingConfirmComplete() {
+    let userEmail = firebase.auth().currentUser.email;
     if (this._isMounted) {
       console.log(`SPOT #${this.state.spotInfo.id} RENTED`);
       this.writeOrderData();
@@ -131,6 +116,14 @@ class Map extends Component {
         spotRented: true
       });
       firebase.database().ref(`spots/${this.state.spotInfo.id}/is_rented`).set(true);
+      firebase.database().ref('users').once('value', (users) => {
+        users.forEach((user) => {
+          if (user.val().email === userEmail) {
+            let userId = user.key;
+            firebase.database().ref(`users/${userId}/currently_renting`).set(true);
+          }
+        });
+      });
     }
   }
 
