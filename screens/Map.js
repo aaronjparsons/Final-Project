@@ -131,7 +131,7 @@ class Map extends Component {
     this._isMounted = true;
 
     const self = this;
-    console.log('did mount', this._isMounted);
+    // console.log('did mount', this._isMounted);
     if (this._isMounted) {
       firebase.database().ref('/spots/').on('value', function(data) {
         let spots = [];
@@ -149,7 +149,7 @@ class Map extends Component {
 
   componentWillUnmount() {
     this._isMounted = false;
-    console.log('unmount', this._isMounted);
+    // console.log('unmount', this._isMounted);
     firebase.database().ref.off();
   }
 

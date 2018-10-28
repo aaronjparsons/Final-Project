@@ -1,7 +1,7 @@
 import React from "react"
-import {TextInput, Text, View, StyleSheet, Dimensions, TouchableOpacity} from "react-native"
+import { TextInput, Text, View, StyleSheet, Dimensions, TouchableOpacity, Picker } from "react-native"
 import firebase from '../Firebase.js';
-
+import ScreenHeader from "../Components/ScreenHeader";
 
 usernameRegex = RegExp(/^[A-Za-z]+$/);  
 emailRegex = RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);  
@@ -13,6 +13,7 @@ export default class Register extends React.Component {
     this.state = {
       first_name:'', last_name:'',
       email:'', phone_number: '',
+      license_plate:'', car_size: 'medium',
       password:'',password_conf:'',
       border_color:'gray',
     }
@@ -47,12 +48,14 @@ export default class Register extends React.Component {
     user.last_name = this.validateData(this.state.last_name, 'name') ? this.state.last_name : this.displayErr("Last Name");
     user.email = this.validateData(this.state.email, 'email') ? this.state.email : this.displayErr("email");
     user.phone_number = this.validateData(this.state.phone_number,'phone_number') ? this.state.phone_number : this.displayErr("Phone number");
-    user.password_digest = this.validateData(this.state.password,'password') ? this.state.password : this.displayErr('Password')
-   for(var prop in user){
+    user.password_digest = this.validateData(this.state.password,'password') ? this.state.password : this.displayErr('Password');
+    user.license_plate = this.state.license_plate;
+    user.car_size = this.state.car_size;
+    for(var prop in user){
       if(!user[prop]){
         return false;
       }
-   }
+    }
     return user;
   }
 
@@ -87,6 +90,7 @@ export default class Register extends React.Component {
   render(){
     return (
       <View style={styles.container}>
+      
         <TextInput underlineColorAndroid='transparent' style={[styles.debug, {borderColor : this.state.border_color}]} placeholder="First Name"
         onChangeText = {(first_name)=> {this.setState({first_name})}}/>
         <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="Last Name"
@@ -95,6 +99,16 @@ export default class Register extends React.Component {
         onChangeText = {(email)=> {this.setState({email})}} placeholder="Email" autoCapitalize = "none"/>
         <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="Phone number"
         onChangeText = {(phone_number)=> {this.setState({phone_number})}}/>
+        <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="License Plate #"
+        onChangeText = {(phone_number)=> {this.setState({license_plate})}}/>
+        <Picker
+          selectedValue={this.state.car_size}
+          style={styles.picker}
+          onValueChange={(itemValue, itemIndex) => this.setState({car_size: itemValue})}>
+          <Picker.Item label="Small" value="small" />
+          <Picker.Item label="Medium" value="medium" />
+          <Picker.Item label="Large" value="large" />
+        </Picker>
         <TextInput underlineColorAndroid='transparent' secureTextEntry = {true} style={styles.debug}
         onChangeText = {(password)=> {this.setState({password})}} placeholder="Password"/>
         <TextInput underlineColorAndroid='transparent' secureTextEntry = {true} style={styles.debug} 
@@ -138,6 +152,14 @@ const styles = StyleSheet.create({
   },
   text : {
     alignSelf: "center"
+  },
+  picker: {
+    height: 50,
+    width: 200,
+    borderColor: 'gray',
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: 'center'
   }
 
 })

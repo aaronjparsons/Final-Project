@@ -6,6 +6,8 @@ import firebase from 'firebase'
 import startFirebase from './config/startFirebase'
 
 console.ignoredYellowBox = ["Setting a timer"];
+// console.ignoredYellowBox = ["Setting a timer"];
+// console.ignoredYellowBox = ["Setting a timer"];
 
 export default class App extends React.Component {
   constructor(props){
