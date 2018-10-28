@@ -201,8 +201,8 @@ class Map extends Component {
                 <Marker
                   key={marker.id}
                   coordinate={{
-                    latitude: marker.latitude,
-                    longitude: marker.longitude
+                    latitude: marker.location.lat,
+                    longitude: marker.location.lng
                   }}
                   onPress={() => this.markerPressed(marker)}
                   image={marker.is_rented ? require('../assets/GrayMarker.png') : require('../assets/GreenMarker.png')}
