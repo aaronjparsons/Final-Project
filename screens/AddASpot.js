@@ -1,8 +1,16 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container,Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import InputScrollView from 'react-native-input-scroll-view';
+
 import ScreenHeader from "../Components/ScreenHeader";
 import firebase from '../Firebase.js';
+import { getLocation } from '../Api.js';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {GOOGLE_MAPS_API} from 'react-native-dotenv'
+// var googleMapsClient = createClient({
+// key: GOOGLE_MAPS_API
+// });
 
 export default class AddASpot extends React.Component {
   constructor(props) {
@@ -21,11 +29,14 @@ export default class AddASpot extends React.Component {
 
     this.addSpot = this.addSpot.bind(this);
     this.getSpot = this.getSpot.bind(this);
+    this.parseAddress = this.parseAddress.bind(this)
   }
 
   _isMounted = false;
 
   getSpot() {
+    console.log("We here")
+    // getLocation(this.parseAddress(this.state.address));
     let spot = {
       title: this.state.address,
       picture_url: this.state.picture_url,
@@ -38,9 +49,10 @@ export default class AddASpot extends React.Component {
     return spot;
   }
 
-  getCoordinates() {
-    // get coordinates from marker
-  }
+  parseAddress(address) {
+    var parsedAddress = address.split(' ').join('+');
+    return parsedAddress;
+}
 
   addSpot(spot) {
     if (this._isMounted) {
@@ -68,13 +80,9 @@ export default class AddASpot extends React.Component {
   
   render() {
     return (
-      <ScrollView>
-        <ScreenHeader navigation={this.props.navigation} />
-        <KeyboardAvoidingView behavior="padding" style={styles.body}>
-          <View style={styles.headerContent}>
-            <Text>Add a Parking Spot</Text>
-          </View>
-          <View style={styles.content}>
+
+      <KeyboardAvoidingView style={styles.body}behavior='padding' keyboardVerticalOffset={40}>
+            <ScrollView style={{alignSelf:'center'}}>
             <MapView
               style={styles.map}
               initialRegion={{
@@ -86,7 +94,7 @@ export default class AddASpot extends React.Component {
               showsMyLocationButton={true}
               showsUserLocation={true}
               // onPress={this.removeCard}
-            >
+              >
               <Marker
                 coordinate={{
                   latitude: 51.0478,
@@ -95,36 +103,75 @@ export default class AddASpot extends React.Component {
                 draggable
               />
             </MapView>
-            <TextInput
-              style={styles.inputField}
-              onChangeText={text => this.setState({ address: text })}
-              placeholder={"Address"}
+            <GooglePlacesAutocomplete
+              placeholder='Search'
+              minLength={2} // minimum length of text to search
+              autoFocus={false}
+              returnKeyType={'done'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+              listViewDisplayed='true'    // true/false/undefined
+              fetchDetails={true}
+              renderDescription={row => row.description} // custom description render
+              onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+                // console.log(data, details);
+              }}
+
+              getDefaultValue={() => ''}
+
+              query={{
+                // available options: https://developers.google.com/places/web-service/autocomplete
+                key: GOOGLE_MAPS_API,
+                language: 'en', // language of the results
+                types: 'address' // default: 'geocode'
+              }}
+            
+
+              currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+              currentLocationLabel="Current location"
+              nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+              GoogleReverseGeocodingQuery={{
+                // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+              }}
+              GooglePlacesSearchQuery={{
+                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                rankby: 'distance',
+                types: 'food'
+              }}
+            
+              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+            
+              debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+            
             />
+
             <TextInput
               style={styles.inputField}
               onChangeText={text => this.setState({ picture_url: text })}
               placeholder={"Picture URL"}
             />
             <TextInput
-              style={styles.inputField}
+              style={[styles.inputField,{height:60}]}
+              multiline = {true}
               onChangeText={text => this.setState({ description: text })}
               placeholder={"Description"}
+              underlineColorAndroid='transparent'
             />
-            <TextInput
+            <TextInput keyboardType='numeric'
               style={styles.inputField}
               onChangeText={text => this.setState({ price: text })}
               placeholder={"Price"}
+              underlineColorAndroid='transparent'
             />
-          </View>
           <Button
             style={styles.button}
-            onPress={() => this.addSpot(this.getSpot())}
+            onPress={() => this.getSpot(136 )}
             title="Save Changes"
             // color="blue"
             accessibilityLabel="Add a parking spot"
           />
+        </ScrollView>
+
         </KeyboardAvoidingView>
-      </ScrollView>
+
     );
   }
 }
@@ -132,22 +179,27 @@ export default class AddASpot extends React.Component {
 const styles = StyleSheet.create({
   body: {
     backgroundColor: "white",
-    height: 800,
+    height:Dimensions.get('window').height,
     alignItems: "center"
   },
   inputField: {
     height: 40,
-    width: 250,
+    width: Dimensions.get('window').width*0.8,
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 10,
     alignItems: "center",
     margin: 10,
-    padding: 5
+    padding: 5,
+    borderRadius:15,
+    borderColor:"red",
+    fontSize:15,
+    alignItems:'flex-start'
   },
   button: {
     width: 300,
-    color: "blue"
+    color: "blue",
+    elevation:0
   },
   headerContent: {
     padding: 30,
@@ -155,8 +207,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
-    width: 300,
+    marginTop:80,
+    width: Dimensions.get('window').width*0.8,
     height: 300,
+    margin: 10,
+    padding: 5,
     // flex: 1,
     // justifyContent: 'center'
   }

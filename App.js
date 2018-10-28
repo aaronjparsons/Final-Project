@@ -19,6 +19,7 @@ export default class App extends React.Component {
         }
     this.authenticate = this.authenticate.bind(this)
     this.logout = this.logout.bind(this)
+    this.isLoggedIn = this.isLoggedIn.bind(this)
   }
 
   _isMounted = false;
@@ -37,9 +38,28 @@ export default class App extends React.Component {
     }
   }
 
+  isLoggedIn(){
+    let userEmail = firebase.auth().currentUser.email;
+    firebase.database().ref("users").on('value', (data)=>{
+      for(let keys in data.val()){
+       if(userEmail === data.val()[keys].email){
+         userObject = data.val()[keys];
+         this.authenticate(userObject);
+       }
+      }
+     }, ()=>{})
+  }
   componentDidMount() {
     this._isMounted = true;
+    let self = this;
+    firebase.auth().onAuthStateChanged(function (user) {
+     if(user){
+      self.isLoggedIn()
+     }
+ 
+  });
   }
+
 
   componentWillUnmount(){
     //Warning fix 
