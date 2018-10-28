@@ -1,8 +1,8 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container,Dimensions } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView,TouchableOpacity, Container,Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import InputScrollView from 'react-native-input-scroll-view';
-
+// import ImagePicker from 'react-native-image-crop-picker';
+import { ImagePicker } from 'expo';
 import ScreenHeader from "../Components/ScreenHeader";
 import firebase from '../Firebase.js';
 import { getLocation } from '../Api.js';
@@ -30,6 +30,7 @@ export default class AddASpot extends React.Component {
     this.addSpot = this.addSpot.bind(this);
     this.getSpot = this.getSpot.bind(this);
     this.parseAddress = this.parseAddress.bind(this)
+    this.pickImage = this.pickImage.bind(this)
   }
 
   _isMounted = false;
@@ -44,7 +45,8 @@ export default class AddASpot extends React.Component {
       price: this.state.price,
       user: this.state.user,
       longitude: this.state.longitude,
-      latitude: this.state.latitude
+      latitude: this.state.latitude,
+      image:null
     };
     return spot;
   }
@@ -67,6 +69,25 @@ export default class AddASpot extends React.Component {
     }
   }
 
+  pickImage(){
+   
+    _pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+  
+      console.log(result);
+  
+      if (!result.cancelled) {
+        this.setState({ image: result.uri });
+      }
+    };
+
+    _pickImage();
+  }
+
+
   componentDidMount() {
     this._isMounted = true;
     console.log('did mount', this._isMounted)
@@ -77,8 +98,11 @@ export default class AddASpot extends React.Component {
     console.log(this._isMounted);
     firebase.database().ref.off();
   }
+
+
   
   render() {
+    let image_path = this.state.image;
     return (
 
       <KeyboardAvoidingView style={styles.body}behavior='padding' keyboardVerticalOffset={40}>
@@ -142,12 +166,19 @@ export default class AddASpot extends React.Component {
               debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
             
             />
+    
 
-            <TextInput
-              style={styles.inputField}
-              onChangeText={text => this.setState({ picture_url: text })}
-              placeholder={"Picture URL"}
+            
+          { (this.state.image ?  <Image style={{alignSelf:'center',width:128,height:128,resizeMode:'contain'}} source={{uri:this.state.image}}/> :             <TouchableOpacity onPress={this.pickImage}>
+              <Image style={{alignSelf:'center'}}
+                source={require('../assets/add_image.png')}
             />
+            </TouchableOpacity> )}
+            
+           
+
+
+
             <TextInput
               style={[styles.inputField,{height:60}]}
               multiline = {true}
