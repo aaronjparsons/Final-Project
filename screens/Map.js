@@ -150,20 +150,19 @@ class Map extends Component {
   componentDidMount() {
     this._isMounted = true;
 
-    const self = this;
     // console.log('did mount', this._isMounted);
     if (this._isMounted) {
       firebase
         .database()
         .ref("/spots/")
-        .on("value", function(data) {
+        .on("value", (data) => {
           let spots = [];
           data.forEach(function(childSnapshot) {
             let item = childSnapshot.val();
             item.id = childSnapshot.key;
             spots.push(item);
           });
-          self.setState({
+          this.setState({
             markers: spots
           });
         });

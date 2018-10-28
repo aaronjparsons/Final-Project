@@ -12,7 +12,6 @@ import firebase from '../Firebase.js';
 const client = new Stripe(STRIPE_PKEY);
 
 let formData = null;
-let userEmail = null;
 
 export default class PaymentInfo extends React.Component {
   constructor() {
@@ -28,6 +27,7 @@ export default class PaymentInfo extends React.Component {
   }
 
   _isMounted = false;
+  userEmail = null;
 
   formOnChange(form) {
     if (this._isMounted) {
@@ -58,12 +58,21 @@ export default class PaymentInfo extends React.Component {
       return createCust(response.id);
     }).then((data) => {
       console.log('CUSTOMER SUCCESSFULLY CREATED', data.id);
+      // Add customer id to user in database
+      firebase.database().ref('users').once('value', (users) => {
+        users.forEach((user) => {
+          if (user.val().email === this.userEmail) {
+            let userId = user.key;
+            firebase.database().ref(`users/${userId}/stripe_id`).set(data.id);
+          }
+        });
+      });
+      // Alert user of success, then redirect back to dashboard
       if (this.state.keyboardUp) {
         Keyboard.dismiss();
       }
       alert('Credit card successfully added');
       this.props.navigation.navigate('Dashboard');
-      // firebase.database().ref(`users`)
     }).catch((e) => {
       console.log('ERROR', e);
       alert(e);
@@ -74,7 +83,7 @@ export default class PaymentInfo extends React.Component {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this._isMounted = true;
-    userEmail = firebase.auth().currentUser.email;
+    this.userEmail = firebase.auth().currentUser.email;
   }
 
   componentWillUnmount() {
