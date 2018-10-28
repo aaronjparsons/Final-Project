@@ -55,7 +55,7 @@ export default class PaymentInfo extends React.Component {
       cvc: formData.values.cvc,
     }).then((response) => {
       console.log(response);
-      return createCust(response.id);
+      return createCust(response.id, this.userEmail);
     }).then((data) => {
       console.log('CUSTOMER SUCCESSFULLY CREATED', data.id);
       // Add customer id to user in database

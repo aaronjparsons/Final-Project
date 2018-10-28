@@ -6,10 +6,11 @@ const MyApiClient = axios.create({
   headers: {'Content-Type': 'application/json'}
 });
 
-export const createCust = (tokenId, accessToken) => {
+export const createCust = (tokenId, email, accessToken) => {
   console.log('create customer api called');
   const body = {
     tokenId: tokenId,
+    email: email
   };
   return MyApiClient
     .post('/createCust', body)
