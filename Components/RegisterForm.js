@@ -14,7 +14,7 @@ export default class Register extends React.Component {
       first_name:'', last_name:'',
       email:'', phone_number: '',
       password:'',password_conf:'',
-      border_color:'gray',
+      border_color:'gray',user_id:''
     }
     this.registerUser = this.registerUser.bind(this);
     this.getRegisterFormData = this.getRegisterFormData.bind(this);
@@ -24,9 +24,17 @@ export default class Register extends React.Component {
   }
 
   registerUser(){
+    self = this;
+    console.log("FLAG1 ", this.getRegisterFormData())
     if(this.getRegisterFormData()){
-      firebase.database().ref("users").push(this.getRegisterFormData());
-      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{
+      console.log("FLAG2")
+      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then((userCred)=>{
+        console.log("FLAG3")
+        console.log("FLAG $ ",userCred.uid )
+       let verifiedUser = this.getRegisterFormData();
+        verifiedUser.uid = userCred.user.uid;
+        
+        firebase.database().ref("users").push(verifiedUser);
        this.props.navigation.navigate("Home")
       },(error)=>{
         alert(error.message)
@@ -53,6 +61,7 @@ export default class Register extends React.Component {
         return false;
       }
    }
+   
     return user;
   }
 

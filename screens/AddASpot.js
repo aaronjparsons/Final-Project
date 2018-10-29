@@ -5,9 +5,9 @@ import MapView, { Marker } from 'react-native-maps';
 import { ImagePicker } from 'expo';
 import ScreenHeader from "../Components/ScreenHeader";
 import firebase from '../Firebase.js';
-import { getLocation } from '../Api.js';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import {GOOGLE_MAPS_API} from 'react-native-dotenv'
+import {uuid} from 'uuid'
 // var googleMapsClient = createClient({
 // key: GOOGLE_MAPS_API
 // });
@@ -18,19 +18,23 @@ export default class AddASpot extends React.Component {
     this.state = {
       marker: [],
       address: "",
+      spot_id:"",
+      location:{lat:51.0478,lng:-114.0593},
       picture_url: "",
       user: "test@gmail.com",
       description: "",
       price: 0,
       latitude: 51.06,
       longitude: -114.05,
-      is_rented: false
+      is_rented: false,
+      image:null
     };
 
     this.addSpot = this.addSpot.bind(this);
     this.getSpot = this.getSpot.bind(this);
-    this.parseAddress = this.parseAddress.bind(this)
-    this.pickImage = this.pickImage.bind(this)
+    this.parseAddress = this.parseAddress.bind(this);
+    this.pickImage = this.pickImage.bind(this);
+    this.getLocatation = this.getLocatation.bind(this);
   }
 
   _isMounted = false;
@@ -39,16 +43,22 @@ export default class AddASpot extends React.Component {
     console.log("We here")
     // getLocation(this.parseAddress(this.state.address));
     let spot = {
+      id:this.state.spot_id,
       title: this.state.address,
-      picture_url: this.state.picture_url,
+      location:this.state.location,
+      picture_url: this.state.image,
       description: this.state.description,
       price: this.state.price,
-      user: this.state.user,
-      longitude: this.state.longitude,
-      latitude: this.state.latitude,
-      image:null
+      user: "test@gmail.com",
+      is_rented: false,
+     
     };
+    console.log("THE SPOT IS ", spot)
     return spot;
+  }
+
+  getLocatation(formattedAddress,locationObject){
+    this.setState({address:formattedAddress, location:locationObject})
   }
 
   parseAddress(address) {
@@ -57,11 +67,24 @@ export default class AddASpot extends React.Component {
 }
 
   addSpot(spot) {
+
+    async function uploadImageAsync(uri) {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const ref = firebase
+        .storage()
+        .ref()
+        .child(`lot_images/${firebase.auth().currentUser.uid}/lot.jpg`);
+      const snapshot = await ref.put(blob);
+
+    }
     if (this._isMounted) {
       firebase.database().ref("spots").push(spot)
       .then((data)=>{
         //success callback
-        console.log('data ' , data)
+        uploadImageAsync(this.state.image)
+        alert("Post Successful!")
+        this.props.navigation.navigate("MySpots");
       }).catch((error)=>{
         //error callback
         console.log('error ' , error)
@@ -70,7 +93,7 @@ export default class AddASpot extends React.Component {
   }
 
   pickImage(){
-   
+
     _pickImage = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
@@ -80,7 +103,7 @@ export default class AddASpot extends React.Component {
       console.log(result);
   
       if (!result.cancelled) {
-        this.setState({ image: result.uri });
+        this.setState({image:result.uri})
       }
     };
 
@@ -96,22 +119,29 @@ export default class AddASpot extends React.Component {
   componentWillUnmount() { 
     this._isMounted = false;
     console.log(this._isMounted);
-    firebase.database().ref.off();
   }
 
 
   
   render() {
-    let image_path = this.state.image;
     return (
+      <View>
+            <ScreenHeader style={{width:Dimensions.get('window').width}}navigation={this.props.navigation} />
+     
+      <KeyboardAvoidingView style={styles.body} behavior='padding' keyboardVerticalOffset={40}>
+            <ScrollView style={{width:Dimensions.get('window').width}} contentContainerStyle={{alignItems:'center'}}>
 
-      <KeyboardAvoidingView style={styles.body}behavior='padding' keyboardVerticalOffset={40}>
-            <ScrollView style={{alignSelf:'center'}}>
             <MapView
+              region={{
+                latitude:this.state.location.lat,
+                longitude:this.state.location.lng,
+                latitudeDelta : 0.001,
+                longitudeDelta : 0.001
+              }}
               style={styles.map}
               initialRegion={{
-                latitude: 51.0478,
-                longitude: -114.0593,
+                  latitude: this.state.location.lat,
+                  longitude: this.state.location.lng,
                 latitudeDelta: 0.1,
                 longitudeDelta: 0.1
               }}
@@ -121,8 +151,8 @@ export default class AddASpot extends React.Component {
               >
               <Marker
                 coordinate={{
-                  latitude: 51.0478,
-                  longitude: -114.0593
+                  latitude: this.state.location.lat,
+                  longitude: this.state.location.lng,
                 }}
                 draggable
               />
@@ -136,7 +166,9 @@ export default class AddASpot extends React.Component {
               fetchDetails={true}
               renderDescription={row => row.description} // custom description render
               onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                // console.log(data, details);
+              
+                 this.getLocatation(details.formatted_address,details.geometry.location);
+
               }}
 
               getDefaultValue={() => ''}
@@ -144,8 +176,13 @@ export default class AddASpot extends React.Component {
               query={{
                 // available options: https://developers.google.com/places/web-service/autocomplete
                 key: GOOGLE_MAPS_API,
-                language: 'en', // language of the results
-                types: 'address' // default: 'geocode'
+                establishment: 'establishment',
+                street_number: 'short_name',
+                route: 'long_name',
+                locality: 'long_name',
+                administrative_area_level_1: 'short_name',
+                country: 'long_name',
+                postal_code: 'short_name'
               }}
             
 
@@ -194,7 +231,7 @@ export default class AddASpot extends React.Component {
             />
           <Button
             style={styles.button}
-            onPress={() => this.getSpot(136 )}
+            onPress={()=>{this.addSpot(this.getSpot())}}
             title="Save Changes"
             // color="blue"
             accessibilityLabel="Add a parking spot"
@@ -202,7 +239,7 @@ export default class AddASpot extends React.Component {
         </ScrollView>
 
         </KeyboardAvoidingView>
-
+        </View>
     );
   }
 }
@@ -223,7 +260,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 5,
     borderRadius:15,
-    borderColor:"red",
+    borderColor:"#161D7D",
     fontSize:15,
     alignItems:'flex-start'
   },
