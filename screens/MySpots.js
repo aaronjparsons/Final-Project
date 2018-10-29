@@ -10,9 +10,18 @@ export default class MySpots extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      spots: []
+      spots: [],
+      image_url:null
     }
     firebase;
+    storageRef = firebase.storage().ref()
+    var starsRef = storageRef.child(`lot_images/${firebase.auth().currentUser.uid}/lot.jpg`);
+
+    
+    starsRef.getDownloadURL().then((url) =>{
+    this.setState({image_url:url})
+    console.log("URL : " , this.state.image_url)
+    })
   }
 
   componentDidMount() {
@@ -47,7 +56,7 @@ export default class MySpots extends React.Component {
             <Text>Parking Spot Id # {id}</Text>
           </CardItem>
           <CardItem bordered>
-            {spot.picture_url ? <Image style={styles.picture} source={spot.picture_url} /> : <Image style={styles.picture} source={require("../assets/spot.jpg")} />}
+            {this.state.image_url ? <Image style={styles.picture} source={{uri:this.state.image_url}} /> : <Image style={styles.picture} source={require("../assets/spot.jpg")} />}
           </CardItem>
           <CardItem bordered>
             <Body>
@@ -63,7 +72,8 @@ export default class MySpots extends React.Component {
           </CardItem>
           <Button
                 // style={styles.button}
-                onPress={() => this.props.navigation.navigate('AddASpot')}
+                
+                onPress={() => this.props.navigation.navigate('EditSpot', {key: spot.key})}
                 title="Edit Spot"
                 color="blue"
                 accessibilityLabel="Edit Parking Spot"

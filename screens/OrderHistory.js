@@ -25,23 +25,24 @@ export default class OrderHistory extends React.Component {
       let orders = [];
       data.forEach((order) => {
         // finds data for user
-        if (user_email === order.val().user) {
+        if (user_email === order.val().rent_user) {
+          let newOrder = order.val();
+          newOrder.key = order.key;
+          orders.push(newOrder);
         }
-
-        let newOrder = order.val();
-        newOrder.key = order.key;
-        orders.push(newOrder);
       });
       this.setState({orders: orders});
     })
   }
 
   render() {
+    let id = 0;
     let orderHistory = this.state.orders.map(order => {
+      id++;
       return (
         <Card key={order.key}>
           <CardItem header bordered>
-            <Text>Order # {order.id}</Text>
+            <Text>Order # {id}</Text>
           </CardItem>
           <CardItem bordered>
             <Body>

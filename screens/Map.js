@@ -153,22 +153,21 @@ class Map extends Component {
     const self = this;
     // console.log('did mount', this._isMounted);
     if (this._isMounted) {
-      firebase
-        .database()
-        .ref("/spots/")
-        .on("value", function(data) {
-          let spots = [];
-          data.forEach(function(childSnapshot) {
-            let item = childSnapshot.val();
-            item.id = childSnapshot.key;
-            spots.push(item);
-          });
-          self.setState({
-            markers: spots
-          });
+      firebase.database().ref('/spots/').on('value', function(data) {
+        let spots = [];
+        data.forEach(function(childSnapshot) {
+          
+          let item = childSnapshot.val();
+          item.id = childSnapshot.key;
+          spots.push(item);
         });
+        self.setState({
+          markers: spots
+        });
+      });
     }
   }
+
 
   componentWillUnmount() {
     this._isMounted = false;
