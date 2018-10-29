@@ -69,11 +69,6 @@ export default class EditSpot extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    
-
-    // .update({description: 'new test description'})
-    // console.log('this is the spot', spot);
-
   }
 
   componentWillUnmount() {
