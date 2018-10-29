@@ -28,10 +28,11 @@ class Map extends Component {
         price: 1.25,
         info: ["Plug available", "12345 12 Street"],
         is_rented: null,
-        id: null
+        id: null,
+        price: null
       },
       spotRented: false,
-      userId: null
+      userId: null,
     };
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
@@ -47,21 +48,6 @@ class Map extends Component {
     console.log("map ready");
   };
 
-  showCard(data) {
-    if (this._isMounted) {
-      this.state.markers.find(marker => {
-        if (data.id === marker.id) {
-          this.setState({
-            spotInfo: {
-              price: marker.price,
-              info: ["Plug available", "12345 12 Street"]
-            }
-          });
-        }
-      });
-    }
-  }
-
   markerPressed(data) {
     console.log(data);
     this.setState({
@@ -69,7 +55,8 @@ class Map extends Component {
         price: data.price,
         info: [data.title, data.description],
         is_rented: data.is_rented,
-        id: data.id
+        id: data.id,
+        price: data.price
       }
     },
     function() {
@@ -243,7 +230,7 @@ class Map extends Component {
               dialogAnimation={slideAnimation}
               dialogStyle={styles.statusDialog}
             >
-              <StatusCard info={this.state.spotInfo} id={this.state.id} checkout={this.checkout}/>
+              <StatusCard info={this.state.spotInfo} id={this.state.id} checkout={this.checkout} parkedTime={this.state.parkedTime}/>
             </PopupDialog>
           </View>
         </View>

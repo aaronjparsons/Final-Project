@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const MyApiClient = axios.create({
   baseURL: 'https://park-server.firebaseapp.com',
-  timeout: 5000,
+  timeout: 10000,
   headers: {'Content-Type': 'application/json'}
 });
 
@@ -23,7 +23,7 @@ export const createCust = (tokenId, email, accessToken) => {
     // });
 };
 
-export const doPayment = (amount, customer, accessToken) => {
+export const doPayment = (amount, customer) => {
   console.log('api.js doPayment called');
   const body = {
     amount: amount,
