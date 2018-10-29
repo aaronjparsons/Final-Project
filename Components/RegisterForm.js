@@ -28,6 +28,7 @@ export default class Register extends React.Component {
     self = this;
     console.log("FLAG1 ", this.getRegisterFormData())
     if(this.getRegisterFormData()){
+<<<<<<< HEAD
       console.log("FLAG2")
       firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then((userCred)=>{
         console.log("FLAG3")
@@ -37,6 +38,13 @@ export default class Register extends React.Component {
         
         firebase.database().ref("users").push(verifiedUser);
        this.props.navigation.navigate("Home")
+=======
+      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then((data)=>{
+        let uid = data.user.uid;
+        let user = this.getRegisterFormData();
+        firebase.database().ref("users/" + uid).set(user);
+        this.props.navigation.navigate("Home")
+>>>>>>> feature/database-functionality
       },(error)=>{
         alert(error.message)
       })
@@ -55,8 +63,9 @@ export default class Register extends React.Component {
       : this.displayErr("First Name");
     user.last_name = this.validateData(this.state.last_name, 'name') ? this.state.last_name : this.displayErr("Last Name");
     user.email = this.validateData(this.state.email, 'email') ? this.state.email : this.displayErr("email");
-    user.phone_number = this.validateData(this.state.phone_number,'phone_number') ? this.state.phone_number : this.displayErr("Phone number");
-    user.password_digest = this.validateData(this.state.password,'password') ? this.state.password : this.displayErr('Password');
+    user.phone_number = this.state.phone_number;
+    // this.validateData(this.state.phone_number,'phone_number') ? this.state.phone_number : this.displayErr("Phone number");
+    this.validateData(this.state.password,'password') ? this.state.password : this.displayErr('Password');
     user.license_plate = this.state.license_plate;
     user.car_size = this.state.car_size;
     for(var prop in user){
@@ -84,11 +93,11 @@ export default class Register extends React.Component {
       if(!emailRegex.test(input))
         return false;
     } 
-    else if (type ==='phone_number'){
-      input = input.slice(0,3) + "-" + input.slice(3,6) + "-" + input.slice(6,10);
-      if(!phoneRegex.test(input))
-        return false;
-    }
+    // else if (type ==='phone_number'){
+    //   input = input.slice(0,3) + "-" + input.slice(3,6) + "-" + input.slice(6,10);
+    //   if(!phoneRegex.test(input))
+    //     return false;
+    // }
     else if (type === 'password'){
       if(this.state.password!== this.state.password_conf)
         return false;
@@ -109,7 +118,7 @@ export default class Register extends React.Component {
         <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="Phone number"
         onChangeText = {(phone_number)=> {this.setState({phone_number})}}/>
         <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="License Plate #"
-        onChangeText = {(phone_number)=> {this.setState({license_plate})}}/>
+        onChangeText = {(license_plate)=> {this.setState({license_plate})}}/>
         <Picker
           selectedValue={this.state.car_size}
           style={styles.picker}
