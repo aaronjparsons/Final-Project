@@ -111,7 +111,7 @@ export default class PaymentInfo extends React.Component {
         <View>
           <CreditCardInput onChange={this.formOnChange} allowScroll={true} />
           <Button
-            title="Add Credit Card"
+            title={this.state.submitButtonDisabled ? "Enter A Valid Credit Card" : "Add Credit Card"}
             disabled={this.state.submitButtonDisabled}
             onPress={this.submitPaymentInfo}
           />
