@@ -27,19 +27,15 @@ class StatusCard extends React.Component {
   }
 
   checkout(orderId, total) {
-    let userStripeId = null;
     let currentUser = firebase.auth().currentUser;
-    firebase.database().ref('users').once('value', (users) => {
-      users.forEach((user) => {
-        if (user.val().email === currentUser.email) {
-          userStripeId = user.val().stripe_id;
-        }
-      });
-      doPayment(total, userStripeId)
-      .then((data) => {
-        // console.log(data)
-        this.props.checkout();
-      });
+    let userStripeId = null;
+    firebase.database().ref(`/users/${currentUser.uid}`).once('value', (data) => {
+      userStripeId = data.val().stripe_id;
+    });
+    doPayment(total, userStripeId)
+    .then((data) => {
+      // console.log(data)
+      this.props.checkout();
     });
   }
 
