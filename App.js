@@ -18,8 +18,8 @@ export default class App extends React.Component {
       userObject: null,
         }
     this.authenticate = this.authenticate.bind(this)
-    this.logout = this.logout.bind(this);
-    this.isLoggedIn = this.isLoggedIn.bind(this);
+    this.logout = this.logout.bind(this)
+    this.isLoggedIn = this.isLoggedIn.bind(this)
   }
 
   _isMounted = false;
@@ -37,10 +37,11 @@ export default class App extends React.Component {
     }
   }
 
-  isLoggedIn() {
+  isLoggedIn(){
+    let userEmail = firebase.auth().currentUser.email;
     firebase.database().ref("users").on('value', (data)=>{
       for(let keys in data.val()){
-       if(firebase.auth().currentUser.email === data.val()[keys].email){
+       if(userEmail === data.val()[keys].email){
          userObject = data.val()[keys];
          this.authenticate(userObject);
        }
@@ -64,6 +65,7 @@ export default class App extends React.Component {
     });
 
   }
+
 
   componentWillUnmount(){
     //Warning fix 
