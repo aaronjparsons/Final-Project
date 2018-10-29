@@ -164,8 +164,10 @@ class Map extends Component {
         self.setState({
           markers: spots
         });
+      });
     }
   }
+
 
   componentWillUnmount() {
     this._isMounted = false;
