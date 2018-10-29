@@ -17,10 +17,9 @@ export default class EditSpot extends React.Component {
       latitude: '',
       longitude: '',
       is_rented: false,
-      spot: ''
     };
 
-    this.addSpot = this.addSpot.bind(this);
+    this.updateSpot = this.updateSpot.bind(this);
     this.getSpot = this.getSpot.bind(this);
   }
 
@@ -46,29 +45,31 @@ export default class EditSpot extends React.Component {
     // get coordinates from marker
   }
 
-  addSpot(spot) {
-    if (this._isMounted) {
-      firebase
-        .database()
-        .ref("spots")
-        .set(spot)
-        .then(data => {
-          //success callback
-          console.log("data ", data);
-        })
-        .catch(error => {
-          //error callback
-          console.log("error ", error);
-        });
-    }
+  updateSpot(spot) {
+    const spot_id = this.props.navigation.getParam('key', null)
+    
+    // find the spot in database
+    firebase.database().ref(`spots/${spot_id}`)
+      .update({
+        description: spot.description,
+        // address: spot.address,
+        // picture_url: spot.picture_url,
+        // price: spot.price
+      })
+      .then(data => {
+        //success callback
+        console.log("data ", data);
+        this.props.navigation.navigate('MySpots');
+      })
+      .catch(error => {
+        //error callback
+        console.log("error ", error);
+      });
   }
 
   componentDidMount() {
     this._isMounted = true;
-    const spot_id = this.props.navigation.getParam('key', null)
     
-    // find the spot in database
-    this.setState({ spot: firebase.database().ref(`spots/${spot_id}`) })
 
     // .update({description: 'new test description'})
     // console.log('this is the spot', spot);
@@ -77,7 +78,7 @@ export default class EditSpot extends React.Component {
 
   componentWillUnmount() {
     this._isMounted = false;
-    firebase.database().ref.off();
+    // firebase.database().ref.off();
     // console.log(this._isMounted);
   }
 
@@ -133,7 +134,7 @@ export default class EditSpot extends React.Component {
           </View>
           <Button
             style={styles.button}
-            onPress={() => this.addSpot(this.getSpot())}
+            onPress={() => this.updateSpot(this.getSpot())}
             title="Save Changes"
             // color="blue"
             accessibilityLabel="Add a parking spot"
