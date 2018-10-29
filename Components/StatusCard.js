@@ -65,10 +65,6 @@ class StatusCard extends React.Component {
     });
   }
 
-  componentDidMount() {
-
-  }
-
   render() {
     return (
       <View style={styles.popup}>

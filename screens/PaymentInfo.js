@@ -47,6 +47,7 @@ export default class PaymentInfo extends React.Component {
   }
 
   submitPaymentInfo() {
+    const currentUser = firebase.auth().currentUser;
     // Create a Stripe token with new card info & create a customer
     const token = client.createToken({
       number: formData.values.number,
@@ -55,18 +56,11 @@ export default class PaymentInfo extends React.Component {
       cvc: formData.values.cvc,
     }).then((response) => {
       console.log(response);
-      return createCust(response.id, this.userEmail);
+      return createCust(response.id, currentUser.email);
     }).then((data) => {
       console.log('CUSTOMER SUCCESSFULLY CREATED', data.id);
       // Add customer id to user in database
-      firebase.database().ref('users').once('value', (users) => {
-        users.forEach((user) => {
-          if (user.val().email === this.userEmail) {
-            let userId = user.key;
-            firebase.database().ref(`users/${userId}/stripe_id`).set(data.id);
-          }
-        });
-      });
+      firebase.database().ref(`users/${currentUser.uid}/stripe_id`).set(data.id);
       // Alert user of success, then redirect back to dashboard
       if (this.state.keyboardUp) {
         Keyboard.dismiss();
@@ -83,7 +77,6 @@ export default class PaymentInfo extends React.Component {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this._isMounted = true;
-    this.userEmail = firebase.auth().currentUser.email;
   }
 
   componentWillUnmount() {
