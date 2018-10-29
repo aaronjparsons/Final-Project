@@ -24,12 +24,12 @@ export default class OrderHistory extends React.Component {
     firebase.database().ref('/orders/').on(('value'), (data) => {
       let orders = [];
       data.forEach((order) => {
-        if (user_email === order.val().user) {
+        if (user_email === order.val().rent_user) {
+          let newOrder = order.val();
+          newOrder.key = order.key;
+          orders.push(newOrder);
         }
   
-        let newOrder = order.val();
-        newOrder.key = order.key;
-        orders.push(newOrder);
       });
       this.setState({orders: orders});
     })

@@ -15,6 +15,7 @@ import PaymentInfo from "../screens/PaymentInfo.js";
 import Help from "../screens/Help.js";
 import Login from "../Components/Login.js";
 import Register from "../Components/RegisterForm";
+import EditSpot from "../screens/EditSpot";
 
 // database connection
 import firebase from "firebase";
@@ -43,6 +44,9 @@ export const RootStack = createStackNavigator(
     },
     PaymentInfo: {
       screen: PaymentInfo
+    },
+    EditSpot: {
+      screen: EditSpot,
     }
   },
   {
