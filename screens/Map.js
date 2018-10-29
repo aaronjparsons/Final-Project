@@ -94,7 +94,7 @@ class Map extends Component {
   }
 
   parkingConfirmComplete() {
-    let userEmail = firebase.auth().currentUser.email;
+    let currentUser = firebase.auth().currentUser;
     if (this._isMounted) {
       console.log(`SPOT #${this.state.spotInfo.id} RENTED`);
       this.writeOrderData();
@@ -103,14 +103,7 @@ class Map extends Component {
         spotRented: true
       });
       firebase.database().ref(`spots/${this.state.spotInfo.id}/is_rented`).set(true);
-      firebase.database().ref('users').once('value', (users) => {
-        users.forEach((user) => {
-          if (user.val().email === userEmail) {
-            let userId = user.key;
-            firebase.database().ref(`users/${userId}/currently_renting`).set(true);
-          }
-        });
-      });
+      firebase.database().ref(`/users/${currentUser.uid}/currently_renting`).set(true);
     }
   }
 
@@ -120,8 +113,10 @@ class Map extends Component {
   }
 
   checkout() {
+    let currentUser = firebase.auth().currentUser;
     this.statusPopup.dismiss();
     firebase.database().ref(`spots/${this.state.spotInfo.id}/is_rented`).set(false);
+    firebase.database().ref(`/users/${currentUser.uid}/currently_renting`).set(false);
     this.setState({
       spotRented: false
     });
