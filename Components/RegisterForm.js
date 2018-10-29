@@ -28,23 +28,11 @@ export default class Register extends React.Component {
     self = this;
     console.log("FLAG1 ", this.getRegisterFormData())
     if(this.getRegisterFormData()){
-<<<<<<< HEAD
-      console.log("FLAG2")
-      firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then((userCred)=>{
-        console.log("FLAG3")
-        console.log("FLAG $ ",userCred.uid )
-       let verifiedUser = this.getRegisterFormData();
-        verifiedUser.uid = userCred.user.uid;
-        
-        firebase.database().ref("users").push(verifiedUser);
-       this.props.navigation.navigate("Home")
-=======
       firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then((data)=>{
         let uid = data.user.uid;
         let user = this.getRegisterFormData();
         firebase.database().ref("users/" + uid).set(user);
         this.props.navigation.navigate("Home")
->>>>>>> feature/database-functionality
       },(error)=>{
         alert(error.message)
       })
