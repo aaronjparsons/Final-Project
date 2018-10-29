@@ -20,8 +20,14 @@ import {
   Title
 } from "native-base";
 import ScreenHeader from "../Components/ScreenHeader";
+import email from "react-native-email";
 
 export default class Help extends React.Component {
+  handleEmail = () => {
+    const to = "reportparking@gmail.com";
+    email(to, { subject: "Issue With Pete Parker App" }).catch(console.error);
+  };
+
   render() {
     return (
       <ScrollView style={styles.scrollview}>
@@ -49,6 +55,21 @@ export default class Help extends React.Component {
                   <Text>
                     A: As long as you want! Don't forget to stop the meter when
                     you are done parking.
+                  </Text>
+                </Body>
+              </CardItem>
+            </Card>
+            <Card>
+              <CardItem>
+                <Body>
+                  <Text>
+                    Q: I'm experinceing technical issues with Peter Parker?
+                  </Text>
+                  <Text onPress={this.handleEmail}>
+                    A: Please email our support team.
+                  </Text>
+                  <Text onPress={this.handleEmail} style={styles.email}>
+                    reportparking@gmail.com
                   </Text>
                 </Body>
               </CardItem>
@@ -118,15 +139,35 @@ export default class Help extends React.Component {
             <Card>
               <CardItem>
                 <Body>
-                  <Text>Q: Can I report bad behaviour?</Text>
-                  <Text>A:</Text>
+                  <Text>
+                    Q: Is there a minimum amount of time to book a parking spot?
+                  </Text>
+                  <Text>
+                    A: There is no minimum time to park however, there is a
+                    minimum 50¢ charge.
+                  </Text>
                 </Body>
               </CardItem>
             </Card>
             <Card>
               <CardItem>
                 <Body>
-                  <Text> Park With Us!</Text>
+                  <Text>Q: Can I report bad behaviour?</Text>
+                  <Text onPress={this.handleEmail}>
+                    A: Yes you can report any user by emailing our support team
+                  </Text>
+                  <Text onPress={this.handleEmail} style={styles.email}>
+                    reportparking@gmail.com
+                  </Text>
+                </Body>
+              </CardItem>
+            </Card>
+            <Card>
+              <CardItem>
+                <Body>
+                  <Text onPress={() => this.props.navigation.navigate("Home")}>
+                    Back to Home
+                  </Text>
                 </Body>
               </CardItem>
             </Card>
@@ -164,5 +205,8 @@ const styles = StyleSheet.create({
   },
   scrollview: {
     flex: 1
+  },
+  email: {
+    color: "#3366BB"
   }
 });
