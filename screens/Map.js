@@ -35,7 +35,7 @@ class Map extends Component {
       currentOrder: null,
       rentedSpotInfo: {
         price: null,
-        info: [],
+        info: []
       }
     };
     this.markerPressed = this.markerPressed.bind(this);
@@ -54,19 +54,21 @@ class Map extends Component {
 
   markerPressed(data) {
     console.log(data);
-    this.setState({
-      spotInfo: {
-        price: data.price,
-        info: [data.title, data.description],
-        is_rented: data.is_rented,
-        id: data.id,
-        address: data.title
+    this.setState(
+      {
+        spotInfo: {
+          price: data.price,
+          info: [data.title, data.description],
+          is_rented: data.is_rented,
+          id: data.id,
+          address: data.title
+        }
+      },
+      function() {
+        console.log("show popup");
+        this.infoPopup.show();
       }
-    },
-    function() {
-      console.log('show popup')
-      this.infoPopup.show();
-    });
+    );
   }
 
   writeOrderData() {
@@ -79,7 +81,7 @@ class Map extends Component {
         start: Date.now()
       })
       .then(data => {
-        this.setState({currentOrder: data.key}, () => {
+        this.setState({ currentOrder: data.key }, () => {
           this.parkingConfirmComplete();
         });
         //success callback
@@ -103,9 +105,18 @@ class Map extends Component {
     let currentUser = firebase.auth().currentUser;
     if (this._isMounted) {
       this.confirmPopup.dismiss();
-      firebase.database().ref(`spots/${this.state.spotInfo.id}/is_rented`).set(true);
-      firebase.database().ref(`/users/${currentUser.uid}/currently_renting`).set(this.state.spotInfo.id);
-      firebase.database().ref(`/users/${currentUser.uid}/current_order`).set(this.state.currentOrder);
+      firebase
+        .database()
+        .ref(`spots/${this.state.spotInfo.id}/is_rented`)
+        .set(true);
+      firebase
+        .database()
+        .ref(`/users/${currentUser.uid}/currently_renting`)
+        .set(this.state.spotInfo.id);
+      firebase
+        .database()
+        .ref(`/users/${currentUser.uid}/current_order`)
+        .set(this.state.currentOrder);
     }
   }
 
@@ -117,9 +128,18 @@ class Map extends Component {
   checkout() {
     let currentUser = firebase.auth().currentUser;
     this.statusPopup.dismiss();
-    firebase.database().ref(`spots/${this.state.spotRented}/is_rented`).set(false);
-    firebase.database().ref(`/users/${currentUser.uid}/currently_renting`).set(null);
-    firebase.database().ref(`/users/${currentUser.uid}/current_order`).set(null);
+    firebase
+      .database()
+      .ref(`spots/${this.state.spotRented}/is_rented`)
+      .set(false);
+    firebase
+      .database()
+      .ref(`/users/${currentUser.uid}/currently_renting`)
+      .set(null);
+    firebase
+      .database()
+      .ref(`/users/${currentUser.uid}/current_order`)
+      .set(null);
   }
 
   componentDidMount() {
@@ -128,42 +148,52 @@ class Map extends Component {
     // console.log('did mount', this._isMounted);
     if (this._isMounted) {
       firebase.auth().onAuthStateChanged(user => {
-        firebase.database().ref(`/users/${user.uid}`).on('value', (data) => {
-          let renting = data.val().currently_renting;
-          let order = data.val().current_order;
-          this.setState({
-            spotRented: renting,
-            currentOrder: order,
-          });
-          if (renting) {
-            firebase.database().ref(`/spots/${renting}`).once('value', (spot) => {
-              console.log(spot);
-              let price = spot.val().price;
-              let info = [spot.val().title, spot.val().description];
+        if (user) {
+          firebase
+            .database()
+            .ref(`/users/${user.uid}`)
+            .on("value", data => {
+              let renting = data.val().currently_renting;
+              let order = data.val().current_order;
               this.setState({
-                rentedSpotInfo: {
-                  price: price,
-                  info: info,
-                }
-              })
+                spotRented: renting,
+                currentOrder: order
+              });
+              if (renting) {
+                firebase
+                  .database()
+                  .ref(`/spots/${renting}`)
+                  .once("value", spot => {
+                    console.log(spot);
+                    let price = spot.val().price;
+                    let info = [spot.val().title, spot.val().description];
+                    this.setState({
+                      rentedSpotInfo: {
+                        price: price,
+                        info: info
+                      }
+                    });
+                  });
+              }
             });
-          }
-        });
-      })
-      firebase.database().ref("/spots/").on("value", (data) => {
-        let spots = [];
-        data.forEach(function(childSnapshot) {
-          let item = childSnapshot.val();
-          item.id = childSnapshot.key;
-          spots.push(item);
-        });
-        this.setState({
-          markers: spots
-        });
+        }
       });
+      firebase
+        .database()
+        .ref("/spots/")
+        .on("value", data => {
+          let spots = [];
+          data.forEach(function(childSnapshot) {
+            let item = childSnapshot.val();
+            item.id = childSnapshot.key;
+            spots.push(item);
+          });
+          this.setState({
+            markers: spots
+          });
+        });
     }
   }
-
 
   componentWillUnmount() {
     this._isMounted = false;
@@ -200,7 +230,11 @@ class Map extends Component {
                     longitude: marker.location.lng
                   }}
                   onPress={() => this.markerPressed(marker)}
-                  image={marker.is_rented ? require('../assets/GrayMarker.png') : require('../assets/GreenMarker.png')}
+                  image={
+                    marker.is_rented
+                      ? require("../assets/GrayMarker.png")
+                      : require("../assets/GreenMarker.png")
+                  }
                 />
               );
             })}
@@ -246,10 +280,10 @@ class Map extends Component {
               dialogAnimation={slideAnimation}
               dialogStyle={styles.statusDialog}
             >
-              <StatusCard 
+              <StatusCard
                 info={this.state.rentedSpotInfo}
-                id={this.state.currentOrder} 
-                checkout={this.checkout} 
+                id={this.state.currentOrder}
+                checkout={this.checkout}
               />
             </PopupDialog>
           </View>

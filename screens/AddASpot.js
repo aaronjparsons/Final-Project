@@ -33,11 +33,11 @@ export default class AddASpot extends React.Component {
       spot_id: "",
       location: { lat: 51.0478, lng: -114.0593 },
       picture_url: "",
-      user: "test@gmail.com",
+      owner: "",
       description: "",
       price: 0,
-      latitude: 51.06,
-      longitude: -114.05,
+      latitude: 0,
+      longitude: 0,
       is_rented: false,
       image: null
     };
@@ -46,13 +46,13 @@ export default class AddASpot extends React.Component {
     this.getSpot = this.getSpot.bind(this);
     this.parseAddress = this.parseAddress.bind(this);
     this.pickImage = this.pickImage.bind(this);
-    this.getLocatation = this.getLocatation.bind(this);
+    this.getLocation = this.getLocation.bind(this);
   }
 
   _isMounted = false;
 
   getSpot() {
-    console.log("We here");
+    // console.log("We here")
     // getLocation(this.parseAddress(this.state.address));
     let spot = {
       id: this.state.spot_id,
@@ -61,14 +61,14 @@ export default class AddASpot extends React.Component {
       picture_url: this.state.image,
       description: this.state.description,
       price: this.state.price,
-      user: "test@gmail.com",
+      owner: this.state.uid,
       is_rented: false
     };
-    console.log("THE SPOT IS ", spot);
+    // console.log("THE SPOT IS ", spot)
     return spot;
   }
 
-  getLocatation(formattedAddress, locationObject) {
+  getLocation(formattedAddress, locationObject) {
     this.setState({ address: formattedAddress, location: locationObject });
   }
 
@@ -125,11 +125,12 @@ export default class AddASpot extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     // console.log('did mount', this._isMounted)
+    this.setState({ uid: firebase.auth().currentUser.uid });
   }
 
   componentWillUnmount() {
     this._isMounted = false;
-    console.log(this._isMounted);
+    // console.log(this._isMounted);
   }
 
   render() {
@@ -185,6 +186,11 @@ export default class AddASpot extends React.Component {
               renderDescription={row => row.description} // custom description render
               onPress={(data, details = null) => {
                 // 'details' is provided when fetchDetails = true
+
+                this.getLocation(
+                  details.formatted_address,
+                  details.geometry.location
+                );
 
                 this.getLocatation(
                   details.formatted_address,
