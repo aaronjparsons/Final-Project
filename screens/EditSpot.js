@@ -1,5 +1,16 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container } from "react-native"; 
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  StatusBar,
+  Button,
+  TextInput,
+  KeyboardAvoidingView,
+  Container
+} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import ScreenHeader from "../Components/ScreenHeader";
 import firebase from "../Firebase.js";
@@ -14,16 +25,15 @@ export default class EditSpot extends React.Component {
       user: "",
       description: "",
       price: 0,
-      latitude: '',
-      longitude: '',
-      is_rented: false,
+      latitude: "",
+      longitude: "",
+      is_rented: false
     };
 
     this.updateSpot = this.updateSpot.bind(this);
     this.getSpot = this.getSpot.bind(this);
   }
 
-  
   _isMounted = false;
 
   getSpot() {
@@ -40,18 +50,19 @@ export default class EditSpot extends React.Component {
     return spot;
   }
 
-
   getCoordinates() {
     // get coordinates from marker
   }
 
   updateSpot(spot) {
-    const spot_id = this.props.navigation.getParam('key', null)
-    
+    const spot_id = this.props.navigation.getParam("key", null);
+
     // find the spot in database
-    firebase.database().ref(`spots/${spot_id}`)
+    firebase
+      .database()
+      .ref(`spots/${spot_id}`)
       .update({
-        description: spot.description,
+        description: spot.description
         // address: spot.address,
         // picture_url: spot.picture_url,
         // price: spot.price
@@ -59,7 +70,7 @@ export default class EditSpot extends React.Component {
       .then(data => {
         //success callback
         console.log("data ", data);
-        this.props.navigation.navigate('MySpots');
+        this.props.navigation.navigate("MySpots");
       })
       .catch(error => {
         //error callback
@@ -112,17 +123,33 @@ export default class EditSpot extends React.Component {
               placeholder={"Address"}
             />
             <TextInput
+              returnKeyType={"next"}
+              blurOnSubmit={false}
+              onSubmitEditing={() => {
+                this.description.focus();
+              }}
               style={styles.inputField}
-              onChangeText={text => this.setState({ picture_url: text })}
-              placeholder={"Picture URL"}
+              onChangeText={text => this.setState({ address: text })}
+              placeholder={"Address"}
             />
             <TextInput
+              returnKeyType={"next"}
+              blurOnSubmit={false}
+              onSubmitEditing={() => {
+                this.price.focus();
+              }}
+              ref={input => {
+                this.description = input;
+              }}
               style={styles.inputField}
               onChangeText={text => this.setState({ description: text })}
               placeholder={"Description"}
             />
             <TextInput
               style={styles.inputField}
+              ref={input => {
+                this.price = input;
+              }}
               onChangeText={text => this.setState({ price: text })}
               placeholder={"Price"}
             />
