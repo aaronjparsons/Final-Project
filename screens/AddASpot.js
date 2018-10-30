@@ -78,14 +78,17 @@ export default class AddASpot extends React.Component {
   }
 
   addSpot(spot) {
-    async function uploadImageAsync(uri) {
+    self = this;
+    async function uploadImageAsync(uri, spot_id) {
       const response = await fetch(uri);
       const blob = await response.blob();
       const ref = firebase
         .storage()
         .ref()
-        .child(`lot_images/${firebase.auth().currentUser.uid}/lot.jpg`);
-      const snapshot = await ref.put(blob);
+        .child(`lot_images/${spot.owner}/${spot_id}/lot.jpg`);
+      const snapshot = await ref.put(blob).then(() => {
+        self.props.navigation.navigate("MySpots");
+      });
     }
     if (this._isMounted) {
       firebase
@@ -94,9 +97,9 @@ export default class AddASpot extends React.Component {
         .push(spot)
         .then(data => {
           //success callback
-          uploadImageAsync(this.state.image);
+          spot_id = data.path.pieces_[1];
+          uploadImageAsync(this.state.image, spot_id);
           alert("Post Successful!");
-          this.props.navigation.navigate("MySpots");
         })
         .catch(error => {
           //error callback

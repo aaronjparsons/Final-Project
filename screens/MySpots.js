@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
-import { Image, StyleSheet, Button }  from 'react-native';
+import { Image, StyleSheet, Button,View,ActivityIndicator }  from 'react-native';
 import ScreenHeader from "../Components/ScreenHeader";
 
 import firebase from '../Firebase.js';
@@ -11,33 +11,32 @@ export default class MySpots extends React.Component {
     super(props);
     this.state = {
       spots: [],
-      image_url:null
+      renderedSpots:[],
+      image_url:null,
+      
     }
     firebase;
     storageRef = firebase.storage().ref()
-    var starsRef = storageRef.child(`lot_images/${firebase.auth().currentUser.uid}/lot.jpg`);
-
-    
-    starsRef.getDownloadURL().then((url) =>{
-    this.setState({image_url:url})
-    console.log("URL : " , this.state.image_url)
-    })
+    this.test_image_url = null;
+    this.counter = 0;
   }
 
   componentDidMount() {
-    let user_email = firebase.auth().currentUser.email;
-    // console.log(user_email);
+   
+    let user_id = firebase.auth().currentUser.uid;
 
     firebase.database().ref('/spots/').on(('value'), (data) => {
       let spots = [];
       data.forEach((spot) => {
-        if (user_email === spot.val().user) {
+        if (user_id === spot.val().owner) {
           let newSpot = spot.val();
           newSpot.key = spot.key;
           spots.push(newSpot);
         }
       });
-      this.setState({spots: spots});
+      
+        this.setState({spots: spots});
+    
     })
   }
 
@@ -45,47 +44,58 @@ export default class MySpots extends React.Component {
     // firebase.database().ref.off();
   }
   
+  
   render() {
-    
+    self = this;
     let id = 0;
     let mySpots = this.state.spots.map(spot => {
-      id++;
-      return (
-        <Card key={spot.key}>
-          <CardItem header bordered>
-            <Text>Parking Spot Id # {id}</Text>
-          </CardItem>
-          <CardItem bordered>
-            {this.state.image_url ? <Image style={styles.picture} source={{uri:this.state.image_url}} /> : <Image style={styles.picture} source={require("../assets/spot.jpg")} />}
-          </CardItem>
-          <CardItem bordered>
-            <Body>
-              <Text>
-                Address: {spot.address}
-                {"\n"}
-                Description: {spot.description}
-              </Text>
-            </Body>
-          </CardItem>
-          <CardItem footer bordered>
-            <Text>Price: ${spot.price}/hr</Text>
-          </CardItem>
-          <Button
-                // style={styles.button}
-                
-                onPress={() => this.props.navigation.navigate('EditSpot', {key: spot.key})}
-                title="Edit Spot"
-                color="blue"
-                accessibilityLabel="Edit Parking Spot"
-              />
-        </Card>
-      );
+      var lotImageRef = storageRef.child(`lot_images/${firebase.auth().currentUser.uid}/${spot.key}/lot.jpg`);
+      lotImageRef.getDownloadURL().then((url) =>{
+        self.test_image_url = url;
+        self.counter+=1;
+        id++;
+        cardToPush =(
+          <Card key={spot.key}>
+            <CardItem header bordered>
+              <Text>Spot: {id}</Text>
+            </CardItem>
+            <CardItem bordered>
+              {self.test_image_url ? <Image style={styles.picture} source={{uri:self.test_image_url}} /> : <Image style={styles.picture} source={require("../assets/spot.jpg")} />}
+            </CardItem>
+            <CardItem bordered>
+              <Body>
+                <Text>
+                  Address: {spot.address}
+                  {"\n"}
+                  Description: {spot.description}
+                </Text>
+              </Body>
+            </CardItem>
+            <CardItem footer bordered>
+              <Text>Price: ${spot.price}/hr</Text>
+            </CardItem>
+            <Button
+                  // style={styles.button}
+                  onPress={() => self.props.navigation.navigate('AddASpot')}
+                  title="Edit Spot"
+                  color="blue"
+                  accessibilityLabel="Edit Parking Spot"
+                />
+          </Card>)
+          if(self.counter <= self.state.spots.length ) {
+            self.setState(prevState=>({
+              renderedSpots : [...prevState.renderedSpots, cardToPush]
+            }))
+          }
+
+        
+      })
     });
 
     return (
       <Container>
         <ScreenHeader navigation={this.props.navigation} />
-        <Content padder>{mySpots}</Content>
+        <Content padder>{this.state.renderedSpots}</Content>
       </Container>
     );
   }
