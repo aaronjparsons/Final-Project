@@ -22,7 +22,7 @@ export default class Login extends React.Component {
   
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container} keyboardVerticalOffset={250}>
         <View style={styles.logoContainer}>
           <Image style={styles.logo} source={require("../assets/peter.jpg")} />
           <Text style={styles.title}>Park Yo Shit</Text>
