@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "4%",
     width: "90%",
-    height: "38%"
+    height: "50%"
   },
   statusDialog: {},
   currentRental: {
