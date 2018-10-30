@@ -7,19 +7,36 @@ import { doPayment } from "../Api.js";
 class StatusCard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      currentTime: null
+    }
   }
 
-  checkout() {
-    doPayment(100, 'cus_DrK1r7Kz4ZxbDn')
-    .then((data) => {
-      console.log(data)
-      this.props.checkout();
+  calculateTotal(order) {
+    firebase.database().ref(`/orders/${order}`).once('value', (data) => {
+      const start = data.val().start;
+      const end = data.val().end;
+      const diff = (end - start) / 60000;
+      const pricePerMin = this.props.info.price / 60;
+      let total = Math.round((diff * pricePerMin) * 100); // Times 100 to be in cents
+      if (total < 50) {
+        total = 50; // Minimum 50 cent charge
+      }
+      firebase.database().ref(`/orders/${this.props.id}/totalPayed`).set(total);
+      this.checkout(order, total)
     });
   }
- 
-  chargeCard() {
-    doPayment(100, "cus_DrK1r7Kz4ZxbDn").then(data => {
-      console.log(data);
+
+  checkout(orderId, total) {
+    let currentUser = firebase.auth().currentUser;
+    let userStripeId = null;
+    firebase.database().ref(`/users/${currentUser.uid}`).once('value', (data) => {
+      userStripeId = data.val().stripe_id;
+    });
+    doPayment(total, userStripeId)
+    .then((data) => {
+      // console.log(data)
+      this.props.checkout();
     });
   }
 
@@ -29,14 +46,27 @@ class StatusCard extends React.Component {
       .ref("/orders/" + id)
       .update({
         end: Date.now()
+      }).then(() => {
+        this.calculateTotal(id);
       });
+  }
+
+  currentTimeParked() {
+    firebase.database().ref(`/orders/${this.props.id}`).once('value', (data) => {
+      const start = data.val().start;
+      const now = Date().now;
+      const time = (now - start) / 60000;
+      this.setState({
+        currentTime: time
+      });
+    });
   }
 
   render() {
     return (
       <View style={styles.popup}>
         <Text style={styles.popupPrice}>Current Parking Session</Text>
-        <Text>X Minutes Parked</Text>
+        <Text>{this.state.currentTimeParked} Minutes Currently</Text>
         {this.props.info.info.map((desc, index) => {
           return (
             <Text key={index} style={styles.info}>
@@ -48,9 +78,8 @@ class StatusCard extends React.Component {
           title="CHECKOUT"
           onPress={() => {
             console.log("CHECKOUT PRESSED");
-            this.checkout()
+            // this.checkout();
             this.updateOrderData(this.props.id);
-            this.chargeCard();
           }}
         />
       </View>

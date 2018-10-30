@@ -28,9 +28,15 @@ class Map extends Component {
         price: 1.25,
         info: ["Plug available", "12345 12 Street"],
         is_rented: null,
-
+        id: null,
+        price: null
       },
-      spotRented: false
+      spotRented: null,
+      currentOrder: null,
+      rentedSpotInfo: {
+        price: null,
+        info: [],
+      }
     };
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
@@ -46,21 +52,6 @@ class Map extends Component {
     console.log("map ready");
   };
 
-  showCard(data) {
-    if (this._isMounted) {
-      this.state.markers.find(marker => {
-        if (data.id === marker.id) {
-          this.setState({
-            spotInfo: {
-              price: marker.price,
-              info: ["Plug available", "12345 12 Street"]
-            }
-          });
-        }
-      });
-    }
-  }
-
   markerPressed(data) {
     console.log(data);
     this.setState({
@@ -68,7 +59,8 @@ class Map extends Component {
         price: data.price,
         info: [data.title, data.description],
         is_rented: data.is_rented,
-        id: data.id
+        id: data.id,
+        address: data.title
       }
     },
     function() {
@@ -82,11 +74,14 @@ class Map extends Component {
       .database()
       .ref("orders/")
       .push({
-        address: "123 fake street",
+        address: this.state.spotInfo.address,
+        spot: this.state.spotInfo.id,
         start: Date.now()
       })
       .then(data => {
-        this.setState({ id: data.key });
+        this.setState({currentOrder: data.key}, () => {
+          this.parkingConfirmComplete();
+        });
         //success callback
         console.log("data ", data);
       })
@@ -97,7 +92,6 @@ class Map extends Component {
   }
 
   parkButtonPressed() {
-    console.log("park pressed");
     this.infoPopup.dismiss(() => {
       setTimeout(() => {
         this.confirmPopup.show();
@@ -105,32 +99,13 @@ class Map extends Component {
     });
   }
 
-  updateOrderData(key) {
-    firebase
-      .database()
-      .ref("orders" / key)
-      .update({
-        duration: "60",
-        total: "60"
-      });
-    if (this._isMounted) {
-      console.log("park pressed");
-      this.infoPopup.dismiss(() => {
-        setTimeout(() => {
-          this.confirmPopup.show();
-        }, 200);
-      });
-    }
-  }
   parkingConfirmComplete() {
+    let currentUser = firebase.auth().currentUser;
     if (this._isMounted) {
-      console.log(`SPOT #${this.state.spotInfo.id} RENTED`);
-      this.writeOrderData();
       this.confirmPopup.dismiss();
-      this.setState({
-        spotRented: true
-      });
       firebase.database().ref(`spots/${this.state.spotInfo.id}/is_rented`).set(true);
+      firebase.database().ref(`/users/${currentUser.uid}/currently_renting`).set(this.state.spotInfo.id);
+      firebase.database().ref(`/users/${currentUser.uid}/current_order`).set(this.state.currentOrder);
     }
   }
 
@@ -140,28 +115,49 @@ class Map extends Component {
   }
 
   checkout() {
+    let currentUser = firebase.auth().currentUser;
     this.statusPopup.dismiss();
-    firebase.database().ref(`spots/${this.state.spotInfo.id}/is_rented`).set(false);
-    this.setState({
-      spotRented: false
-    });
+    firebase.database().ref(`spots/${this.state.spotRented}/is_rented`).set(false);
+    firebase.database().ref(`/users/${currentUser.uid}/currently_renting`).set(null);
+    firebase.database().ref(`/users/${currentUser.uid}/current_order`).set(null);
   }
 
   componentDidMount() {
     this._isMounted = true;
 
-    const self = this;
     // console.log('did mount', this._isMounted);
     if (this._isMounted) {
-      firebase.database().ref('/spots/').on('value', function(data) {
+      firebase.auth().onAuthStateChanged(user => {
+        firebase.database().ref(`/users/${user.uid}`).on('value', (data) => {
+          let renting = data.val().currently_renting;
+          let order = data.val().current_order;
+          this.setState({
+            spotRented: renting,
+            currentOrder: order,
+          });
+          if (renting) {
+            firebase.database().ref(`/spots/${renting}`).once('value', (spot) => {
+              console.log(spot);
+              let price = spot.val().price;
+              let info = [spot.val().title, spot.val().description];
+              this.setState({
+                rentedSpotInfo: {
+                  price: price,
+                  info: info,
+                }
+              })
+            });
+          }
+        });
+      })
+      firebase.database().ref("/spots/").on("value", (data) => {
         let spots = [];
         data.forEach(function(childSnapshot) {
-          
           let item = childSnapshot.val();
           item.id = childSnapshot.key;
           spots.push(item);
         });
-        self.setState({
+        this.setState({
           markers: spots
         });
       });
@@ -240,7 +236,7 @@ class Map extends Component {
             >
               <ConfirmCard
                 info={this.state.spotInfo}
-                parkingConfirmComplete={this.parkingConfirmComplete}
+                parkingConfirmComplete={this.writeOrderData}
               />
             </PopupDialog>
             <PopupDialog
@@ -250,7 +246,11 @@ class Map extends Component {
               dialogAnimation={slideAnimation}
               dialogStyle={styles.statusDialog}
             >
-              <StatusCard info={this.state.spotInfo} id={this.state.id} checkout={this.checkout}/>
+              <StatusCard 
+                info={this.state.rentedSpotInfo}
+                id={this.state.currentOrder} 
+                checkout={this.checkout} 
+              />
             </PopupDialog>
           </View>
         </View>

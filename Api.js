@@ -3,7 +3,7 @@ import {GOOGLE_MAPS_API} from 'react-native-dotenv'
 
 const MyApiClient = axios.create({
   baseURL: 'https://park-server.firebaseapp.com',
-  timeout: 5000,
+  timeout: 10000,
   headers: {'Content-Type': 'application/json'}
 });
 
@@ -25,6 +25,7 @@ export const createCust = (tokenId, accessToken) => {
   console.log('create customer api called');
   const body = {
     tokenId: tokenId,
+    email: email
   };
   return MyApiClient
     .post('/createCust', body)
@@ -37,7 +38,7 @@ export const createCust = (tokenId, accessToken) => {
     // });
 };
 
-export const doPayment = (amount, customer, accessToken) => {
+export const doPayment = (amount, customer) => {
   console.log('api.js doPayment called');
   const body = {
     amount: amount,

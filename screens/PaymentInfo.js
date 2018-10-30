@@ -12,7 +12,6 @@ import firebase from '../Firebase.js';
 const client = new Stripe(STRIPE_PKEY);
 
 let formData = null;
-let userEmail = null;
 
 export default class PaymentInfo extends React.Component {
   constructor() {
@@ -28,6 +27,7 @@ export default class PaymentInfo extends React.Component {
   }
 
   _isMounted = false;
+  userEmail = null;
 
   formOnChange(form) {
     if (this._isMounted) {
@@ -47,6 +47,7 @@ export default class PaymentInfo extends React.Component {
   }
 
   submitPaymentInfo() {
+    const currentUser = firebase.auth().currentUser;
     // Create a Stripe token with new card info & create a customer
     const token = client.createToken({
       number: formData.values.number,
@@ -55,15 +56,17 @@ export default class PaymentInfo extends React.Component {
       cvc: formData.values.cvc,
     }).then((response) => {
       console.log(response);
-      return createCust(response.id);
+      return createCust(response.id, currentUser.email);
     }).then((data) => {
       console.log('CUSTOMER SUCCESSFULLY CREATED', data.id);
+      // Add customer id to user in database
+      firebase.database().ref(`users/${currentUser.uid}/stripe_id`).set(data.id);
+      // Alert user of success, then redirect back to dashboard
       if (this.state.keyboardUp) {
         Keyboard.dismiss();
       }
       alert('Credit card successfully added');
       this.props.navigation.navigate('Dashboard');
-      // firebase.database().ref(`users`)
     }).catch((e) => {
       console.log('ERROR', e);
       alert(e);
@@ -74,7 +77,6 @@ export default class PaymentInfo extends React.Component {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this._isMounted = true;
-    userEmail = firebase.auth().currentUser.email;
   }
 
   componentWillUnmount() {
@@ -102,7 +104,7 @@ export default class PaymentInfo extends React.Component {
         <View>
           <CreditCardInput onChange={this.formOnChange} allowScroll={true} />
           <Button
-            title="Add Credit Card"
+            title={this.state.submitButtonDisabled ? "Enter A Valid Credit Card" : "Add Credit Card"}
             disabled={this.state.submitButtonDisabled}
             onPress={this.submitPaymentInfo}
           />

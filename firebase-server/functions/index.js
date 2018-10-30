@@ -9,7 +9,7 @@ const googleMapsClient = require('@google/maps').createClient({
 });
 app.post('/createCust/', (req, res) => {
   return stripe.customers.create({
-    email: 'YOUR_EMAILtest@test.com', //req.body.email
+    email: req.body.email,
     source: req.body.tokenId
   })
   .then(result => res.status(200).json(result))
