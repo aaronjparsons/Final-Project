@@ -52,10 +52,11 @@ class StatusCard extends React.Component {
   }
 
   currentTimeParked() {
-    firebase.database().ref(`/orders/${this.props.id}`).once('value', (data) => {
+    firebase.database().ref(`/orders/${this.state.currentOrder}`).once('value', (data) => {
       const start = data.val().start;
-      const now = Date().now;
-      const time = (now - start) / 60000;
+      const now = Date.now();
+      const time = Math.round((now - start) / 60000);
+      console.log('currentTimeParked()', time, this.state.currentTime);
       this.setState({
         currentTime: time
       });
@@ -66,7 +67,7 @@ class StatusCard extends React.Component {
     return (
       <View style={styles.popup}>
         <Text style={styles.popupPrice}>Current Parking Session</Text>
-        <Text>{this.state.currentTimeParked} Minutes Currently</Text>
+        <Text> Minutes Currently</Text>
         {this.props.info.info.map((desc, index) => {
           return (
             <Text key={index} style={styles.info}>

@@ -30,14 +30,15 @@ class Map extends Component {
         is_rented: null,
         id: null,
         price: null,
-        owner: null
+        owner: null,
+        image: null
       },
       spotRented: null,
       currentOrder: null,
       rentedSpotInfo: {
         price: null,
         info: [],
-      }
+      },
     };
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
@@ -62,7 +63,8 @@ class Map extends Component {
         is_rented: data.is_rented,
         id: data.id,
         address: data.title,
-        owner: data.owner
+        owner: data.owner,
+        image: data.image
       }
     },
     function() {
@@ -170,14 +172,22 @@ class Map extends Component {
       })
       firebase.database().ref("/spots/").on("value", (data) => {
         let spots = [];
-        data.forEach(function(childSnapshot) {
-          let item = childSnapshot.val();
-          item.id = childSnapshot.key;
-          spots.push(item);
+        data.forEach((childSnapshot) => {
+          storageRef = firebase.storage().ref()
+          var starsRef = storageRef.child(`lot_images/${childSnapshot.val().owner}/${childSnapshot.key}/lot.jpg`);
+          
+          starsRef.getDownloadURL().then((url) =>{
+            console.log("URL : " , url)
+            let item = childSnapshot.val();
+            item.id = childSnapshot.key;
+            item.image = url;
+            spots.push(item);
+            this.setState({
+              markers: spots
+            });
+          });
         });
-        this.setState({
-          markers: spots
-        });
+        
       });
     }
   }
@@ -267,7 +277,7 @@ class Map extends Component {
               <StatusCard 
                 info={this.state.rentedSpotInfo}
                 id={this.state.currentOrder} 
-                checkout={this.checkout} 
+                checkout={this.checkout}
               />
             </PopupDialog>
           </View>
