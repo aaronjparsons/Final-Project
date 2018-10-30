@@ -4,7 +4,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Text
+  Text,
+  returnKeyType
 } from "react-native";
 import firebase from "../Firebase";
 
