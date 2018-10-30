@@ -192,7 +192,7 @@ export default class AddASpot extends React.Component {
                   details.geometry.location
                 );
 
-                this.getLocatation(
+                this.getLocation(
                   details.formatted_address,
                   details.geometry.location
                 );
