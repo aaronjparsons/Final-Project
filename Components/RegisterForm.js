@@ -109,7 +109,7 @@ export default class Register extends React.Component {
         <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="Phone number"
         onChangeText = {(phone_number)=> {this.setState({phone_number})}}/>
         <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="License Plate #"
-        onChangeText = {(phone_number)=> {this.setState({license_plate})}}/>
+        onChangeText = {(license_plate)=> {this.setState({license_plate})}}/>
         <Picker
           selectedValue={this.state.car_size}
           style={styles.picker}

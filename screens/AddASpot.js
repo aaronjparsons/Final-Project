@@ -48,11 +48,10 @@ export default class AddASpot extends React.Component {
       picture_url: this.state.image,
       description: this.state.description,
       price: this.state.price,
-      user: "test@gmail.com",
+      user: firebase.auth().currentUser.email,
       is_rented: false,
      
     };
-    console.log("THE SPOT IS ", spot)
     return spot;
   }
 
@@ -66,24 +65,26 @@ export default class AddASpot extends React.Component {
 }
 
   addSpot(spot) {
-
-    async function uploadImageAsync(uri) {
+    self = this;
+    async function uploadImageAsync(uri,spot_id) {
       const response = await fetch(uri);
       const blob = await response.blob();
       const ref = firebase
         .storage()
         .ref()
-        .child(`lot_images/${firebase.auth().currentUser.uid}/${spot.id}/lot.jpg`);
-      const snapshot = await ref.put(blob);
+        .child(`lot_images/${firebase.auth().currentUser.uid}/${spot_id}/lot.jpg`);
+      const snapshot = await ref.put(blob).then(()=>{
+        self.props.navigation.navigate("MySpots");
+      });
 
     }
     if (this._isMounted) {
       firebase.database().ref("spots").push(spot)
       .then((data)=>{
         //success callback
-        uploadImageAsync(this.state.image)
+        spot_id = data.path.pieces_[1];
+        uploadImageAsync(this.state.image,spot_id)
         alert("Post Successful!")
-        this.props.navigation.navigate("MySpots");
       }).catch((error)=>{
         //error callback
         console.log('error ' , error)
@@ -124,7 +125,7 @@ export default class AddASpot extends React.Component {
   
   render() {
     return (
-      <View>
+      <ScrollView>
             <ScreenHeader style={{width:Dimensions.get('window').width}}navigation={this.props.navigation} />
      
       <KeyboardAvoidingView style={styles.body} behavior='padding' keyboardVerticalOffset={40}>
@@ -211,10 +212,6 @@ export default class AddASpot extends React.Component {
             />
             </TouchableOpacity> )}
             
-           
-
-
-
             <TextInput
               style={[styles.inputField,{height:60}]}
               multiline = {true}
@@ -238,7 +235,7 @@ export default class AddASpot extends React.Component {
         </ScrollView>
 
         </KeyboardAvoidingView>
-        </View>
+        </ScrollView>
     );
   }
 }
