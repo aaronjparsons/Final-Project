@@ -69,6 +69,7 @@ export default class LoginForm extends Component {
           onSubmitEditing={() => this.passwordInput.focus()}
           keyboardType="email-address"
           autoCapitalize="none"
+          blurOnSubmit={false}
           autoCorrect={false}
           underlineColorAndroid="transparent"
           onChangeText={email => this.setState({ email })}

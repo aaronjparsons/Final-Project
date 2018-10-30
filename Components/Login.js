@@ -1,34 +1,49 @@
 import React from "react";
-import { Text, View, StyleSheet, Image, KeyboardAvoidingView } from "react-native";
-import firebase from 'firebase'
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  KeyboardAvoidingView
+} from "react-native";
+import firebase from "firebase";
 import LoginForm from "./LoginForm";
 // import firebase from '../Firebase.js'
 
 export default class Login extends React.Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       isAuthenticated: false,
-      user : {}
-    }
+      user: {}
+    };
     this.login = this.login.bind(this);
   }
-  
-  login()
-  {
-    this.props.navigation.navigate("Home")
+
+  login() {
+    this.props.navigation.navigate("Home");
   }
-  
+
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container} keyboardVerticalOffset={250}>
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={styles.container}
+        keyboardVerticalOffset={250}
+      >
         <View style={styles.logoContainer}>
-          <Image style={styles.logo} source={require("../assets/peter.jpg")} />
-          <Text style={styles.title}>Park Yo Shit</Text>
+          <Image
+            style={styles.logo}
+            source={require("../assets/parkpark.jpg")}
+          />
+          <Text style={styles.title}>Park Park</Text>
         </View>
-        <View style={styles.formContainer} />
-        <LoginForm login={this.login} authenticate ={this.props.authenticate} />
+        <View style={styles.formContainer}>
+          <LoginForm
+            login={this.login}
+            authenticate={this.props.authenticate}
+          />
+        </View>
       </KeyboardAvoidingView>
     );
   }
@@ -45,12 +60,15 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   logo: {
-    height: 200,
-    width: 200,
-    borderRadius: 75
+    height: 300,
+    width: 300,
+    borderRadius: 65
   },
   title: {
     color: "#fff",
     marginTop: 10
+  },
+  formContainer: {
+    marginBottom: 25
   }
 });
