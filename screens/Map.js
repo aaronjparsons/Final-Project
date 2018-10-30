@@ -128,27 +128,29 @@ class Map extends Component {
     // console.log('did mount', this._isMounted);
     if (this._isMounted) {
       firebase.auth().onAuthStateChanged(user => {
-        firebase.database().ref(`/users/${user.uid}`).on('value', (data) => {
-          let renting = data.val().currently_renting;
-          let order = data.val().current_order;
-          this.setState({
-            spotRented: renting,
-            currentOrder: order,
-          });
-          if (renting) {
-            firebase.database().ref(`/spots/${renting}`).once('value', (spot) => {
-              console.log(spot);
-              let price = spot.val().price;
-              let info = [spot.val().title, spot.val().description];
-              this.setState({
-                rentedSpotInfo: {
-                  price: price,
-                  info: info,
-                }
-              })
+        if (user) {
+          firebase.database().ref(`/users/${user.uid}`).on('value', (data) => {
+            let renting = data.val().currently_renting;
+            let order = data.val().current_order;
+            this.setState({
+              spotRented: renting,
+              currentOrder: order,
             });
-          }
-        });
+            if (renting) {
+              firebase.database().ref(`/spots/${renting}`).once('value', (spot) => {
+                console.log(spot);
+                let price = spot.val().price;
+                let info = [spot.val().title, spot.val().description];
+                this.setState({
+                  rentedSpotInfo: {
+                    price: price,
+                    info: info,
+                  }
+                })
+              });
+            }
+          });
+        }
       })
       firebase.database().ref("/spots/").on("value", (data) => {
         let spots = [];
