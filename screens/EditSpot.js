@@ -106,23 +106,22 @@ export default class EditSpot extends React.Component {
                 draggable
               />
             </MapView>
-            <TextInput
+            <TextInput  
+              returnKeyType = { "next" } onSubmitEditing={() => { this.description.focus(); }} blurOnSubmit={false}
               style={styles.inputField}
               onChangeText={text => this.setState({ address: text })}
               placeholder={"Address"}
             />
             <TextInput
-              style={styles.inputField}
-              onChangeText={text => this.setState({ picture_url: text })}
-              placeholder={"Picture URL"}
-            />
-            <TextInput
+              returnKeyType = { "next" } onSubmitEditing={() => { this.price.focus(); }} blurOnSubmit={false}
+              ref={(input) => { this.description = input; }}
               style={styles.inputField}
               onChangeText={text => this.setState({ description: text })}
               placeholder={"Description"}
             />
             <TextInput
               style={styles.inputField}
+              ref={(input) => { this.price = input; }}
               onChangeText={text => this.setState({ price: text })}
               placeholder={"Price"}
             />

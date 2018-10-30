@@ -76,7 +76,7 @@ export default class MySpots extends React.Component {
             </CardItem>
             <Button
                   // style={styles.button}
-                  onPress={() => self.props.navigation.navigate('AddASpot')}
+                  onPress={() => self.props.navigation.navigate('EditSpot')}
                   title="Edit Spot"
                   color="blue"
                   accessibilityLabel="Edit Parking Spot"

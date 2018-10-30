@@ -128,8 +128,7 @@ export default class AddASpot extends React.Component {
   render() {
     return (
       <ScrollView>
-            <ScreenHeader style={{width:Dimensions.get('window').width}}navigation={this.props.navigation} />
-     
+      <ScreenHeader style={{width:Dimensions.get('window').width}}navigation={this.props.navigation} />
       <KeyboardAvoidingView style={styles.body} behavior='padding' keyboardVerticalOffset={40}>
             <ScrollView style={{width:Dimensions.get('window').width}} contentContainerStyle={{alignItems:'center'}}>
 

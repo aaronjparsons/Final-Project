@@ -60,7 +60,7 @@ export default class LoginForm extends Component {
         <Text style={{ color: "red", textAlign: "center" }}>
           {this.state.Error}
         </Text>
-        <TextInput
+        <TextInput blurOnSubmit={false}
           style={styles.input}
           placeholder="  Email"
           placeholderTextColor="rgba(255,255,255,0.7)"
@@ -72,7 +72,7 @@ export default class LoginForm extends Component {
           underlineColorAndroid="transparent"
           onChangeText={email => this.setState({ email })}
         />
-        <TextInput
+        <TextInput blurOnSubmit={false}
           style={styles.input}
           placeholder="  Password"
           placeholderTextColor="rgba(255,255,255,0.7)"
