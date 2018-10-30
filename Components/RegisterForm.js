@@ -1,5 +1,5 @@
 import React from "react"
-import { TextInput, Text, View, StyleSheet, Dimensions, TouchableOpacity, Picker } from "react-native"
+import { TextInput, Text, View, StyleSheet, Dimensions, TouchableOpacity, Picker,KeyboardAvoidingView } from "react-native"
 import firebase from '../Firebase.js';
 import ScreenHeader from "../Components/ScreenHeader";
 
@@ -95,7 +95,7 @@ export default class Register extends React.Component {
 
   render(){
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={100}>
       
         <TextInput underlineColorAndroid='transparent' style={[styles.debug, {borderColor : this.state.border_color}]} placeholder="First Name"
         onChangeText = {(first_name)=> {this.setState({first_name})}}/>
@@ -123,7 +123,7 @@ export default class Register extends React.Component {
         <TouchableOpacity onPress={this.registerUser}  style={styles.button}>
          <Text>Register</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
