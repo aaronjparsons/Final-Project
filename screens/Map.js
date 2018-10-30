@@ -96,18 +96,22 @@ class Map extends Component {
   }
 
   parkButtonPressed() {
-    let user = firebase.auth().currentUser;
-    if (!user.stripe_id) {
-      alert('Please add a credit card to your account to rent a spot');
-      return;
-    }
-    if (user.currently_renting) {
-      alert('Sorry, you are already renting a spot.');
-    }
-    this.infoPopup.dismiss(() => {
-      setTimeout(() => {
-        this.confirmPopup.show();
-      }, 200);
+    let userId = firebase.auth().currentUser.uid;
+    firebase.database().ref(`/users/${userId}`).once('value', (user) => {
+      console.log(user);
+      if (!user.val().stripe_id) {
+        alert('Please add a credit card to your account to rent a spot');
+        return;
+      }
+      if (user.val().currently_renting) {
+        alert('Sorry, you are already renting a spot.');
+        return;
+      }
+      this.infoPopup.dismiss(() => {
+        setTimeout(() => {
+          this.confirmPopup.show();
+        }, 200);
+      });
     });
   }
 
