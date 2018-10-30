@@ -21,7 +21,7 @@ export const getLocation = (parsedAddress) => {
   })
 }
 
-export const createCust = (tokenId, accessToken) => {
+export const createCust = (tokenId, email, accessToken) => {
   console.log('create customer api called');
   const body = {
     tokenId: tokenId,
