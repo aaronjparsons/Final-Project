@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {GOOGLE_MAPS_API} from 'react-native-dotenv'
 
 const MyApiClient = axios.create({
   baseURL: 'https://park-server.firebaseapp.com',
@@ -6,7 +7,21 @@ const MyApiClient = axios.create({
   headers: {'Content-Type': 'application/json'}
 });
 
-export const createCust = (tokenId, email, accessToken) => {
+const googleApi = axios.create({
+  baseURL:'https://maps.googleapis.com/maps/api/geocode',
+  timeout: 5000,
+  headers: {'Content-Type': 'application/json'}
+});
+
+export const getLocation = (parsedAddress) => {
+  console.log("inside getLocation");
+  return googleApi.get(`/json?address=${parsedAddress}&key=${GOOGLE_MAPS_API }`).then(function(response){
+    console.log(response.data.results[0].formatted_address);
+    console.log(response.data.results[0].geometry.location);
+  })
+}
+
+export const createCust = (tokenId, accessToken) => {
   console.log('create customer api called');
   const body = {
     tokenId: tokenId,

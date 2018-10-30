@@ -164,6 +164,7 @@ class Map extends Component {
     }
   }
 
+
   componentWillUnmount() {
     this._isMounted = false;
     // console.log('unmount', this._isMounted);
