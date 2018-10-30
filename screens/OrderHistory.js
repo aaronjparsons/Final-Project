@@ -19,13 +19,13 @@ export default class OrderHistory extends React.Component {
   }
   
   componentDidMount() {
-    let user_email = firebase.auth().currentUser.email;
+    let uid = firebase.auth().currentUser.uid;
 
     firebase.database().ref('/orders/').on(('value'), (data) => {
       let orders = [];
       data.forEach((order) => {
         // finds data for user
-        if (user_email === order.val().rent_user) {
+        if (uid === order.val().renter) {
           let newOrder = order.val();
           newOrder.key = order.key;
           orders.push(newOrder);
@@ -54,7 +54,7 @@ export default class OrderHistory extends React.Component {
             </Body>
           </CardItem>
           <CardItem footer bordered>
-            <Text>Total: ${this.orderTotal(order.duration, order.price)}</Text>
+            <Text>Total: ${order.totalPayed / 100.00}</Text>
           </CardItem>
         </Card>
       );
