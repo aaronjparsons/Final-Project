@@ -73,7 +73,7 @@ export default class AddASpot extends React.Component {
       const ref = firebase
         .storage()
         .ref()
-        .child(`lot_images/${firebase.auth().currentUser.uid}/lot.jpg`);
+        .child(`lot_images/${firebase.auth().currentUser.uid}/${spot.id}/lot.jpg`);
       const snapshot = await ref.put(blob);
 
     }
