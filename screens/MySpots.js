@@ -42,7 +42,7 @@ export default class MySpots extends React.Component {
   }
 
   componentWillUnmount() { 
-    firebase.database().ref.off();
+    // firebase.database().ref.off();
   }
   
   render() {

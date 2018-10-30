@@ -29,7 +29,8 @@ class Map extends Component {
         info: ["Plug available", "12345 12 Street"],
         is_rented: null,
         id: null,
-        price: null
+        price: null,
+        owner: null
       },
       spotRented: null,
       currentOrder: null,
@@ -60,7 +61,8 @@ class Map extends Component {
         info: [data.title, data.description],
         is_rented: data.is_rented,
         id: data.id,
-        address: data.title
+        address: data.title,
+        owner: data.owner
       }
     },
     function() {
@@ -76,7 +78,9 @@ class Map extends Component {
       .push({
         address: this.state.spotInfo.address,
         spot: this.state.spotInfo.id,
-        start: Date.now()
+        owner: this.state.spotInfo.owner,
+        start: Date.now(),
+        renter: firebase.auth().currentUser.uid
       })
       .then(data => {
         this.setState({currentOrder: data.key}, () => {
@@ -128,27 +132,29 @@ class Map extends Component {
     // console.log('did mount', this._isMounted);
     if (this._isMounted) {
       firebase.auth().onAuthStateChanged(user => {
-        firebase.database().ref(`/users/${user.uid}`).on('value', (data) => {
-          let renting = data.val().currently_renting;
-          let order = data.val().current_order;
-          this.setState({
-            spotRented: renting,
-            currentOrder: order,
-          });
-          if (renting) {
-            firebase.database().ref(`/spots/${renting}`).once('value', (spot) => {
-              console.log(spot);
-              let price = spot.val().price;
-              let info = [spot.val().title, spot.val().description];
-              this.setState({
-                rentedSpotInfo: {
-                  price: price,
-                  info: info,
-                }
-              })
+        if (user) {
+          firebase.database().ref(`/users/${user.uid}`).on('value', (data) => {
+            let renting = data.val().currently_renting;
+            let order = data.val().current_order;
+            this.setState({
+              spotRented: renting,
+              currentOrder: order,
             });
-          }
-        });
+            if (renting) {
+              firebase.database().ref(`/spots/${renting}`).once('value', (spot) => {
+                console.log(spot);
+                let price = spot.val().price;
+                let info = [spot.val().title, spot.val().description];
+                this.setState({
+                  rentedSpotInfo: {
+                    price: price,
+                    info: info,
+                  }
+                })
+              });
+            }
+          });
+        }
       })
       firebase.database().ref("/spots/").on("value", (data) => {
         let spots = [];
