@@ -8,15 +8,6 @@ class InfoCard extends React.Component {
     this.state = {
       image_url: null
     }
-
-    storageRef = firebase.storage().ref()
-    var starsRef = storageRef.child(`lot_images/FTBOiXgL9NUnkKeqF39HSYwHJ0e2/lot.jpg`);
-
-    
-    starsRef.getDownloadURL().then((url) =>{
-      this.setState({image_url:url})
-      console.log("URL : " , this.state.image_url)
-    })
   }
 
   render() {
