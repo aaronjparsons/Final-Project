@@ -22,6 +22,7 @@ class StatusCard extends React.Component {
       if (total < 50) {
         total = 50; // Minimum 50 cent charge
       }
+      firebase.database().ref(`/orders/${this.props.id}/totalPayed`).set(total);
       this.checkout(order, total)
     });
   }
