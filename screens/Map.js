@@ -99,13 +99,13 @@ class Map extends Component {
 
   parkButtonPressed() {
     let user = firebase.auth().currentUser;
-    if (!user.stripe_id) {
+    /* if (!user.stripe_id) {
       alert('Please add a credit card to your account to rent a spot');
       return;
     }
     if (user.currently_renting) {
       alert('Sorry, you are already renting a spot.');
-    }
+    } */
     this.infoPopup.dismiss(() => {
       setTimeout(() => {
         this.confirmPopup.show();
