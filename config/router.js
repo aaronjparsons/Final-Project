@@ -72,19 +72,19 @@ export const RootStack = createStackNavigator(
 
 const CustomDrawerContentComponent = props => (
   <Container>
-    <Header style={{ height: 200 }}>
-      <Body>
+    <Header style={styles.drawerStyle}>
+      <Body style={styles.drawerStyle}>
         <Image
           style={styles.drawerImage}
           source={require("../assets/horse.png")}
         />
-        <Text style={{ color: "white", alignSelf: "center" }}>
-          Welcome! {props.screenProps.userObject.first_name}
+        <Text style={styles.welcome}>
+          Welcome {props.screenProps.userObject.first_name}.
         </Text>
       </Body>
     </Header>
-    <Content>
-      <DrawerItems
+    <Content style={styles.content}>
+      <DrawerItems activeBackgroundColor='#212121' inactiveTintColor='rgba(0, 0, 0, .87)' labelStyle={styles.drawerItems}
         {...props}
         onItemPress={(route, focused) => {
           props.onItemPress({ route, focused });
@@ -106,16 +106,16 @@ const CustomDrawerContentComponent = props => (
 
 const CustomDrawerContentComponentLoggedOut = props => (
   <Container>
-    <Header style={{ height: 200 }}>
-      <Body>
+    <Header style={styles.drawerStyle}>
+      <Body style={styles.drawerStyle}>
         <Image
           style={styles.drawerImage}
           source={require("../assets/horse.png")}
         />
       </Body>
     </Header>
-    <Content>
-      <DrawerItems {...props} />
+    <Content style={styles.content}>
+      <DrawerItems activeBackgroundColor='#212121' inactiveTintColor='rgba(0, 0, 0, .87)' labelStyle={styles.drawerItems} {...props} />
     </Content>
   </Container>
 );
@@ -170,35 +170,58 @@ export const LoggedOutApp = createDrawerNavigator(
   }
 );
 
-export const SignedIn = createDrawerNavigator(
-  {
-    Home: {
-      screen: RootStack
-    },
-    Dashboard: {
-      screen: Dashboard
-    },
-    Signout: {
-      screen: Login
-    },
-    Help: {
-      screen: Help
-    }
-  },
-  {
-    InitalRouteName: "Home",
-    contentComponent: CustomDrawerContentComponent,
-    drawerOpenRoute: "DrawerOpen",
-    drawerCloseRoute: "DrawerClose",
-    drawerToggleRoute: "DrawerToggle"
-  }
-);
+// export const SignedIn = createDrawerNavigator(
+//   {
+//     Home: {
+//       screen: RootStack
+//     },
+//     Dashboard: {
+//       screen: Dashboard
+//     },
+//     Signout: {
+//       screen: Login
+//     },
+//     Help: {
+//       screen: Help
+//     }
+//   },
+//   {
+//     InitalRouteName: "Home",
+//     contentComponent: CustomDrawerContentComponent,
+//     drawerOpenRoute: "DrawerOpen",
+//     drawerCloseRoute: "DrawerClose",
+//     drawerToggleRoute: "DrawerToggle"
+//   }
+// );
 
 const styles = StyleSheet.create({
   drawerImage: {
     height: 150,
     width: 150,
     //borderRadius: 75,
-    marginLeft: 50
+    marginLeft: 50,
+    marginTop: 24,
+    backgroundColor: '#3c3c3c'
+  },
+  drawerStyle: {
+    height: 200,
+    backgroundColor: '#3c3c3c'
+  },
+  content: {
+    backgroundColor: '#3c3c3c',
+    // color: 'white',
+    // fontWeight: '100'
+  },
+  drawerItems: {
+    color: '#F5F5F5',
+    fontWeight: '100',
+    fontFamily: 'sans-serif-thin'
+  },
+  welcome: { 
+    alignSelf: "center",
+    marginTop: 5,
+    color: '#F5F5F5',
+    fontWeight: '100',
+    fontFamily: 'sans-serif-thin'
   }
 });

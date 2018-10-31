@@ -106,20 +106,22 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    backgroundColor: "rgba(255,255,255,0.7)",
+    backgroundColor: "#8a8a8a",
     marginTop: 10,
     borderRadius: 45,
     paddingLeft: 10,
-    paddingVertical: 10
+    paddingVertical: 10,
+    fontFamily: "sans-serif-thin"
   },
   buttonContainer: {
     marginTop: 10,
     borderRadius: 45,
-    backgroundColor: "#2980b9",
+    backgroundColor: "#2f2f2f",
     paddingVertical: 15
   },
   buttonText: {
     textAlign: "center",
-    color: "#FFFFFF"
+    color: "#FFFFFF",
+    fontFamily: "sans-serif-thin"
   }
 });
