@@ -2,6 +2,9 @@ import React from "react";
 import { View, StyleSheet, Text, Button, Image } from "react-native";
 import firebase from "../Firebase.js";
 
+const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/parker-7a5ba.appspot.com/o/lot_images%2F';
+const endUrl = '%2Flot.jpg?alt=media';
+
 class InfoCard extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +17,7 @@ class InfoCard extends React.Component {
     return (
       <View style={styles.popup}>
         <Text style={styles.popupPrice}>{`$${this.props.info.price}/hour`}</Text>
-        <Image style={styles.image}></Image>
+        <Image style={styles.image} source={{uri: `${baseUrl}${this.props.info.owner}%2F${this.props.info.id}${endUrl}`}}></Image>
         {this.props.info.info.map((desc, index) => {
           return (
             <Text key={index} style={styles.info}>

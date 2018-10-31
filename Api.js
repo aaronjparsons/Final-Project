@@ -3,13 +3,13 @@ import {GOOGLE_MAPS_API} from 'react-native-dotenv'
 
 const MyApiClient = axios.create({
   baseURL: 'https://park-server.firebaseapp.com',
-  timeout: 10000,
+  timeout: 15000,
   headers: {'Content-Type': 'application/json'}
 });
 
 const googleApi = axios.create({
   baseURL:'https://maps.googleapis.com/maps/api/geocode',
-  timeout: 5000,
+  timeout: 15000,
   headers: {'Content-Type': 'application/json'}
 });
 
