@@ -87,6 +87,7 @@ export default class AddASpot extends React.Component {
         .ref()
         .child(`lot_images/${spot.owner}/${spot_id}/lot.jpg`);
       const snapshot = await ref.put(blob).then(() => {
+        
         self.props.navigation.navigate("MySpots");
       });
     }
@@ -138,18 +139,20 @@ export default class AddASpot extends React.Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps='always'>
         <ScreenHeader
           style={{ width: Dimensions.get("window").width }}
           navigation={this.props.navigation}
         />
 
         <KeyboardAvoidingView
+        
           style={styles.body}
           behavior="padding"
           keyboardVerticalOffset={40}
         >
           <ScrollView
+            keyboardShouldPersistTaps='always'
             style={{ width: Dimensions.get("window").width }}
             contentContainerStyle={{ alignItems: "center" }}
           >
@@ -189,16 +192,12 @@ export default class AddASpot extends React.Component {
               renderDescription={row => row.description} // custom description render
               onPress={(data, details = null) => {
                 // 'details' is provided when fetchDetails = true
-
+               
                 this.getLocation(
                   details.formatted_address,
                   details.geometry.location
                 );
 
-                this.getLocation(
-                  details.formatted_address,
-                  details.geometry.location
-                );
               }}
               getDefaultValue={() => ""}
               query={{
