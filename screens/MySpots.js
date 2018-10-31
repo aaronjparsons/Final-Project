@@ -103,10 +103,9 @@ export default class MySpots extends React.Component {
 
 const styles = StyleSheet.create({
   picture: {
-    flex: 1,
     flexDirection: 'column',
-    width: 100,
-    height: 100,
+    width: 128,
+    height: 128,
     justifyContent: 'flex-end'
   }
 });
