@@ -6,14 +6,15 @@ import {
   Card,
   CardItem,
   Text,
-  Body
+  Body,
 } from "native-base";
 import {
   Image,
   StyleSheet,
   Button,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions
 } from "react-native";
 import ScreenHeader from "../Components/ScreenHeader";
 
@@ -67,6 +68,7 @@ export default class MySpots extends React.Component {
     self = this;
     let id = 0;
     let mySpots = this.state.spots.map(spot => {
+      
       if (spot.picture_url) {
         var lotImageRef = storageRef.child(
           `lot_images/${firebase.auth().currentUser.uid}/${spot.key}/lot.jpg`
@@ -80,9 +82,14 @@ export default class MySpots extends React.Component {
         id++;
         cardToPush = (
           <Card key={spot.key}>
-            <CardItem header bordered>
+            <CardItem header bordered containerStyle={{flexDirection:"row"}}>
               <Text>Spot: {id}</Text>
-            </CardItem>
+              {(spot.is_rented) 
+              ?
+              <Image source={require("../assets/red_light.png")} style={{width:32,height:32,marginLeft:Dimensions.get('window').width * 0.65}}/>
+              :
+              <Image source={require("../assets/green_light.png")} style={{width:32,height:32,marginLeft:Dimensions.get('window').width * 0.65}}/>}
+              </CardItem>
             <CardItem bordered>
               {self.test_image_url ? (
                 <Image
@@ -111,15 +118,27 @@ export default class MySpots extends React.Component {
                 /hr
               </Text>
             </CardItem>
+            {(spot.is_rented) 
+            ?
             <Button
                   // style={styles.button}
+                  disabled={true}
+                  title="Edit Spot"
+                  color="gray"
+                  accessibilityLabel="Edit Parking Spot"
+                />
+            :
+            <Button
+                  // style={styles.button}
+                
                   onPress={() => self.props.navigation.navigate('EditSpot', { spot, onNavigateBack: this.receivedUpdate })}
                   title="Edit Spot"
                   color="blue"
                   accessibilityLabel="Edit Parking Spot"
-                />
+                />}
           </Card>)
           if(self.counter <= self.state.spots.length ) {
+            self.is_rented = false;
             self.setState(prevState=>({
               renderedSpots : [...prevState.renderedSpots, cardToPush]
             }))
