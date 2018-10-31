@@ -31,7 +31,6 @@ class Map extends Component {
         id: null,
         price: null,
         owner: null,
-        image: null
       },
       spotRented: null,
       currentOrder: null,
@@ -64,7 +63,6 @@ class Map extends Component {
         id: data.id,
         address: data.title,
         owner: data.owner,
-        image: data.image
       }
     },
       function() {
@@ -201,19 +199,6 @@ class Map extends Component {
       firebase.database().ref("/spots/").on("value", (data) => {
         let spots = [];
         data.forEach((childSnapshot) => {
-          // storageRef = firebase.storage().ref()
-          // var starsRef = storageRef.child(`lot_images/${childSnapshot.val().owner}/${childSnapshot.key}/lot.jpg`);
-          
-          // starsRef.getDownloadURL().then((url) =>{
-          //   console.log("URL : " , url)
-          //   let item = childSnapshot.val();
-          //   item.id = childSnapshot.key;
-          //   item.image = url;
-          //   spots.push(item);
-          //   this.setState({
-          //     markers: spots
-          //   });
-          // });
           let item = childSnapshot.val();
             item.id = childSnapshot.key;
             spots.push(item);

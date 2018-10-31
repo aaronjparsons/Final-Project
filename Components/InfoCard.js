@@ -14,7 +14,7 @@ class InfoCard extends React.Component {
     return (
       <View style={styles.popup}>
         <Text style={styles.popupPrice}>{`$${this.props.info.price}/hour`}</Text>
-        <Image style={styles.image} source={{uri: this.props.info.image}}></Image>
+        <Image style={styles.image}></Image>
         {this.props.info.info.map((desc, index) => {
           return (
             <Text key={index} style={styles.info}>
