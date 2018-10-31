@@ -250,31 +250,33 @@ export default class AddASpot extends React.Component {
                 />
               </TouchableOpacity>
             )}
-
-            <TextInput
-              style={[styles.inputField, { height: 60 }]}
-              returnKeyType="next"
-              onChangeText={text => this.setState({ description: text })}
-              placeholder={"Description"}
-              underlineColorAndroid="transparent"
-            />
-            <TextInput
-              keyboardType="numeric"
-              style={styles.inputField}
-              onChangeText={text => this.setState({ price: text })}
-              placeholder={"Price"}
-              underlineColorAndroid="transparent"
-            />
-            <Button
-              style={styles.button}
-              onPress={() => {
-                this.addSpot(this.getSpot());
-              }}
-              title="Save Changes"
-              // color="blue"
-              accessibilityLabel="Add a parking spot"
-            />
           </ScrollView>
+          <TextInput
+            style={[styles.inputField, { height: 60 }]}
+            returnKeyType="next"
+            onChangeText={text => this.setState({ description: text })}
+            placeholder={"Description"}
+            underlineColorAndroid="transparent"
+            onSubmitEditing={() => this.price.focus()}
+            blurOnSubmit={false}
+          />
+          <TextInput
+            keyboardType="numeric"
+            style={styles.inputField}
+            onChangeText={text => this.setState({ price: text })}
+            placeholder={"Price"}
+            underlineColorAndroid="transparent"
+            ref={input => (this.price = input)}
+          />
+          <Button
+            style={styles.button}
+            onPress={() => {
+              this.addSpot(this.getSpot());
+            }}
+            title="Save Changes"
+            // color="blue"
+            accessibilityLabel="Add a parking spot"
+          />
         </KeyboardAvoidingView>
       </ScrollView>
     );

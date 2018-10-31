@@ -10,7 +10,7 @@ export default class HeaderNavigation extends Component {
           onPress={() => this.props.navigation.navigate("Home")}
           style={styles.title}
         >
-          Peter Parker
+          Stable
         </Text>
         <Button
           style={styles.button}

@@ -36,7 +36,7 @@ export default class Login extends React.Component {
             style={styles.logo}
             source={require("../assets/parkpark.jpg")}
           />
-          <Text style={styles.title}>Park Park</Text>
+          <Text style={styles.title}>Stable</Text>
         </View>
         <View style={styles.formContainer}>
           <LoginForm

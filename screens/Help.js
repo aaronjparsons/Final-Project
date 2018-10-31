@@ -37,7 +37,7 @@ export default class Help extends React.Component {
               onPress={() => this.props.navigation.navigate("Home")}
               style={styles.parker}
             >
-              Peter Parker
+              Stable
             </Text>
             <Button
               style={styles.button}
@@ -62,9 +62,7 @@ export default class Help extends React.Component {
             <Card>
               <CardItem>
                 <Body>
-                  <Text>
-                    Q: I'm experinceing technical issues with Peter Parker?
-                  </Text>
+                  <Text>Q: I'm experinceing technical issues with Stable?</Text>
                   <Text onPress={this.handleEmail}>
                     A: Please email our support team.
                   </Text>
@@ -77,12 +75,12 @@ export default class Help extends React.Component {
             <Card>
               <CardItem>
                 <Body>
-                  <Text>Q: Is Peter Parker only available in Calgary?</Text>
+                  <Text>Q: Is Stable only available in Calgary?</Text>
                   <Text>
-                    A: Peter Parker can be used across North America but most
-                    support is currently located in Calgary. As of December 2018
-                    Peter Parker has plans to expand its support to
-                    Saskatchewan, Edmonton and Vancouver.
+                    A: Stable can be used across North America but most support
+                    is currently located in Calgary. As of December 2018 Stable
+                    has plans to expand its support to Saskatchewan, Edmonton
+                    and Vancouver.
                   </Text>
                 </Body>
               </CardItem>
@@ -90,10 +88,10 @@ export default class Help extends React.Component {
             <Card>
               <CardItem>
                 <Body>
-                  <Text>Q: Is there a desktop version of Peter Parker?</Text>
+                  <Text>Q: Is there a desktop version of Stable?</Text>
                   <Text>
-                    A: No, at the moment Peter Parker is only availble through
-                    the app on Apple or Android devices.
+                    A: No, at the moment Stable is only availble through the app
+                    on Apple or Android devices.
                   </Text>
                 </Body>
               </CardItem>
@@ -101,13 +99,13 @@ export default class Help extends React.Component {
             <Card>
               <CardItem>
                 <Body>
-                  <Text>Q: How do I park with Peter Parker?</Text>
+                  <Text>Q: How do I park with Stable?</Text>
                   <Text>
-                    A: Peter Parker is a real time App so treat it just like a
-                    normal meter spot. We currently cannot reserve spots, using
-                    the map view locate a sport with a green pin, make sure the
-                    spot can fit your car and press confirm to start your
-                    parking session.
+                    A: Stable is a real time App so treat it just like a normal
+                    meter spot. We currently cannot reserve spots, using the map
+                    view locate a sport with a green pin, make sure the spot can
+                    fit your car and press confirm to start your parking
+                    session.
                   </Text>
                 </Body>
               </CardItem>
@@ -117,7 +115,7 @@ export default class Help extends React.Component {
                 <Body>
                   <Text>Q: Why are there no spots where I want to park?</Text>
                   <Text>
-                    A: Peter Parker relies on people in the community to provide
+                    A: Stable relies on people in the community to provide
                     access to there private parking spots. So please tell your
                     friends and community members about our App.
                   </Text>
