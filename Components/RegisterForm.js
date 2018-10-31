@@ -96,8 +96,9 @@ export default class Register extends React.Component {
 
   render(){
     return (
-      <KeyboardAvoidingView style={styles.container} behavior={"padding"} keyboardVerticalOffset={40}>
-      <ScrollView style={{marginTop:50}}>
+      <KeyboardAvoidingView style={styles.container} behavior={"padding"}>
+        <ScreenHeader navigation={this.props.navigation} />
+      <ScrollView style={{marginTop:20}}>
         <TextInput  returnKeyType = { "next" } onSubmitEditing={() => { this.last_name.focus(); }} blurOnSubmit={false}
         underlineColorAndroid='transparent' style={[styles.debug, {borderColor : this.state.border_color}]} placeholder="First Name"
         onChangeText = {(first_name)=> {this.setState({first_name})}}/>
