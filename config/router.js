@@ -28,7 +28,7 @@ import Help from "../screens/Help.js";
 import Login from "../Components/Login.js";
 import Register from "../Components/RegisterForm";
 import EditSpot from "../screens/EditSpot";
-
+import ForgotPassword from "../Components/ForgotPassword";
 // database connection
 import firebase from "firebase";
 import startFirebase from "./startFirebase";
@@ -59,6 +59,9 @@ export const RootStack = createStackNavigator(
     },
     EditSpot: {
       screen: EditSpot
+    },
+    ForgotPassword: {
+      screen: ForgotPassword
     }
   },
   {

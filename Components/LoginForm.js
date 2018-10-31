@@ -76,7 +76,7 @@ export default class LoginForm extends Component {
           underlineColorAndroid="transparent"
           onChangeText={email => this.setState({ email })}
         />
-        <TextInput blurOnSubmit={false}
+        <TextInput blurOnSubmit={true}
           style={styles.input}
           placeholder="  Password"
           placeholderTextColor="rgba(255,255,255,0.7)"
