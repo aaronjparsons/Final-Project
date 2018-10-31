@@ -28,8 +28,7 @@ export default class EditProfile extends React.Component {
 
   updateUser(newUser) {
     let user = firebase.auth().currentUser;
-    let credential;
-
+  
     firebase.database().ref('users/' + user.uid).set({
       first_name: newUser.first_name,
       last_name: newUser.last_name,
@@ -45,11 +44,7 @@ export default class EditProfile extends React.Component {
           console.log('email updated successfully')
         }).catch(() => {
           console.log('update email failed')
-          user.reauthenticateAndRetrieveDataWithCredential(credential).then(function() {
-            // User re-authenticated.
-          }).catch(function(error) {
-            // An error happened.
-          });
+          
         })
       }
       this.props.navigation.navigate('Dashboard');

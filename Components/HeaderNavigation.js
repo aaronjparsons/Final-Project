@@ -10,7 +10,7 @@ export default class HeaderNavigation extends Component {
           onPress={() => this.props.navigation.navigate("Home")}
           style={styles.title}
         >
-          Stable
+          STABLE
         </Text>
         <Button
           style={styles.button}
@@ -27,20 +27,26 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   header: {
-    height: 75
+    height: 75,
+    backgroundColor: '#3c3c3c'
   },
   button: {
     position: "absolute",
     left: 0,
     marginTop: 20,
     paddingBottom: 20,
-    paddingTop: 0
+    paddingTop: 0,
+    backgroundColor: '#3c3c3c',
+    width: 80,
   },
   title: {
     color: "white",
-    fontSize: 30,
-    fontStyle: "italic",
-    marginTop: 20
+    fontSize: 25,
+    fontFamily: 'sans-serif-thin',
+    // fontStyle: "italic",
+    marginTop: 20,
+    fontWeight: '100',
+    letterSpacing: 1
   },
   icon: {
     marginTop: 20
