@@ -13,6 +13,9 @@ import ConfirmCard from "../Components/ConfirmCard";
 import StatusCard from "../Components/StatusCard";
 import CurrentRental from "../Components/CurrentRental";
 import HeaderNavigation from "../Components/HeaderNavigation.js";
+import { MapAutoComplete } from "react-native-google-places-autocomplete/MapAutoComplete";
+import { GOOGLE_MAPS_API } from "react-native-dotenv";
+
 import { Container } from "native-base";
 
 import firebase from "../Firebase.js";
@@ -33,6 +36,7 @@ class Map extends Component {
         owner: null,
       },
       spotRented: null,
+      location: { lat: 51.0478, lng: -114.0593 },
       currentOrder: null,
       rentedSpotInfo: {
         price: null,
@@ -45,10 +49,14 @@ class Map extends Component {
     this.statusPressed = this.statusPressed.bind(this);
     this.writeOrderData = this.writeOrderData.bind(this);
     this.checkout = this.checkout.bind(this);
+    this.getLocation = this.getLocation.bind(this);
   }
 
   _isMounted = false;
 
+  getLocation(locationObject) {
+    this.setState({location: locationObject });
+  }
   _onMapReady = () => {
     console.log("map ready");
   };
@@ -227,8 +235,61 @@ class Map extends Component {
       <Container>
         <HeaderNavigation navigation={this.props.navigation} />
         <View style={{ width: "100%", height: "100%", alignItems: "center" }}>
+        <MapAutoComplete
+              placeholder="Search"
+              minLength={2} // minimum length of text to search
+              autoFocus={false}
+              returnKeyType={"done"} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+              listViewDisplayed="true" // true/false/undefined
+              fetchDetails={true}
+              renderDescription={row => row.description} // custom description render
+              onPress={(data, details = null) => {
+                // 'details' is provided when fetchDetails = true
+
+                this.getLocation(
+                  details.geometry.location
+                );
+
+              }}
+              getDefaultValue={() => ""}
+              query={{
+                // available options: https://developers.google.com/places/web-service/autocomplete
+                key: GOOGLE_MAPS_API,
+                establishment: "establishment",
+                street_number: "short_name",
+                route: "long_name",
+                locality: "long_name",
+                administrative_area_level_1: "short_name",
+                country: "long_name",
+                postal_code: "short_name"
+              }}
+              currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+              currentLocationLabel="Current location"
+              nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+              GoogleReverseGeocodingQuery={
+                {
+                  // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+                }
+              }
+              GooglePlacesSearchQuery={{
+                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                rankby: "distance",
+                types: "food"
+              }}
+              filterReverseGeocodingByTypes={[
+                "locality",
+                "administrative_area_level_3"
+              ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+              debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+            />
           <MapView
             style={styles.map}
+            region={{
+              latitude: this.state.location.lat,
+              longitude: this.state.location.lng,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1
+            }}
             initialRegion={{
               latitude: 51.0478,
               longitude: -114.0593,
