@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, Button } from "react-native";
+import { View, StyleSheet, Text, Button, ActivityIndicator } from "react-native";
 import Map from "../screens/Map.js";
 import firebase from "../Firebase.js";
 import { doPayment } from "../Api.js";
@@ -91,11 +91,7 @@ class StatusCard extends React.Component {
           }}
         />
         :
-        <Button
-          title="PROCESSING PAYMENT..."
-          disabled={true}
-          onPress={() => {}}
-        />
+        <ActivityIndicator size="large" color="#0000ff" />
         }
       </View>
     );
