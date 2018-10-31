@@ -111,8 +111,10 @@ export default class MySpots extends React.Component {
                 /hr
               </Text>
             </CardItem>
+            
             <Button
                   // style={styles.button}
+                  disabled={spot.is_rented}
                   onPress={() => self.props.navigation.navigate('EditSpot', { spot, onNavigateBack: this.receivedUpdate })}
                   title="Edit Spot"
                   color="blue"
