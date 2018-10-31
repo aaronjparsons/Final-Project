@@ -8,6 +8,7 @@ import {
   Text,
   Body
 } from "native-base";
+import { StyleSheet } from "react-native";
 import ScreenHeader from "../Components/ScreenHeader";
 
 import firebase from "../Firebase";
@@ -51,30 +52,53 @@ export default class OrderHistory extends React.Component {
       id++;
       return (
         <Card key={order.key}>
-          <CardItem header bordered>
-            <Text>Order # {id}</Text>
+          <CardItem style={styles.card} header bordered>
+            <Text style={styles.header}>Order # {id}</Text>
           </CardItem>
-          <CardItem bordered>
+          <CardItem style={styles.card} bordered>
             <Body>
-              <Text>
+              <Text style={styles.body}>
                 Address: {order.address}
                 {"\n"}
                 Duration: {order.duration}
               </Text>
             </Body>
           </CardItem>
-          <CardItem footer bordered>
-            <Text>Total: ${order.totalPayed / 100.0}</Text>
+          <CardItem style={styles.card} footer bordered>
+            <Text style={styles.footer}>
+              Total: ${order.totalPayed / 100.0}
+            </Text>
           </CardItem>
         </Card>
       );
     });
 
     return (
-      <Container>
+      <Container style={styles.container}>
         <ScreenHeader navigation={this.props.navigation} />
         <Content padder>{orderHistory}</Content>
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#3c3c3c"
+  },
+  card: {
+    backgroundColor: "#8a8a8a"
+  },
+  header: {
+    color: "#3c3c3c",
+    fontFamily: "sans-serif-thin"
+  },
+  body: {
+    color: "#FFFFFF",
+    fontFamily: "sans-serif-thin"
+  },
+  footer: {
+    color: "#3c3c3c",
+    fontFamily: "sans-serif-thin"
+  }
+});

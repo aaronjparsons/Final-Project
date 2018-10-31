@@ -1,38 +1,47 @@
 import React from "react";
-import { Container, Header, Content, Card, CardItem, Text, Body } from "native-base";
+import {
+  Container,
+  Header,
+  Content,
+  Card,
+  CardItem,
+  Text,
+  Body
+} from "native-base";
 import ScreenHeader from "../Components/ScreenHeader";
-
-import firebase from '../Firebase';
+import { StyleSheet } from "react-native";
+import firebase from "../Firebase";
 
 export default class OrderHistory extends React.Component {
-  
   constructor(props) {
     super(props);
     this.state = {
       orders: []
-    }
+    };
     firebase;
   }
 
   orderTotal(duration, price) {
     return (duration / 60) * price;
   }
-  
+
   componentDidMount() {
     let uid = firebase.auth().currentUser.uid;
 
-    firebase.database().ref('/orders/').on(('value'), (data) => {
-      let orders = [];
-      data.forEach((order) => {
-        if (uid === order.val().owner) {
-          let newOrder = order.val();
-          newOrder.key = order.key;
-          orders.push(newOrder);
-        }
-  
+    firebase
+      .database()
+      .ref("/orders/")
+      .on("value", data => {
+        let orders = [];
+        data.forEach(order => {
+          if (uid === order.val().owner) {
+            let newOrder = order.val();
+            newOrder.key = order.key;
+            orders.push(newOrder);
+          }
+        });
+        this.setState({ orders: orders });
       });
-      this.setState({orders: orders});
-    })
   }
 
   render() {
@@ -41,30 +50,53 @@ export default class OrderHistory extends React.Component {
       id++;
       return (
         <Card key={order.key}>
-          <CardItem header bordered>
-            <Text>Order # {id}</Text>
+          <CardItem style={styles.card} header bordered>
+            <Text style={styles.header}>Order # {id}</Text>
           </CardItem>
-          <CardItem bordered>
+          <CardItem style={styles.card} bordered>
             <Body>
-              <Text>
+              <Text style={styles.body}>
                 Address: {order.address}
                 {"\n"}
                 Duration: {order.duration}
               </Text>
             </Body>
           </CardItem>
-          <CardItem footer bordered>
-            <Text>Price: ${order.totalPayed / 100.00}</Text>
+          <CardItem style={styles.card} footer bordered>
+            <Text style={styles.footer}>
+              Price: ${order.totalPayed / 100.0}
+            </Text>
           </CardItem>
         </Card>
       );
     });
 
     return (
-      <Container>
+      <Container style={styles.container}>
         <ScreenHeader navigation={this.props.navigation} />
         <Content padder>{orderHistory}</Content>
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#3c3c3c"
+  },
+  card: {
+    backgroundColor: "#8a8a8a"
+  },
+  header: {
+    color: "#3c3c3c",
+    fontFamily: "sans-serif-thin"
+  },
+  body: {
+    color: "#FFFFFF",
+    fontFamily: "sans-serif-thin"
+  },
+  footer: {
+    color: "#3c3c3c",
+    fontFamily: "sans-serif-thin"
+  }
+});

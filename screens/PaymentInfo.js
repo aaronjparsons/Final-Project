@@ -1,13 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, StatusBar, Button, Keyboard } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  StatusBar,
+  Button,
+  Keyboard
+} from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import ScreenHeader from "../Components/ScreenHeader";
 import { Container } from "native-base";
 
-import { createCust } from '../Api.js';
-import { STRIPE_PKEY } from 'react-native-dotenv';
-import Stripe from 'react-native-stripe-api';
-import firebase from '../Firebase.js';
+import { createCust } from "../Api.js";
+import { STRIPE_PKEY } from "react-native-dotenv";
+import Stripe from "react-native-stripe-api";
+import firebase from "../Firebase.js";
 
 const client = new Stripe(STRIPE_PKEY);
 
@@ -49,33 +57,46 @@ export default class PaymentInfo extends React.Component {
   submitPaymentInfo() {
     const currentUser = firebase.auth().currentUser;
     // Create a Stripe token with new card info & create a customer
-    const token = client.createToken({
-      number: formData.values.number,
-      exp_month: formData.values.expiry.slice(0,2), 
-      exp_year: formData.values.expiry.slice(3,5), 
-      cvc: formData.values.cvc,
-    }).then((response) => {
-      console.log(response);
-      return createCust(response.id, currentUser.email);
-    }).then((data) => {
-      console.log('CUSTOMER SUCCESSFULLY CREATED', data.id);
-      // Add customer id to user in database
-      firebase.database().ref(`users/${currentUser.uid}/stripe_id`).set(data.id);
-      // Alert user of success, then redirect back to dashboard
-      if (this.state.keyboardUp) {
-        Keyboard.dismiss();
-      }
-      alert('Credit card successfully added');
-      this.props.navigation.navigate('Dashboard');
-    }).catch((e) => {
-      console.log('ERROR', e);
-      alert(e);
-    });
+    const token = client
+      .createToken({
+        number: formData.values.number,
+        exp_month: formData.values.expiry.slice(0, 2),
+        exp_year: formData.values.expiry.slice(3, 5),
+        cvc: formData.values.cvc
+      })
+      .then(response => {
+        console.log(response);
+        return createCust(response.id, currentUser.email);
+      })
+      .then(data => {
+        console.log("CUSTOMER SUCCESSFULLY CREATED", data.id);
+        // Add customer id to user in database
+        firebase
+          .database()
+          .ref(`users/${currentUser.uid}/stripe_id`)
+          .set(data.id);
+        // Alert user of success, then redirect back to dashboard
+        if (this.state.keyboardUp) {
+          Keyboard.dismiss();
+        }
+        alert("Credit card successfully added");
+        this.props.navigation.navigate("Dashboard");
+      })
+      .catch(e => {
+        console.log("ERROR", e);
+        alert(e);
+      });
   }
 
   componentDidMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    this.keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      this._keyboardDidShow
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      this._keyboardDidHide
+    );
     this._isMounted = true;
   }
 
@@ -85,26 +106,30 @@ export default class PaymentInfo extends React.Component {
     this._isMounted = false;
   }
 
-  _keyboardDidShow () {
+  _keyboardDidShow() {
     this.setState({
       keyboardUp: true
-    })
+    });
   }
 
-  _keyboardDidHide () {
+  _keyboardDidHide() {
     this.setState({
       keyboardUp: false
-    })
+    });
   }
 
   render() {
     return (
-      <Container>
+      <Container style={styles.container}>
         <ScreenHeader navigation={this.props.navigation} />
         <View>
           <CreditCardInput onChange={this.formOnChange} allowScroll={true} />
           <Button
-            title={this.state.submitButtonDisabled ? "Enter A Valid Credit Card" : "Add Credit Card"}
+            title={
+              this.state.submitButtonDisabled
+                ? "Enter A Valid Credit Card"
+                : "Add Credit Card"
+            }
             disabled={this.state.submitButtonDisabled}
             onPress={this.submitPaymentInfo}
           />
@@ -113,3 +138,9 @@ export default class PaymentInfo extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#3c3c3c"
+  }
+});

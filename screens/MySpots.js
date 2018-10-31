@@ -13,7 +13,8 @@ import {
   StyleSheet,
   Button,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity
 } from "react-native";
 import ScreenHeader from "../Components/ScreenHeader";
 
@@ -34,10 +35,10 @@ export default class MySpots extends React.Component {
     this.receivedUpdate = this.receivedUpdate.bind(this);
   }
 
-  receivedUpdate = (foo) => {
-    console.log('in the received update');
-    this.setState({foo});
-  }
+  receivedUpdate = foo => {
+    console.log("in the received update");
+    this.setState({ foo });
+  };
 
   componentDidMount() {
     let user_id = firebase.auth().currentUser.uid;
@@ -80,10 +81,10 @@ export default class MySpots extends React.Component {
         id++;
         cardToPush = (
           <Card key={spot.key}>
-            <CardItem header bordered>
-              <Text>Spot: {id}</Text>
+            <CardItem style={styles.card} header bordered>
+              <Text style={styles.header}>Spot: {id}</Text>
             </CardItem>
-            <CardItem bordered>
+            <CardItem style={styles.card} bordered>
               {self.test_image_url ? (
                 <Image
                   style={styles.picture}
@@ -96,43 +97,47 @@ export default class MySpots extends React.Component {
                 />
               )}
             </CardItem>
-            <CardItem bordered>
+            <CardItem style={styles.card} bordered>
               <Body>
-                <Text>
+                <Text style={styles.body}>
                   Address: {spot.title}
                   {"\n"}
                   Description: {spot.description}
                 </Text>
               </Body>
             </CardItem>
-            <CardItem footer bordered>
-              <Text>
+            <CardItem style={styles.card} footer bordered>
+              <Text style={styles.body}>
                 Price: ${spot.price}
                 /hr
               </Text>
             </CardItem>
-            
-            <Button
-                  // style={styles.button}
-                  disabled={spot.is_rented}
-                  onPress={() => self.props.navigation.navigate('EditSpot', { spot, onNavigateBack: this.receivedUpdate })}
-                  title="Edit Spot"
-                  color="blue"
-                  accessibilityLabel="Edit Parking Spot"
-                />
-          </Card>)
-          if(self.counter <= self.state.spots.length ) {
-            self.setState(prevState=>({
-              renderedSpots : [...prevState.renderedSpots, cardToPush]
-            }))
-          }
 
-        
-      })
+            <Button
+              //style={styles.button}
+              disabled={spot.is_rented}
+              onPress={() =>
+                self.props.navigation.navigate("EditSpot", {
+                  spot,
+                  onNavigateBack: this.receivedUpdate
+                })
+              }
+              title="Edit Spot"
+              color="#2f2f2f"
+              accessibilityLabel="Edit Parking Spot"
+            />
+          </Card>
+        );
+        if (self.counter <= self.state.spots.length) {
+          self.setState(prevState => ({
+            renderedSpots: [...prevState.renderedSpots, cardToPush]
+          }));
+        }
+      });
     });
 
     return (
-      <Container>
+      <Container style={styles.container}>
         <ScreenHeader navigation={this.props.navigation} />
         <Content padder>{this.state.renderedSpots}</Content>
       </Container>
@@ -142,9 +147,27 @@ export default class MySpots extends React.Component {
 
 const styles = StyleSheet.create({
   picture: {
-    flexDirection: 'column',
+    flexDirection: "column",
     width: 128,
     height: 128,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end"
+  },
+  container: {
+    backgroundColor: "#3c3c3c"
+  },
+  card: {
+    backgroundColor: "#8a8a8a"
+  },
+  header: {
+    color: "#3c3c3c",
+    fontFamily: "sans-serif-thin"
+  },
+  body: {
+    color: "#FFFFFF",
+    fontFamily: "sans-serif-thin"
+  },
+  button: {
+    backgroundColor: "#2f2f2f",
+    fontFamily: "sans-serif-thin"
   }
 });
