@@ -1,9 +1,8 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { LoggedOutApp, MyApp } from "./config/router.js";
 
 import firebase from 'firebase'
-import startFirebase from './config/startFirebase'
 
 console.ignoredYellowBox = ["Setting a timer"];
 // console.ignoredYellowBox = ["Setting a timer"];
@@ -11,11 +10,11 @@ console.ignoredYellowBox = ["Setting a timer"];
 
 export default class App extends React.Component {
   constructor(props){
-    startFirebase(firebase);
     super(props);
     this.state = {
       currentUser : null,
       userObject: null,
+      loading: true,
         }
     this.authenticate = this.authenticate.bind(this)
     this.logout = this.logout.bind(this)
@@ -26,14 +25,17 @@ export default class App extends React.Component {
 
   authenticate(userObject) {
     if (this._isMounted) {
-      this.setState({currentUser:firebase.auth().currentUser,userObject:userObject})
+      this.setState({currentUser:firebase.auth().currentUser,userObject:userObject, loading: false})
     }  
   }
 
   logout() {
     if (this._isMounted) {
       firebase.auth().signOut().then(()=>{console.log("Signed out")}, ()=>{})
-      this.setState({currentUser:null});
+      this.setState({
+        currentUser:null,
+        loading: false
+      });
     }
   }
 
@@ -59,7 +61,7 @@ export default class App extends React.Component {
       } else {
         // no user logged in. currentUser is null.
         console.log('yeah you definitely logged out')
-        this.setState({currentUser:null});
+        this.setState({currentUser:null, loading: false});
       }
     });
 
@@ -76,11 +78,33 @@ export default class App extends React.Component {
     console.log("Rendering main")
     
     return (
-      <View style={{ width: "100%", height: "100%", marginTop: 24 }}>
-        {firebase.auth().currentUser ? <MyApp screenProps={{logout:this.logout,userObject:this.state.userObject}} /> : <LoggedOutApp screenProps={this.authenticate}/> }    
+      <View>
+        {!this.state.loading ?
+          <View style={{ width: "100%", height: "100%", marginTop: 24 }}>
+            {firebase.auth().currentUser ? <MyApp screenProps={{logout:this.logout,userObject:this.state.userObject}} /> : <LoggedOutApp screenProps={this.authenticate}/> }    
+          </View>
+        :
+        <View style={styles.loadingView}>
+          <View>
+            <Text style={styles.text}>LOADING...</Text>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        </View>
+        }
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  loadingView: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: '30%'
+  },
+  text: {
+    fontSize: 32
+  }
+});
 
 console.disableYellowBox = true;
