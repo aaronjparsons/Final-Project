@@ -4,10 +4,12 @@ import {
   View,
   StyleSheet,
   Image,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  TouchableOpacity
 } from "react-native";
 import firebase from "firebase";
 import LoginForm from "./LoginForm";
+import { Button } from "native-base";
 // import firebase from '../Firebase.js'
 
 export default class Login extends React.Component {
@@ -43,6 +45,12 @@ export default class Login extends React.Component {
             login={this.login}
             authenticate={this.props.authenticate}
           />
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("ForgotPassword")}
+            style={styles.forgotpassword}
+          >
+            <Text>Forgot Password?</Text>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     );
@@ -66,9 +74,14 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#fff",
-    marginTop: 10
+    marginTop: 10,
+    paddingTop: 10
   },
   formContainer: {
-    marginBottom: 25
+    marginBottom: 65
+  },
+  forgotpassword: {
+    marginLeft: 150,
+    paddingBottom: 30
   }
 });
