@@ -49,7 +49,7 @@ export default class Login extends React.Component {
             onPress={() => this.props.navigation.navigate("ForgotPassword")}
             style={styles.forgotpassword}
           >
-            <Text>Forgot Password?</Text>
+            <Text style={styles.buttontext}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -60,7 +60,7 @@ export default class Login extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#3498db"
+    backgroundColor: "#3c3c3c"
   },
   logoContainer: {
     alignItems: "center",
@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     marginTop: 10,
-    paddingTop: 10
+    paddingTop: 10,
+    fontFamily: "sans-serif-thin"
   },
   formContainer: {
     marginBottom: 65
@@ -83,5 +84,8 @@ const styles = StyleSheet.create({
   forgotpassword: {
     marginLeft: 150,
     paddingBottom: 30
+  },
+  buttontext: {
+    fontFamily: "sans-serif-thin"
   }
 });

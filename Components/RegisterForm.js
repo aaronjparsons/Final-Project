@@ -231,9 +231,21 @@ export default class Register extends React.Component {
               this.setState({ car_size: itemValue })
             }
           >
-            <Picker.Item label="Small" value="small" />
-            <Picker.Item label="Medium" value="medium" />
-            <Picker.Item label="Large" value="large" />
+            <Picker.Item
+              style={styles.pickertext}
+              label="Small"
+              value="small"
+            />
+            <Picker.Item
+              style={styles.pickertext}
+              label="Medium"
+              value="medium"
+            />
+            <Picker.Item
+              style={styles.pickertext}
+              label="Large"
+              value="large"
+            />
           </Picker>
           <TextInput
             returnKeyType={"next"}
@@ -267,7 +279,7 @@ export default class Register extends React.Component {
           />
 
           <TouchableOpacity onPress={this.registerUser} style={styles.button}>
-            <Text>Register</Text>
+            <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -281,7 +293,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "gray"
+    borderColor: "gray",
+    backgroundColor: "#3c3c3c"
   },
   debug: {
     width: Dimensions.get("window").width * 0.8,
@@ -291,12 +304,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 30,
     marginBottom: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
+    backgroundColor: "#8a8a8a",
+    fontFamily: "sans-serif-thin"
   },
   button: {
     borderRadius: 30,
-    borderWidth: 1,
-    borderColor: "gray",
+    backgroundColor: "#2f2f2f",
     width: Dimensions.get("window").width * 0.4,
     height: 40,
     alignSelf: "center",
@@ -304,7 +318,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   text: {
-    alignSelf: "center"
+    alignSelf: "center",
+    fontFamily: "sans-serif-thin"
   },
   picker: {
     height: 50,
@@ -312,7 +327,8 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     alignSelf: "center",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    fontFamily: "sans-serif-thin"
   },
   title: {
     fontWeight: "bold",
@@ -320,20 +336,23 @@ const styles = StyleSheet.create({
     padding: 4
   },
   header: {
-    height: 75
+    height: 75,
+    backgroundColor: "#2f2f2f"
   },
   headerbutton: {
     position: "absolute",
     left: 0,
     marginTop: 20,
     paddingBottom: 20,
-    paddingTop: 0
+    paddingTop: 0,
+    backgroundColor: "#2f2f2f"
   },
   parker: {
     color: "white",
     fontSize: 30,
     fontStyle: "italic",
-    marginTop: 20
+    marginTop: 20,
+    fontFamily: "sans-serif-thin"
   },
   icon: {
     marginTop: 20
@@ -343,5 +362,12 @@ const styles = StyleSheet.create({
   },
   email: {
     color: "#3366BB"
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontFamily: "sans-serif-thin"
+  },
+  pickertext: {
+    fontFamily: "sans-serif-thin"
   }
 });
