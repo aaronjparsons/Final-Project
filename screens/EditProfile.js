@@ -22,48 +22,67 @@ export default class EditProfile extends React.Component {
       phone_number: "",
       license_plate: "",
       car_size: "",
-      password: "",
-      address: ""
+      stripe_id: ''
     };
   }
 
   updateUser(newUser) {
-    console.log(newUser);
     let user = firebase.auth().currentUser;
-    user
-      .updateProfile({
-        first_name: newUser.first_name,
-        last_name: newUser.last_name,
-        email: newUser.email,
-        address: newUser.address
-      })
-      .then(function() {
-        console.log("Update successful");
-        // navigate to dashboard
-      })
-      .catch(function() {
-        console.log("error updating user");
-      });
+    let credential;
+
+    firebase.database().ref('users/' + user.uid).set({
+      first_name: newUser.first_name,
+      last_name: newUser.last_name,
+      email: newUser.email,
+      phone_number: newUser.phone_number,
+      license_plate: newUser.license_plate,
+      car_size: newUser.car_size,
+      stripe_id: this.state.stripe_id
+    }).then(() => {
+      console.log('profile updated successfully')
+      if (newUser.email !== user.email) {
+        user.updateEmail(newUser.email).then(() => {
+          console.log('email updated successfully')
+        }).catch(() => {
+          console.log('update email failed')
+          user.reauthenticateAndRetrieveDataWithCredential(credential).then(function() {
+            // User re-authenticated.
+          }).catch(function(error) {
+            // An error happened.
+          });
+        })
+      }
+      this.props.navigation.navigate('Dashboard');
+    }).catch(() => {
+      console.log('error updating profile')
+    });
+
   }
 
   componentDidMount() {
-    // console.log(firebase.auth().currentUser.email);
-    // console.log(this.state);
+    this._isMounted = true;
+    const user_id = firebase.auth().currentUser.uid;
+    let user = firebase.database().ref(`users/${user_id}`)
+
+    // populate form with currents users data
+    user.once('value').then((data) => {
+      
+      this.setState({
+        
+        first_name: data.val().first_name,
+        last_name: data.val().last_name,
+        email: data.val().email,
+        phone_number: data.val().phone_number,
+        license_plate: data.val().license_plate,
+        car_size: data.val().car_size,
+        stripe_id: data.val().stripe_id
+      })
+    })
   }
 
   render() {
-    let users = {
-      id: 1,
-      first_name: "Some",
-      last_name: "Guy",
-      email: "test@test.ca",
-      phone_number: "403-111-1111",
-      license_plate: "BJW-1819",
-      car_size: "medium",
-      password: "something",
-      address: "123 Fake St"
-    };
 
+    // form for updating user profile
     return (
       <Container>
         <KeyboardAvoidingView behavior="padding">
@@ -81,7 +100,7 @@ export default class EditProfile extends React.Component {
                 blurOnSubmit={false}
                 style={styles.inputField}
                 onChangeText={text => this.setState({ first_name: text })}
-                placeholder={users.first_name}
+                value={this.state.first_name}
               />
               <TextInput
                 returnKeyType={"next"}
@@ -94,7 +113,7 @@ export default class EditProfile extends React.Component {
                 }}
                 style={styles.inputField}
                 onChangeText={text => this.setState({ last_name: text })}
-                placeholder={users.last_name}
+                value={this.state.last_name}
               />
               <TextInput
                 returnKeyType={"next"}
@@ -107,7 +126,7 @@ export default class EditProfile extends React.Component {
                 }}
                 style={styles.inputField}
                 onChangeText={text => this.setState({ email: text })}
-                placeholder={users.email}
+                value={this.state.email}
               />
               <TextInput
                 returnKeyType={"next"}
@@ -120,7 +139,7 @@ export default class EditProfile extends React.Component {
                 }}
                 style={styles.inputField}
                 onChangeText={text => this.setState({ phone_number: text })}
-                placeholder={users.phone_number}
+                value={this.state.phone_number}
               />
               <TextInput
                 returnKeyType={"next"}
@@ -133,7 +152,7 @@ export default class EditProfile extends React.Component {
                 }}
                 style={styles.inputField}
                 onChangeText={text => this.setState({ license_plate: text })}
-                placeholder={users.license_plate}
+                value={this.state.license_plate}
               />
               <TextInput
                 returnKeyType={"next"}
@@ -146,18 +165,9 @@ export default class EditProfile extends React.Component {
                 }}
                 style={styles.inputField}
                 onChangeText={text => this.setState({ car_size: text })}
-                placeholder={users.car_size}
+                value={this.state.car_size}
               />
-              <TextInput
-                returnKeyType={"go"}
-                blurOnSubmit={true}
-                ref={input => {
-                  this.address = input;
-                }}
-                style={styles.inputField}
-                onChangeText={text => this.setState({ address: text })}
-                placeholder={users.address}
-              />
+              
             </View>
             <Button
               style={styles.button}
