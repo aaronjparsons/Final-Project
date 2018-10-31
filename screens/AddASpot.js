@@ -208,7 +208,8 @@ export default class AddASpot extends React.Component {
     
 
             
-          { (this.state.image ?  <Image style={{alignSelf:'center',width:128,height:128,resizeMode:'contain'}} source={{uri:this.state.image}}/> :             <TouchableOpacity onPress={this.pickImage}>
+          { (this.state.image ?  <Image style={{alignSelf:'center',width:128,height:128,resizeMode:'contain'}} source={{uri:this.state.image}}/> :             
+          <TouchableOpacity onPress={this.pickImage}>
               <Image style={{alignSelf:'center'}}
                 source={require('../assets/add_image.png')}
             />

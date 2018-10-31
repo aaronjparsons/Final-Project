@@ -13,18 +13,23 @@ export default class MySpots extends React.Component {
       spots: [],
       renderedSpots:[],
       image_url:null,
-      
     }
     firebase;
     storageRef = firebase.storage().ref()
     this.test_image_url = null;
     this.counter = 0;
+    this.receivedUpdate = this.receivedUpdate.bind(this);
+  }
+
+  receivedUpdate = (foo) => {
+    console.log('in the received update');
+    this.setState({foo});
   }
 
   componentDidMount() {
    
     let user_id = firebase.auth().currentUser.uid;
-
+  
     firebase.database().ref('/spots/').on(('value'), (data) => {
       let spots = [];
       data.forEach((spot) => {
@@ -49,7 +54,12 @@ export default class MySpots extends React.Component {
     self = this;
     let id = 0;
     let mySpots = this.state.spots.map(spot => {
-      var lotImageRef = storageRef.child(`lot_images/${firebase.auth().currentUser.uid}/${spot.key}/lot.jpg`);
+      if(spot.picture_url) {
+        var lotImageRef = storageRef.child(`lot_images/${firebase.auth().currentUser.uid}/${spot.key}/lot.jpg`);
+      }
+      else {
+        var lotImageRef = storageRef.child(`no_imagev2.png`);
+      }
       lotImageRef.getDownloadURL().then((url) =>{
         self.test_image_url = url;
         self.counter+=1;
@@ -65,7 +75,7 @@ export default class MySpots extends React.Component {
             <CardItem bordered>
               <Body>
                 <Text>
-                  Address: {spot.address}
+                  Address: {spot.title}
                   {"\n"}
                   Description: {spot.description}
                 </Text>
@@ -76,7 +86,7 @@ export default class MySpots extends React.Component {
             </CardItem>
             <Button
                   // style={styles.button}
-                  onPress={() => self.props.navigation.navigate('AddASpot')}
+                  onPress={() => self.props.navigation.navigate('EditSpot', { spot, onNavigateBack: this.receivedUpdate })}
                   title="Edit Spot"
                   color="blue"
                   accessibilityLabel="Edit Parking Spot"
