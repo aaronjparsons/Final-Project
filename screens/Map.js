@@ -332,7 +332,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "4%",
     width: "90%",
-    height: "50%"
+    height: "60%",
+    backgroundColor: 'rgba(38, 50, 56, 0.8)',
   },
   statusDialog: {},
   currentRental: {

@@ -1,5 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Text, Button, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator, Image } from 'react-native';
+import { Button } from 'react-native-elements';
+
+const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/parker-7a5ba.appspot.com/o/lot_images%2F';
+const endUrl = '%2Flot.jpg?alt=media';
 
 class ConfimCard extends React.Component {
   constructor(props) {
@@ -35,13 +39,13 @@ class ConfimCard extends React.Component {
     return (
       <View style={styles.popup}>
         <Text style={styles.popupPrice}>CONFIRM?</Text>
-        {this.props.info.info.map((desc, index) => {
-          return <Text key={index} style={styles.info}>{desc}</Text>
-        })}
-        {!this.state.confirmPressed ? <Button style={styles.parkButton} title='CONFIRM PARKING' onPress={this.confirmButtonPressed} />
+        <Image style={styles.image} source={{uri: `${baseUrl}${this.props.info.owner}%2F${this.props.info.id}${endUrl}`}}></Image>
+        <Text style={styles.info}>{this.props.info.info[0]}</Text>
+        <Text style={styles.info}>{`$${this.props.info.price}/hour`}</Text>
+        {!this.state.confirmPressed ? 
+        <Button buttonStyle={styles.parkButton} title='CONFIRM PARKING' onPress={this.confirmButtonPressed} />
         :
-        <ActivityIndicator size="large" color="#0000ff" />
-        // <Button style={styles.parkButton} title='RENTING SPOT...' disabled={true} onPress={() => {}} />
+        <ActivityIndicator size="large" color="#FAFAFA" />
         }
       </View>
     );
@@ -57,16 +61,26 @@ const styles = StyleSheet.create({
     padding: 20
   },
   popupPrice: {
-    fontSize: 42,
+    fontFamily: 'sans-serif-thin',
+    color: '#FAFAFA',
+    fontSize: 36,
     fontWeight: 'bold',
     marginBottom: 20,
   },
   info: {
+    color: '#FAFAFA',
+    textAlign: 'center',
+    marginBottom: 10
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
     marginBottom: 10
   },
   parkButton: {
+    fontFamily: 'sans-serif-thin',
+    color: '#FAFAFA',
+    backgroundColor: '#546E7A',
   },
-  confirmButton: {
-    backgroundColor: 'green'
-  }
 });
