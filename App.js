@@ -83,7 +83,7 @@ export default class App extends React.Component {
     return (
       <View>
         {!this.state.loading ?
-          <View style={{ width: "100%", height: "100%", marginTop: 24}}>
+          <View style={{ width: "100%", height: "100%", marginTop: 24, paddingBottom: 48}}>
             {firebase.auth().currentUser ? <MyApp screenProps={{logout:this.logout,userObject:this.state.userObject}} /> : <LoggedOutApp screenProps={this.authenticate}/> }    
           </View>
         :

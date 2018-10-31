@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Button } from 'react-native';
+import { View, StyleSheet, Text, Button, ActivityIndicator } from 'react-native';
 
 class ConfimCard extends React.Component {
   constructor(props) {
@@ -40,7 +40,9 @@ class ConfimCard extends React.Component {
         })}
         {!this.state.confirmPressed ? <Button style={styles.parkButton} title='CONFIRM PARKING' onPress={this.confirmButtonPressed} />
         :
-        <Button style={styles.parkButton} title='RENTING SPOT...' disabled={true} onPress={() => {}} />}
+        <ActivityIndicator size="large" color="#0000ff" />
+        // <Button style={styles.parkButton} title='RENTING SPOT...' disabled={true} onPress={() => {}} />
+        }
       </View>
     );
     }
