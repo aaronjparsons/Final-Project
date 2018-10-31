@@ -4,7 +4,7 @@ import {
   View,
   Text,
   Button,
-  TouchableHighlight
+  TouchableOpacity
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
@@ -145,6 +145,7 @@ class Map extends Component {
   }
 
   checkout() {
+    this.refs.statusCard.resetButton();
     let currentUser = firebase.auth().currentUser;
     this.statusPopup.dismiss();
     firebase
@@ -258,9 +259,9 @@ class Map extends Component {
 
           <View style={styles.currentRental}>
             {this.state.spotRented && (
-              <TouchableHighlight onPress={this.statusPressed}>
+              <TouchableOpacity onPress={this.statusPressed} activeOpacity={0.6}>
                 <CurrentRental />
-              </TouchableHighlight>
+              </TouchableOpacity>
             )}
           </View>
 
@@ -298,6 +299,7 @@ class Map extends Component {
               dialogStyle={styles.statusDialog}
             >
               <StatusCard
+                ref='statusCard'
                 info={this.state.rentedSpotInfo}
                 id={this.state.currentOrder} 
                 checkout={this.checkout}

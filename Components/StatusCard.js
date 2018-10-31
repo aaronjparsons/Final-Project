@@ -8,6 +8,7 @@ class StatusCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      checkoutPressed: false,
       currentTime: null
     }
   }
@@ -41,6 +42,7 @@ class StatusCard extends React.Component {
   }
 
   updateOrderData(id) {
+    this.setState({checkoutPressed: true});
     firebase
       .database()
       .ref("/orders/" + id)
@@ -63,6 +65,10 @@ class StatusCard extends React.Component {
     });
   }
 
+  resetButton() {
+    this.setState({checkoutPressed: false});
+  }
+
   render() {
     return (
       <View style={styles.popup}>
@@ -75,6 +81,7 @@ class StatusCard extends React.Component {
             </Text>
           );
         })}
+        {!this.state.checkoutPressed ?
         <Button
           title="CHECKOUT"
           onPress={() => {
@@ -83,6 +90,13 @@ class StatusCard extends React.Component {
             this.updateOrderData(this.props.id);
           }}
         />
+        :
+        <Button
+          title="PROCESSING PAYMENT..."
+          disabled={true}
+          onPress={() => {}}
+        />
+        }
       </View>
     );
   }

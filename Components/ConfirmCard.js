@@ -40,7 +40,7 @@ class ConfimCard extends React.Component {
         })}
         {!this.state.confirmPressed ? <Button style={styles.parkButton} title='CONFIRM PARKING' onPress={this.confirmButtonPressed} />
         :
-        <Button style={styles.parkButton} title='RENTING YOUR SPOT...' onPress={() => {}} />}
+        <Button style={styles.parkButton} title='RENTING SPOT...' disabled={true} onPress={() => {}} />}
       </View>
     );
     }
