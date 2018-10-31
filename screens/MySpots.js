@@ -13,11 +13,15 @@ import {
   StyleSheet,
   Button,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions
 } from "react-native";
 import ScreenHeader from "../Components/ScreenHeader";
 
 import firebase from "../Firebase.js";
+
+const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/parker-7a5ba.appspot.com/o/lot_images%2F';
+const endUrl = '%2Flot.jpg?alt=media';
 
 export default class MySpots extends React.Component {
   constructor(props) {
@@ -29,7 +33,7 @@ export default class MySpots extends React.Component {
     };
     firebase;
     storageRef = firebase.storage().ref();
-    this.test_image_url = null;
+    this.urlToFetch = null;
     this.counter = 0;
     this.receivedUpdate = this.receivedUpdate.bind(this);
   }
@@ -68,33 +72,27 @@ export default class MySpots extends React.Component {
     let id = 0;
     let mySpots = this.state.spots.map(spot => {
       if (spot.picture_url) {
-        var lotImageRef = storageRef.child(
-          `lot_images/${firebase.auth().currentUser.uid}/${spot.key}/lot.jpg`
-        );
+        self.urlToFetch = `${baseUrl}${firebase.auth().currentUser.uid}%2F${spot.key}${endUrl}`
       } else {
-        var lotImageRef = storageRef.child(`no_imagev2.png`);
+        self.urlToFetch = "https://firebasestorage.googleapis.com/v0/b/parker-7a5ba.appspot.com/o/no_imagev2.png?alt=media&token=dc6603f8-58df-41c8-8f89-3e9a01dfb280"
       }
-      lotImageRef.getDownloadURL().then(url => {
-        self.test_image_url = url;
-        self.counter += 1;
-        id++;
-        cardToPush = (
+      id++;
+      return (
           <Card key={spot.key}>
-            <CardItem header bordered>
+            <CardItem header bordered containerStyle={{flexDirection:"row"}}>
               <Text>Spot: {id}</Text>
-            </CardItem>
+              {(spot.is_rented) 
+              ?
+              <Image source={require("../assets/red_light.png")} style={{width:32,height:32,marginLeft:Dimensions.get('window').width * 0.65}}/>
+              :
+              <Image source={require("../assets/green_light.png")} style={{width:32,height:32,marginLeft:Dimensions.get('window').width * 0.65}}/>}
+              </CardItem>
             <CardItem bordered>
-              {self.test_image_url ? (
-                <Image
+            <Image
                   style={styles.picture}
-                  source={{ uri: self.test_image_url }}
-                />
-              ) : (
-                <Image
-                  style={styles.picture}
-                  source={require("../assets/spot.jpg")}
-                />
-              )}
+                  source={{ uri: self.urlToFetch }}
+                  />
+             
             </CardItem>
             <CardItem bordered>
               <Body>
@@ -121,20 +119,15 @@ export default class MySpots extends React.Component {
                   accessibilityLabel="Edit Parking Spot"
                 />
           </Card>)
-          if(self.counter <= self.state.spots.length ) {
-            self.setState(prevState=>({
-              renderedSpots : [...prevState.renderedSpots, cardToPush]
-            }))
-          }
 
-        
-      })
-    });
+
+
+    }); //end of mapping
 
     return (
       <Container>
         <ScreenHeader navigation={this.props.navigation} />
-        <Content padder>{this.state.renderedSpots}</Content>
+        <Content padder>{mySpots}</Content>
       </Container>
     );
   }
