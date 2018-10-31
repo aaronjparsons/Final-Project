@@ -14,8 +14,13 @@ class ConfimCard extends React.Component {
 
   confirmButtonPressed() {
     if (this._isMounted) {
-      this.props.parkingConfirmComplete()
+      this.setState({confirmPressed: true});
+      this.props.parkingConfirmComplete();
     }
+  }
+
+  resetButton() {
+    this.setState({confirmPressed: false});
   }
 
   componentDidMount() {
@@ -33,7 +38,9 @@ class ConfimCard extends React.Component {
         {this.props.info.info.map((desc, index) => {
           return <Text key={index} style={styles.info}>{desc}</Text>
         })}
-        <Button style={styles.parkButton} title='CONFIRM PARKING' onPress={this.confirmButtonPressed} />
+        {!this.state.confirmPressed ? <Button style={styles.parkButton} title='CONFIRM PARKING' onPress={this.confirmButtonPressed} />
+        :
+        <Button style={styles.parkButton} title='RENTING YOUR SPOT...' onPress={() => {}} />}
       </View>
     );
     }

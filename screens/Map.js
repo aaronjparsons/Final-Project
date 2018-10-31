@@ -120,6 +120,7 @@ class Map extends Component {
   }
 
   parkingConfirmComplete() {
+    this.refs.confirmCard.resetButton();
     let currentUser = firebase.auth().currentUser;
     if (this._isMounted) {
       this.confirmPopup.dismiss();
@@ -284,6 +285,7 @@ class Map extends Component {
               dialogStyle={styles.dialog}
             >
               <ConfirmCard
+                ref='confirmCard'
                 info={this.state.spotInfo}
                 parkingConfirmComplete={this.writeOrderData}
               />
