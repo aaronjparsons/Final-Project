@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, View, Text, Button, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
 import InfoCard from "../Components/InfoCard";
@@ -33,15 +27,15 @@ class Map extends Component {
         is_rented: null,
         id: null,
         price: null,
-        owner: null,
+        owner: null
       },
       spotRented: null,
       location: { lat: 51.0478, lng: -114.0593 },
       currentOrder: null,
       rentedSpotInfo: {
         price: null,
-        info: [],
-      },
+        info: []
+      }
     };
     this.markerPressed = this.markerPressed.bind(this);
     this.parkButtonPressed = this.parkButtonPressed.bind(this);
@@ -55,7 +49,7 @@ class Map extends Component {
   _isMounted = false;
 
   getLocation(locationObject) {
-    this.setState({location: locationObject });
+    this.setState({ location: locationObject });
   }
   _onMapReady = () => {
     console.log("map ready");
@@ -63,16 +57,17 @@ class Map extends Component {
 
   markerPressed(data) {
     console.log(data);
-    this.setState({
-      spotInfo: {
-        price: data.price,
-        info: [data.title, data.description],
-        is_rented: data.is_rented,
-        id: data.id,
-        address: data.title,
-        owner: data.owner,
-      }
-    },
+    this.setState(
+      {
+        spotInfo: {
+          price: data.price,
+          info: [data.title, data.description],
+          is_rented: data.is_rented,
+          id: data.id,
+          address: data.title,
+          owner: data.owner
+        }
+      },
       function() {
         console.log("show popup");
         this.infoPopup.show();
@@ -196,29 +191,35 @@ class Map extends Component {
                     console.log(spot);
                     let price = spot.val().price;
                     let info = [spot.val().title, spot.val().description];
-                    this.setState({
-                      rentedSpotInfo: {
-                        price: price,
-                        info: info
-                      }
-                    }, () => this.refs.currentRent.startTimer())
+                    this.setState(
+                      {
+                        rentedSpotInfo: {
+                          price: price,
+                          info: info
+                        }
+                      },
+                      () => this.refs.currentRent.startTimer()
+                    );
                     // });
                   });
               }
             });
         }
-      })
-      firebase.database().ref("/spots/").on("value", (data) => {
-        let spots = [];
-        data.forEach((childSnapshot) => {
-          let item = childSnapshot.val();
+      });
+      firebase
+        .database()
+        .ref("/spots/")
+        .on("value", data => {
+          let spots = [];
+          data.forEach(childSnapshot => {
+            let item = childSnapshot.val();
             item.id = childSnapshot.key;
             spots.push(item);
             this.setState({
               markers: spots
             });
+          });
         });
-      });
     }
   }
 
@@ -237,55 +238,53 @@ class Map extends Component {
       <Container>
         <HeaderNavigation navigation={this.props.navigation} />
         <View style={{ width: "100%", height: "100%", alignItems: "center" }}>
-        <MapAutoComplete
-              placeholder="Search"
-              minLength={2} // minimum length of text to search
-              autoFocus={false}
-              returnKeyType={"done"} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
-              listViewDisplayed="true" // true/false/undefined
-              fetchDetails={true}
-              renderDescription={row => row.description} // custom description render
-              onPress={(data, details = null) => {
-                // 'details' is provided when fetchDetails = true
+          <MapAutoComplete
+            placeholder="Search"
+            minLength={2} // minimum length of text to search
+            autoFocus={false}
+            returnKeyType={"done"} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+            listViewDisplayed="true" // true/false/undefined
+            fetchDetails={true}
+            renderDescription={row => row.description} // custom description render
+            onPress={(data, details = null) => {
+              // 'details' is provided when fetchDetails = true
 
-                this.getLocation(
-                  details.geometry.location
-                );
-
-              }}
-              getDefaultValue={() => ""}
-              query={{
-                // available options: https://developers.google.com/places/web-service/autocomplete
-                key: GOOGLE_MAPS_API,
-                establishment: "establishment",
-                street_number: "short_name",
-                route: "long_name",
-                locality: "long_name",
-                administrative_area_level_1: "short_name",
-                country: "long_name",
-                postal_code: "short_name"
-              }}
-              currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
-              currentLocationLabel="Current location"
-              nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-              GoogleReverseGeocodingQuery={
-                {
-                  // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-                }
+              this.getLocation(details.geometry.location);
+            }}
+            getDefaultValue={() => ""}
+            query={{
+              // available options: https://developers.google.com/places/web-service/autocomplete
+              key: GOOGLE_MAPS_API,
+              establishment: "establishment",
+              street_number: "short_name",
+              route: "long_name",
+              locality: "long_name",
+              administrative_area_level_1: "short_name",
+              country: "long_name",
+              postal_code: "short_name"
+            }}
+            currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+            currentLocationLabel="Current location"
+            nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+            GoogleReverseGeocodingQuery={
+              {
+                // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
               }
-              GooglePlacesSearchQuery={{
-                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-                rankby: "distance",
-                types: "food"
-              }}
-              filterReverseGeocodingByTypes={[
-                "locality",
-                "administrative_area_level_3"
-              ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-              debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-            />
+            }
+            GooglePlacesSearchQuery={{
+              // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+              rankby: "distance",
+              types: "food"
+            }}
+            filterReverseGeocodingByTypes={[
+              "locality",
+              "administrative_area_level_3"
+            ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+            debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+          />
           <MapView
             style={styles.map}
+            customMapStyle={mapStyle}
             region={{
               latitude: this.state.location.lat,
               longitude: this.state.location.lng,
@@ -322,9 +321,12 @@ class Map extends Component {
 
           <View style={styles.currentRental}>
             {this.state.spotRented && (
-              <TouchableOpacity onPress={this.statusPressed} activeOpacity={0.6}>
-                <CurrentRental 
-                  ref='currentRent'
+              <TouchableOpacity
+                onPress={this.statusPressed}
+                activeOpacity={0.6}
+              >
+                <CurrentRental
+                  ref="currentRent"
                   order={this.state.currentOrder}
                 />
               </TouchableOpacity>
@@ -352,7 +354,7 @@ class Map extends Component {
               dialogStyle={styles.dialog}
             >
               <ConfirmCard
-                ref='confirmCard'
+                ref="confirmCard"
                 info={this.state.spotInfo}
                 parkingConfirmComplete={this.writeOrderData}
               />
@@ -365,9 +367,9 @@ class Map extends Component {
               dialogStyle={styles.statusDialog}
             >
               <StatusCard
-                ref='statusCard'
+                ref="statusCard"
                 info={this.state.rentedSpotInfo}
-                id={this.state.currentOrder} 
+                id={this.state.currentOrder}
                 checkout={this.checkout}
               />
             </PopupDialog>
@@ -403,233 +405,233 @@ const styles = StyleSheet.create({
 
 const mapStyle = [
   {
-    "elementType": "geometry",
-    "stylers": [
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#1d2c4d"
+        color: "#1d2c4d"
       }
     ]
   },
   {
-    "elementType": "labels.text.fill",
-    "stylers": [
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#8ec3b9"
+        color: "#8ec3b9"
       }
     ]
   },
   {
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    elementType: "labels.text.stroke",
+    stylers: [
       {
-        "color": "#1a3646"
+        color: "#1a3646"
       }
     ]
   },
   {
-    "featureType": "administrative.country",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: "administrative.country",
+    elementType: "geometry.stroke",
+    stylers: [
       {
-        "color": "#4b6878"
+        color: "#4b6878"
       }
     ]
   },
   {
-    "featureType": "administrative.land_parcel",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "administrative.land_parcel",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#64779e"
+        color: "#64779e"
       }
     ]
   },
   {
-    "featureType": "administrative.province",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: "administrative.province",
+    elementType: "geometry.stroke",
+    stylers: [
       {
-        "color": "#4b6878"
+        color: "#4b6878"
       }
     ]
   },
   {
-    "featureType": "landscape.man_made",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: "landscape.man_made",
+    elementType: "geometry.stroke",
+    stylers: [
       {
-        "color": "#334e87"
+        color: "#334e87"
       }
     ]
   },
   {
-    "featureType": "landscape.natural",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "landscape.natural",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#023e58"
+        color: "#023e58"
       }
     ]
   },
   {
-    "featureType": "poi",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "poi",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#283d6a"
+        color: "#283d6a"
       }
     ]
   },
   {
-    "featureType": "poi",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "poi",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#6f9ba5"
+        color: "#6f9ba5"
       }
     ]
   },
   {
-    "featureType": "poi",
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    featureType: "poi",
+    elementType: "labels.text.stroke",
+    stylers: [
       {
-        "color": "#1d2c4d"
+        color: "#1d2c4d"
       }
     ]
   },
   {
-    "featureType": "poi.park",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "poi.park",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "color": "#023e58"
+        color: "#023e58"
       }
     ]
   },
   {
-    "featureType": "poi.park",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "poi.park",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#3C7680"
+        color: "#3C7680"
       }
     ]
   },
   {
-    "featureType": "road",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "road",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#304a7d"
+        color: "#304a7d"
       }
     ]
   },
   {
-    "featureType": "road",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "road",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#98a5be"
+        color: "#98a5be"
       }
     ]
   },
   {
-    "featureType": "road",
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    featureType: "road",
+    elementType: "labels.text.stroke",
+    stylers: [
       {
-        "color": "#1d2c4d"
+        color: "#1d2c4d"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "road.highway",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#2c6675"
+        color: "#2c6675"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: "road.highway",
+    elementType: "geometry.stroke",
+    stylers: [
       {
-        "color": "#255763"
+        color: "#255763"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "road.highway",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#b0d5ce"
+        color: "#b0d5ce"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    featureType: "road.highway",
+    elementType: "labels.text.stroke",
+    stylers: [
       {
-        "color": "#023e58"
+        color: "#023e58"
       }
     ]
   },
   {
-    "featureType": "transit",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "transit",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#98a5be"
+        color: "#98a5be"
       }
     ]
   },
   {
-    "featureType": "transit",
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    featureType: "transit",
+    elementType: "labels.text.stroke",
+    stylers: [
       {
-        "color": "#1d2c4d"
+        color: "#1d2c4d"
       }
     ]
   },
   {
-    "featureType": "transit.line",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "transit.line",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "color": "#283d6a"
+        color: "#283d6a"
       }
     ]
   },
   {
-    "featureType": "transit.station",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "transit.station",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#3a4762"
+        color: "#3a4762"
       }
     ]
   },
   {
-    "featureType": "water",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "water",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#0e1626"
+        color: "#0e1626"
       }
     ]
   },
   {
-    "featureType": "water",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "water",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#4e6d70"
+        color: "#4e6d70"
       }
     ]
   }
