@@ -286,6 +286,7 @@ class Map extends Component {
             />
           <MapView
             style={styles.map}
+            customMapStyle={mapStyle}
             region={{
               latitude: this.state.location.lat,
               longitude: this.state.location.lng,
