@@ -156,12 +156,23 @@ export default class EditSpot extends React.Component {
             />
             </TouchableOpacity> )}
             <TextInput
+              returnKeyType={"next"}
+              blurOnSubmit={false}
+              onSubmitEditing={() => {
+                this.price.focus();
+              }}
+              ref={input => {
+                this.description = input;
+              }}
               style={styles.inputField}
               onChangeText={text => this.setState({ description: text })}
               value={this.state.description + ''}
             />
             <TextInput
               style={styles.inputField}
+              ref={input => {
+                this.price = input;
+              }}
               onChangeText={text => this.setState({ price: text })}
               value={this.state.price + ''}
             />

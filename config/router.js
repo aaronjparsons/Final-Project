@@ -1,7 +1,19 @@
 import React from "react";
-import { createDrawerNavigator, DrawerItems, createStackNavigator } from "react-navigation";
+import {
+  createDrawerNavigator,
+  DrawerItems,
+  createStackNavigator
+} from "react-navigation";
 import { StyleSheet, Image } from "react-native";
-import { Container, Content, Header, Body, Text, Icon, Root } from "native-base";
+import {
+  Container,
+  Content,
+  Header,
+  Body,
+  Text,
+  Icon,
+  Root
+} from "native-base";
 
 // importing screens/components
 import Dashboard from "../screens/Dashboard.js";
@@ -46,7 +58,7 @@ export const RootStack = createStackNavigator(
       screen: PaymentInfo
     },
     EditSpot: {
-      screen: EditSpot,
+      screen: EditSpot
     }
   },
   {
@@ -61,7 +73,7 @@ const CustomDrawerContentComponent = props => (
       <Body>
         <Image
           style={styles.drawerImage}
-          source={require("../assets/peter.jpg")}
+          source={require("../assets/horse.png")}
         />
         <Text style={{ color: "white", alignSelf: "center" }}>
           Welcome! {props.screenProps.userObject.first_name}
@@ -95,7 +107,7 @@ const CustomDrawerContentComponentLoggedOut = props => (
       <Body>
         <Image
           style={styles.drawerImage}
-          source={require("../assets/peter.jpg")}
+          source={require("../assets/horse.png")}
         />
       </Body>
     </Header>
@@ -183,7 +195,7 @@ const styles = StyleSheet.create({
   drawerImage: {
     height: 150,
     width: 150,
-    borderRadius: 75,
+    //borderRadius: 75,
     marginLeft: 50
   }
 });
