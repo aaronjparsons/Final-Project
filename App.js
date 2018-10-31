@@ -39,22 +39,29 @@ export default class App extends React.Component {
     }
   }
 
-  isLoggedIn(){
+  isLoggedIn() {
     let userEmail = firebase.auth().currentUser.email;
-    firebase.database().ref("users").on('value', (data)=>{
-      for(let keys in data.val()){
-       if(userEmail === data.val()[keys].email){
-         userObject = data.val()[keys];
-         this.authenticate(userObject);
-       }
-      }
-     }, ()=>{})
+    firebase
+      .database()
+      .ref("users")
+      .on(
+        "value",
+        data => {
+          for (let keys in data.val()) {
+            if (userEmail === data.val()[keys].email) {
+              userObject = data.val()[keys];
+              this.authenticate(userObject);
+            }
+          }
+        },
+        () => {}
+      );
   }
 
   componentDidMount() {
     this._isMounted = true;
     // Call this function when app mounts
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
         // currentUser should be non null.
         this.isLoggedIn();
@@ -64,19 +71,16 @@ export default class App extends React.Component {
         this.setState({currentUser:null, loading: false});
       }
     });
-
   }
 
-
-  componentWillUnmount(){
-    //Warning fix 
+  componentWillUnmount() {
+    //Warning fix
     this._isMounted = false;
   }
 
-
   render() {
-    console.log("Rendering main")
-    
+    console.log("Rendering main");
+
     return (
       <View>
         {!this.state.loading ?

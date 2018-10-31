@@ -26,27 +26,29 @@ export default class LoginForm extends Component {
       .signInWithEmailAndPassword(email, password)
       .then(
         () => {
-          //If login successful
-
-          firebase
-            .database()
-            .ref("users")
-            .on(
-              "value",
-              data => {
-                for (let keys in data.val()) {
-                  if (
-                    firebase.auth().currentUser.email === data.val()[keys].email
-                  ) {
-                    userObject = data.val()[keys];
-                    this.props.authenticate(userObject);
+          if (firebase.auth().currentUser) {
+            firebase
+              .database()
+              .ref("users")
+              .on(
+                "value",
+                data => {
+                  for (let keys in data.val()) {
+                    if (
+                      firebase.auth().currentUser.email ===
+                      data.val()[keys].email
+                    ) {
+                      userObject = data.val()[keys];
+                      this.props.authenticate(userObject);
+                    }
                   }
-                }
-              },
-              () => {}
-            );
+                },
+                () => {}
+              );
 
-          this.props.login();
+            this.props.login();
+          }
+          //If login successful
         },
         error => {
           //If login failed
@@ -69,6 +71,7 @@ export default class LoginForm extends Component {
           onSubmitEditing={() => this.passwordInput.focus()}
           keyboardType="email-address"
           autoCapitalize="none"
+          blurOnSubmit={false}
           autoCorrect={false}
           underlineColorAndroid="transparent"
           onChangeText={email => this.setState({ email })}
