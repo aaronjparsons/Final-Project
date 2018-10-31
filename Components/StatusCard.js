@@ -9,7 +9,7 @@ class StatusCard extends React.Component {
     super(props);
     this.state = {
       checkoutPressed: false,
-      currentTime: null
+      currentTime: null,
     }
   }
 
@@ -53,18 +53,6 @@ class StatusCard extends React.Component {
       });
   }
 
-  currentTimeParked() {
-    firebase.database().ref(`/orders/${this.state.currentOrder}`).once('value', (data) => {
-      const start = data.val().start;
-      const now = Date.now();
-      const time = Math.round((now - start) / 60000);
-      console.log('currentTimeParked()', time, this.state.currentTime);
-      this.setState({
-        currentTime: time
-      });
-    });
-  }
-
   resetButton() {
     this.setState({checkoutPressed: false});
   }
@@ -73,7 +61,6 @@ class StatusCard extends React.Component {
     return (
       <View style={styles.popup}>
         <Text style={styles.popupPrice}>Current Parking Session</Text>
-        <Text> Minutes Currently</Text>
         {this.props.info.info.map((desc, index) => {
           return (
             <Text key={index} style={styles.info}>

@@ -146,6 +146,7 @@ class Map extends Component {
 
   checkout() {
     this.refs.statusCard.resetButton();
+    this.refs.currentRent.clearTimer();
     let currentUser = firebase.auth().currentUser;
     this.statusPopup.dismiss();
     firebase
@@ -192,7 +193,8 @@ class Map extends Component {
                         price: price,
                         info: info
                       }
-                    });
+                    }, () => this.refs.currentRent.startTimer())
+                    // });
                   });
               }
             });
@@ -260,7 +262,10 @@ class Map extends Component {
           <View style={styles.currentRental}>
             {this.state.spotRented && (
               <TouchableOpacity onPress={this.statusPressed} activeOpacity={0.6}>
-                <CurrentRental />
+                <CurrentRental 
+                  ref='currentRent'
+                  order={this.state.currentOrder}
+                />
               </TouchableOpacity>
             )}
           </View>
