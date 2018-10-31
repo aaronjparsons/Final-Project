@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View, Image, Button, StyleSheet } from "react-native";
+import { Text, View, Image, StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
 import { List, ListItem } from "react-native-elements";
 import { Container } from "native-base";
 import HeaderNavigation from "../Components/HeaderNavigation.js";
@@ -9,13 +10,13 @@ export default class Dashboard extends React.Component {
   vehicleSize(size) {
     switch (size) {
       case 'small':
-        return 'https://png.icons8.com/nolan/40/000000/motorcycle.png';
+        return 'https://png.icons8.com/dotty/40/000000/dirt-bike.png';
       case 'medium':
-        return 'https://png.icons8.com/office/40/000000/sedan.png';
+        return 'https://png.icons8.com/dotty/40/000000/fiat-500.png';
       case 'large':
-        return 'https://png.icons8.com/nolan/40/000000/truck.png';
+        return 'https://png.icons8.com/dotty/40/000000/suv.png';
       default:
-        return 'https://png.icons8.com/office/40/000000/sedan.png';
+        return 'https://png.icons8.com/dotty/40/000000/fiat-500.png';
     }
   }
 
@@ -71,11 +72,13 @@ export default class Dashboard extends React.Component {
               </Text>
               <Image style={styles.avatar} source={{uri: this.vehicleSize(this.props.user.car_size)}} />
               <Button
-                style={styles.button}
-                onPress={() => this.props.navigation.navigate('EditProfile')}
-                title="Edit Profile"
-                color="blue"
+                // buttonStyle={styles.bottom_button}
+                buttonStyle={styles.bottom_button}
+                raise={true}
+                title="EDIT PROFILE"
+                
                 accessibilityLabel="Change User Profile"
+                onPress={() => this.props.navigation.navigate('EditProfile')}
               />
             </View>
           </View>
@@ -84,6 +87,8 @@ export default class Dashboard extends React.Component {
             <List>
               {list.map(item => (
                 <ListItem
+                  containerStyle={styles.listItem}
+                  titleStyle={styles.listItemContent}
                   key={item.title}
                   title={item.title}
                   onPress={() => this.props.navigation.navigate(item.navigate)}
@@ -100,7 +105,7 @@ export default class Dashboard extends React.Component {
 
 const styles = StyleSheet.create({
   header:{
-    backgroundColor: "#DCDCDC",
+    backgroundColor: "#424242",
   },
   headerContent:{
     padding:30,
@@ -116,16 +121,18 @@ const styles = StyleSheet.create({
   },
   name:{
     fontSize:22,
-    color:"#000000",
-    fontWeight:'600',
+    color:"#F5F5F5",
+    fontWeight:'200',
+    fontFamily: 'sans-serif-thin'
   },
   userInfo:{
     fontSize:16,
-    color:"#778899",
-    fontWeight:'600',
+    color:"#F5F5F5",
+    fontWeight:'100',
+    fontFamily: 'sans-serif-thin'
   },
   body:{
-    backgroundColor: "#778899",
+    backgroundColor: "#424242",
     height:500,
     // alignItems:'center',
   },
@@ -153,14 +160,22 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   bottom_button:{
-    position: 'absolute',
-    backgroundColor: 'red',
-    width: '100%',
-    marginTop: 290,
+    // position: 'absolute',
+    backgroundColor: '#212121',
+    width: 350,
+    // fontFamily: 'sans-serif-thin'
+    // marginTop: 290,
     // bottom: 0,
   },
   map: {
     // ...StyleSheet.absoluteFillObject,
     marginTop: 65
   },
+  listItem: {
+    backgroundColor: '#424242',
+  },
+  listItemContent: {
+    color: '#F5F5F5',
+    fontFamily: 'sans-serif-thin'
+  }
 });

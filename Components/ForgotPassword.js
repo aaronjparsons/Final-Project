@@ -30,7 +30,7 @@ export default class ForgotPassword extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView style={styles.container}>
         <Header style={styles.header}>
           <Text
             onPress={() => this.props.navigation.navigate("Home")}
@@ -51,18 +51,21 @@ export default class ForgotPassword extends Component {
           style={styles.input}
           onChangeText={email => this.setState({ email })}
           placeholder="  Email"
-          placeholderTextColor="rgba(255,255,255,0.7)"
           returnKeyType="go"
           underlineColorAndroid="transparent"
         />
-        <TouchableOpacity onPress={this.resetPassword.bind(this)}>
-          <Text>Reset Password</Text>
+        <TouchableOpacity
+          style={styles.reset}
+          onPress={this.resetPassword.bind(this)}
+        >
+          <Text style={styles.buttontext}>Reset Password</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
+          style={styles.login}
           onPress={() => this.props.navigation.navigate("Login")}
         >
-          <Text>Go To Login</Text>
+          <Text style={styles.logintext}> Back To Login</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     );
@@ -72,7 +75,7 @@ export default class ForgotPassword extends Component {
 const styles = StyleSheet.create({
   input: {
     height: 40,
-    backgroundColor: "rgba(255,255,255,0.7)",
+    backgroundColor: "#8a8a8a",
     marginTop: 10,
     borderRadius: 45,
     paddingLeft: 10,
@@ -81,23 +84,30 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     textAlign: "center",
-    padding: 4
+    padding: 4,
+    fontFamily: "sans-serif-thin",
+    color: "#FFFFFF"
   },
   header: {
-    height: 75
+    height: 75,
+    backgroundColor: "#2f2f2f",
+    fontFamily: "sans-serif-thin"
   },
   button: {
     position: "absolute",
     left: 0,
     marginTop: 20,
     paddingBottom: 20,
-    paddingTop: 0
+    paddingTop: 0,
+    backgroundColor: "#2f2f2f",
+    fontFamily: "sans-serif-thin"
   },
   parker: {
     color: "white",
     fontSize: 30,
     fontStyle: "italic",
-    marginTop: 20
+    marginTop: 20,
+    fontFamily: "sans-serif-thin"
   },
   icon: {
     marginTop: 20
@@ -107,5 +117,28 @@ const styles = StyleSheet.create({
   },
   email: {
     color: "#3366BB"
+  },
+  login: {
+    marginTop: 400,
+    marginLeft: 150
+  },
+  reset: {
+    marginTop: 10,
+    borderRadius: 45,
+    backgroundColor: "#F5F5F5",
+    paddingVertical: 15,
+    paddingLeft: 150,
+    backgroundColor: "#8a8a8a"
+  },
+  container: {
+    backgroundColor: "#3c3c3c",
+    height: "100%"
+  },
+  buttontext: {
+    fontFamily: "sans-serif-thin"
+  },
+  logintext: {
+    fontFamily: "sans-serif-thin",
+    color: "#FFFFFF"
   }
 });

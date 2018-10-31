@@ -25,20 +25,23 @@ export default class ScreenHeader extends Component {
 
 const styles = StyleSheet.create({
   header: {
-    height: 75
+    height: 75,
+    backgroundColor: "#2f2f2f"
   },
   button: {
     position: "absolute",
     left: 0,
     marginTop: 20,
     paddingBottom: 20,
-    paddingTop: 0
+    paddingTop: 0,
+    backgroundColor: "#2f2f2f"
   },
   title: {
     color: "white",
     fontSize: 30,
     fontStyle: "italic",
-    marginTop: 20
+    marginTop: 20,
+    fontFamily: "sans-serif-thin"
   },
   icon: {
     marginTop: 20
