@@ -31,6 +31,12 @@ export default class MySpots extends React.Component {
     storageRef = firebase.storage().ref();
     this.test_image_url = null;
     this.counter = 0;
+    this.receivedUpdate = this.receivedUpdate.bind(this);
+  }
+
+  receivedUpdate = (foo) => {
+    console.log('in the received update');
+    this.setState({foo});
   }
 
   componentDidMount() {
@@ -48,7 +54,7 @@ export default class MySpots extends React.Component {
             spots.push(newSpot);
           }
         });
-
+        // ?????
         this.setState({ spots: spots });
       });
   }
@@ -93,7 +99,7 @@ export default class MySpots extends React.Component {
             <CardItem bordered>
               <Body>
                 <Text>
-                  Address: {spot.address}
+                  Address: {spot.title}
                   {"\n"}
                   Description: {spot.description}
                 </Text>
@@ -106,20 +112,21 @@ export default class MySpots extends React.Component {
               </Text>
             </CardItem>
             <Button
-              // style={styles.button}
-              onPress={() => self.props.navigation.navigate("AddASpot")}
-              title="Edit Spot"
-              color="blue"
-              accessibilityLabel="Edit Parking Spot"
-            />
-          </Card>
-        );
-        if (self.counter <= self.state.spots.length) {
-          self.setState(prevState => ({
-            renderedSpots: [...prevState.renderedSpots, cardToPush]
-          }));
-        }
-      });
+                  // style={styles.button}
+                  onPress={() => self.props.navigation.navigate('EditSpot', { spot, onNavigateBack: this.receivedUpdate })}
+                  title="Edit Spot"
+                  color="blue"
+                  accessibilityLabel="Edit Parking Spot"
+                />
+          </Card>)
+          if(self.counter <= self.state.spots.length ) {
+            self.setState(prevState=>({
+              renderedSpots : [...prevState.renderedSpots, cardToPush]
+            }))
+          }
+
+        
+      })
     });
 
     return (

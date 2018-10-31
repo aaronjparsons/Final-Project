@@ -5,8 +5,7 @@ import { LoggedOutApp, MyApp } from "./config/router.js";
 import firebase from 'firebase'
 
 console.ignoredYellowBox = ["Setting a timer"];
-// console.ignoredYellowBox = ["Setting a timer"];
-// console.ignoredYellowBox = ["Setting a timer"];
+console.disableYellowBox = true;
 
 export default class App extends React.Component {
   constructor(props){

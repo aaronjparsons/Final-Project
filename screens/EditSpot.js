@@ -1,17 +1,6 @@
 import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  StatusBar,
-  Button,
-  TextInput,
-  KeyboardAvoidingView,
-  Container
-} from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container, TouchableOpacity } from "react-native"; 
+import { ImagePicker } from 'expo';
 import ScreenHeader from "../Components/ScreenHeader";
 import firebase from "../Firebase.js";
 
@@ -25,52 +14,101 @@ export default class EditSpot extends React.Component {
       user: "",
       description: "",
       price: 0,
-      latitude: "",
-      longitude: "",
-      is_rented: false
+      latitude: '',
+      longitude: '',
+      is_rented: false,
+      current_spot: '',
+      image: ''
     };
 
     this.updateSpot = this.updateSpot.bind(this);
     this.getSpot = this.getSpot.bind(this);
+    this.pickImage = this.pickImage.bind(this);
+    this.uploadImageAsync = this.uploadImageAsync.bind(this);
+    this.deleteSpot = this.deleteSpot.bind(this);
+    this.toggleRented = this.toggleRented.bind(this);
   }
 
   _isMounted = false;
 
+  pickImage(){
+
+    _pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+  
+      console.log(result);
+  
+      if (!result.cancelled) {
+        this.setState({image:result.uri})
+      }
+    };
+
+    _pickImage();
+  }
+
   getSpot() {
     let spot = {
-      title: this.state.address,
-      picture_url: this.state.picture_url,
       description: this.state.description,
       price: this.state.price,
-      user: this.state.user,
-      longitude: this.state.longitude,
-      latitude: this.state.latitude,
-      is_rented: this.state.is_rented
     };
     return spot;
   }
 
-  getCoordinates() {
-    // get coordinates from marker
+  deleteSpot() {
+    firebase.database().ref(`spots/${this.props.navigation.state.params.spot.key}`).remove()
+    this.props.navigation.push('MySpots')
+  }
+
+  toggleRented() {
+    let bool;
+    let spot_bool = firebase.database().ref(`spots/${this.props.navigation.state.params.spot.key}/is_rented`);
+    spot_bool.on(('value'), (data) => {
+      bool = data.val();
+    })
+
+    if (bool === true) {
+      spot_bool.set(false);
+    } else {
+    spot_bool.set(true);
+    }
+  }
+  
+  async uploadImageAsync(uri, spot_id) {
+    console.log("URI", uri)
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = firebase
+      .storage()
+      .ref()
+      .child(`lot_images/${current_spot.owner}/${current_spot.key}/lot.jpg`);
+    await ref.put(blob).then(()=>{
+      console.log('in the async action')
+      self.props.navigation.navigate("MySpots");
+    });
   }
 
   updateSpot(spot) {
-    const spot_id = this.props.navigation.getParam("key", null);
-
+    const current_spot = this.props.navigation.state.params.spot;
+    
+    let the_spot = firebase.database().ref(`spots/${current_spot.key}`)
     // find the spot in database
-    firebase
-      .database()
-      .ref(`spots/${spot_id}`)
+
+    the_spot
       .update({
-        description: spot.description
-        // address: spot.address,
-        // picture_url: spot.picture_url,
-        // price: spot.price
+        description: spot.description,
+        price: spot.price
       })
-      .then(data => {
+      .then(() => {
         //success callback
-        console.log("data ", data);
-        this.props.navigation.navigate("MySpots");
+
+        this.uploadImageAsync(this.state.image, current_spot.key);
+        
+        this.props.navigation.push('MySpots', {
+          onNavigateBack: this.receivedUpdate
+        });
       })
       .catch(error => {
         //error callback
@@ -80,6 +118,18 @@ export default class EditSpot extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
+    const spot_id = this.props.navigation.state.params.spot.key;
+    let spot = firebase.database().ref(`spots/${spot_id}`)
+
+    spot.once('value').then((data) => {
+      
+      this.setState({
+        
+        description: data.val().description,
+        price: data.val().price,
+        address: data.val().title
+      })
+    })
   }
 
   componentWillUnmount() {
@@ -96,42 +146,15 @@ export default class EditSpot extends React.Component {
           <View style={styles.headerContent}>
             <Text>Edit Parking Spot</Text>
           </View>
+          <Text>{this.state.address}</Text>
           <View style={styles.content}>
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: 51.0478,
-                longitude: -114.0593,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1
-              }}
-              showsMyLocationButton={true}
-              showsUserLocation={true}
-              // onPress={this.removeCard}
-            >
-              <Marker
-                coordinate={{
-                  latitude: 51.0478,
-                  longitude: -114.0593
-                }}
-                draggable
-              />
-            </MapView>
-            <TextInput
-              style={styles.inputField}
-              onChangeText={text => this.setState({ address: text })}
-              placeholder={"Address"}
+           
+            { (this.state.image ?  <Image style={{alignSelf:'center',width:128,height:128,resizeMode:'contain'}} source={{uri:this.state.image}}/> :   
+            <TouchableOpacity onPress={this.pickImage}>
+              <Image style={{alignSelf:'center'}}
+                source={require('../assets/add_image.png')}
             />
-            <TextInput
-              returnKeyType={"next"}
-              blurOnSubmit={false}
-              onSubmitEditing={() => {
-                this.description.focus();
-              }}
-              style={styles.inputField}
-              onChangeText={text => this.setState({ address: text })}
-              placeholder={"Address"}
-            />
+            </TouchableOpacity> )}
             <TextInput
               returnKeyType={"next"}
               blurOnSubmit={false}
@@ -143,7 +166,7 @@ export default class EditSpot extends React.Component {
               }}
               style={styles.inputField}
               onChangeText={text => this.setState({ description: text })}
-              placeholder={"Description"}
+              value={this.state.description + ''}
             />
             <TextInput
               style={styles.inputField}
@@ -151,7 +174,7 @@ export default class EditSpot extends React.Component {
                 this.price = input;
               }}
               onChangeText={text => this.setState({ price: text })}
-              placeholder={"Price"}
+              value={this.state.price + ''}
             />
           </View>
           <Button
@@ -160,6 +183,20 @@ export default class EditSpot extends React.Component {
             title="Save Changes"
             // color="blue"
             accessibilityLabel="Add a parking spot"
+          />
+          <Button
+            style={styles.button}
+            onPress={() => this.deleteSpot()}
+            title="Delete"
+            // color="blue"
+            accessibilityLabel="Delete this parking spot"
+          />
+          <Button
+            style={styles.button}
+            onPress={() => this.toggleRented()}
+            title="Toggle On/Off"
+            // color="blue"
+            accessibilityLabel="Toggle this parking spot on/off"
           />
         </KeyboardAvoidingView>
       </ScrollView>
@@ -204,3 +241,4 @@ const styles = StyleSheet.create({
   //   paddingLeft:5
   // }
 });
+
