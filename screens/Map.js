@@ -71,6 +71,10 @@ class Map extends Component {
         id: data.id,
         address: data.title,
         owner: data.owner,
+      },
+      location: {
+        lat: data.location.latitude,
+        lng: data.location.longitude
       }
     },
       function() {

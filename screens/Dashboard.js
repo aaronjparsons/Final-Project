@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     backgroundColor: '#212121',
     width: 350,
-    fontFamily: 'sans-serif-thin'
+    // fontFamily: 'sans-serif-thin'
     // marginTop: 290,
     // bottom: 0,
   },
