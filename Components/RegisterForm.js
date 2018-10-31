@@ -1,8 +1,9 @@
 import React from "react"
-import { TextInput, Text, View, StyleSheet, Dimensions, TouchableOpacity, Picker,KeyboardAvoidingView } from "react-native"
+import { TextInput, Text, View,
+   StyleSheet, Dimensions,StatusBar,
+    TouchableOpacity, Picker,KeyboardAvoidingView,ScrollView } from "react-native"
 import firebase from '../Firebase.js';
 import ScreenHeader from "../Components/ScreenHeader";
-
 usernameRegex = RegExp(/^[A-Za-z]+$/);  
 emailRegex = RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);  
 phoneRegex = RegExp(/^[2-9]\d{2}-\d{3}-\d{4}$/);
@@ -95,17 +96,31 @@ export default class Register extends React.Component {
 
   render(){
     return (
-      <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={100}>
-      
-        <TextInput underlineColorAndroid='transparent' style={[styles.debug, {borderColor : this.state.border_color}]} placeholder="First Name"
+      <KeyboardAvoidingView style={styles.container} behavior={"padding"}>
+        <ScreenHeader navigation={this.props.navigation} />
+      <ScrollView style={{marginTop:20}}>
+        <TextInput  returnKeyType = { "next" } onSubmitEditing={() => { this.last_name.focus(); }} blurOnSubmit={false}
+        underlineColorAndroid='transparent' style={[styles.debug, {borderColor : this.state.border_color}]} placeholder="First Name"
         onChangeText = {(first_name)=> {this.setState({first_name})}}/>
-        <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="Last Name"
+
+        <TextInput  returnKeyType = { "next" } onSubmitEditing={() => { this.email.focus(); }} blurOnSubmit={false}
+        ref={(input) => { this.last_name = input; }}
+        underlineColorAndroid='transparent' style={styles.debug} placeholder="Last Name"
         onChangeText = {(last_name)=> {this.setState({last_name})}}/>
-        <TextInput underlineColorAndroid='transparent' textContentType={"emailAddress"}style={styles.debug}
+
+        <TextInput returnKeyType = { "next" } onSubmitEditing={() => { this.phone_number.focus(); }} blurOnSubmit={false}
+        ref={(input) => { this.email = input; }}
+        underlineColorAndroid='transparent' textContentType={"emailAddress"}style={styles.debug}
         onChangeText = {(email)=> {this.setState({email})}} placeholder="Email" autoCapitalize = "none"/>
-        <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="Phone number"
+
+        <TextInput returnKeyType = { "next" } onSubmitEditing={() => { this.license_plate.focus(); }} blurOnSubmit={false} 
+        ref={(input) => { this.phone_number = input; }}
+        underlineColorAndroid='transparent' style={styles.debug} placeholder="Phone number"
         onChangeText = {(phone_number)=> {this.setState({phone_number})}}/>
-        <TextInput underlineColorAndroid='transparent' style={styles.debug} placeholder="License Plate #"
+
+        <TextInput returnKeyType = { "next" } onSubmitEditing={() => { this.password.focus(); }} blurOnSubmit={false}
+        ref={(input) => { this.license_plate = input; }}
+        underlineColorAndroid='transparent' style={styles.debug} placeholder="License Plate #"
         onChangeText = {(license_plate)=> {this.setState({license_plate})}}/>
         <Picker
           selectedValue={this.state.car_size}
@@ -115,14 +130,19 @@ export default class Register extends React.Component {
           <Picker.Item label="Medium" value="medium" />
           <Picker.Item label="Large" value="large" />
         </Picker>
-        <TextInput underlineColorAndroid='transparent' secureTextEntry = {true} style={styles.debug}
+        <TextInput returnKeyType = { "next" } onSubmitEditing={() => { this.password_conf.focus(); }} blurOnSubmit={false} 
+        ref={(input) => { this.password = input; }}
+        underlineColorAndroid='transparent' secureTextEntry = {true} style={styles.debug}
         onChangeText = {(password)=> {this.setState({password})}} placeholder="Password"/>
-        <TextInput underlineColorAndroid='transparent' secureTextEntry = {true} style={styles.debug} 
+        <TextInput returnKeyType = { "done" } 
+        underlineColorAndroid='transparent' secureTextEntry = {true} style={styles.debug}
+        ref={(input) => { this.password_conf = input; }} 
         onChangeText = {(password_conf)=> {this.setState({password_conf})}} placeholder="Confirm Password"/>
 
         <TouchableOpacity onPress={this.registerUser}  style={styles.button}>
          <Text>Register</Text>
         </TouchableOpacity>
+        </ScrollView>
       </KeyboardAvoidingView>
     )
   }
