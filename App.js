@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { View, Text, ActivityIndicator, StyleSheet, ImageBackground } from "react-native";
 import { LoggedOutApp, MyApp } from "./config/router.js";
+import { BlurView } from 'expo';
 
 import firebase from 'firebase'
 
@@ -88,10 +89,18 @@ export default class App extends React.Component {
           </View>
         :
         <View style={styles.loadingView}>
-          <View>
-            <Text style={styles.text}>LOADING...</Text>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
+          <ImageBackground
+            resizeMode='cover'
+            style={{height: '100%', }}
+            source={require('./assets/parkparkblur.jpg')}
+          > 
+            <BlurView tint="dark" intensity={90} style={styles.opacityView}>
+              <View style={styles.info}>
+                <Text style={styles.text}>STABLE</Text>
+                <ActivityIndicator size="large" color="white" style={styles.spinner}/>
+              </View>
+            </BlurView>
+          </ImageBackground>
         </View>
         }
       </View>
@@ -101,12 +110,27 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   loadingView: {
+    width: '100%',
+    height: '100%'
+  },
+  opacityView: {
+    width: '100%',
+    height: '100%',
+    paddingTop: 360,
+  },
+  info: {
+    backgroundColor: 'rgba(38, 50, 56, 0.6)',
     display: 'flex',
-    alignItems: 'center',
-    marginTop: '30%'
+    alignItems: 'center'
   },
   text: {
-    fontSize: 32
+    color: 'white',
+    fontSize: 36,
+    fontFamily: 'sans-serif-thin',
+  },
+  spinner: {
+    marginTop: 20,
+    marginBottom: 20
   }
 });
 
