@@ -89,7 +89,6 @@ export default class Dashboard extends React.Component {
             <List>
               {list.map(item => (
                 <ListItem
-                  component={TouchableScale}
                   friction={90}
                   tension={100}
                   activeScale={0.95}
