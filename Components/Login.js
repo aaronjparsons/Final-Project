@@ -38,7 +38,9 @@ export default class Login extends React.Component {
             style={styles.logo}
             source={require("../assets/parkpark.jpg")}
           />
-          <Text style={styles.title}>Stable</Text>
+        </View>
+        <View>
+          <Text style={styles.title}>STABLE</Text>
         </View>
         <View style={styles.formContainer}>
           <LoginForm
@@ -68,14 +70,17 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   logo: {
-    height: 300,
-    width: 300,
+    height: 275,
+    width: 275,
     borderRadius: 65
   },
   title: {
     color: "#fff",
     marginTop: 10,
-    paddingTop: 10,
+    paddingTop: 20,
+    paddingLeft: 160,
+    letterSpacing: 1,
+    fontSize: 25,
     fontFamily: "sans-serif-thin"
   },
   formContainer: {

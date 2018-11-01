@@ -36,7 +36,7 @@ export default class ForgotPassword extends Component {
             onPress={() => this.props.navigation.navigate("Home")}
             style={styles.parker}
           >
-            Stable
+            STABLE
           </Text>
           <Button
             style={styles.button}
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
   },
   parker: {
     color: "white",
-    fontSize: 30,
-    fontStyle: "italic",
+    fontSize: 25,
+    letterSpacing: 1,
     marginTop: 20,
     fontFamily: "sans-serif-thin"
   },
