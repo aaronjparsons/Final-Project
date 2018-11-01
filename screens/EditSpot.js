@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container, TouchableOpacity } from "react-native"; 
+import { ScrollView, StyleSheet,Dimensions, Text, View, Image, StatusBar, Button, TextInput, KeyboardAvoidingView, Container, TouchableOpacity } from "react-native"; 
 import { ImagePicker } from 'expo';
 import ScreenHeader from "../Components/ScreenHeader";
 import firebase from "../Firebase.js";
@@ -156,6 +156,7 @@ export default class EditSpot extends React.Component {
             />
             </TouchableOpacity> )}
             <TextInput
+              underlineColorAndroid="transparent"
               returnKeyType={"next"}
               blurOnSubmit={false}
               onSubmitEditing={() => {
@@ -169,6 +170,7 @@ export default class EditSpot extends React.Component {
               value={this.state.description + ''}
             />
             <TextInput
+              underlineColorAndroid="transparent"
               style={styles.inputField}
               ref={input => {
                 this.price = input;
@@ -185,7 +187,7 @@ export default class EditSpot extends React.Component {
             accessibilityLabel="Add a parking spot"
           />
           <Button
-            style={styles.button}
+            style={[styles.button,{marginBottom:30}]}
             onPress={() => this.deleteSpot()}
             title="Delete"
             // color="blue"
@@ -206,23 +208,32 @@ export default class EditSpot extends React.Component {
 
 const styles = StyleSheet.create({
   body: {
-    backgroundColor: "white",
-    height: 800,
-    alignItems: "center"
+    backgroundColor: "#424242",
+    height: Dimensions.get('window').height,
+    alignItems: "center",
+    color:"white"
   },
   inputField: {
     height: 40,
-    width: 250,
+    width: Dimensions.get("window").width * 0.8,
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 10,
     alignItems: "center",
     margin: 10,
-    padding: 5
+    padding: 5,
+    borderRadius: 15,
+    borderColor: "black",
+    fontSize: 15,
+    alignItems: "flex-start",
+    color:"white"
+
   },
   button: {
     width: 300,
-    color: "blue"
+    color: "blue",
+    elevation: 0,
+    marginBottom:50
   },
   headerContent: {
     padding: 30,

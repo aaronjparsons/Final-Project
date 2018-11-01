@@ -110,6 +110,7 @@ export default class MySpots extends React.Component {
                 }}
               />
             )}
+          
           </CardItem>
           <CardItem style={styles.card} bordered>
             <Image style={styles.picture} source={{ uri: self.urlToFetch }} />
@@ -168,10 +169,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#3c3c3c"
   },
   card: {
-    backgroundColor: "#8a8a8a"
+    backgroundColor: "#2f2f2f"
   },
   header: {
-    color: "#3c3c3c",
+    color: "white",
     fontFamily: "sans-serif-thin"
   },
   body: {
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
     fontFamily: "sans-serif-thin"
   },
   button: {
-    backgroundColor: "#2f2f2f",
+    color: "#8a8a8a",
     fontFamily: "sans-serif-thin"
   }
 });
