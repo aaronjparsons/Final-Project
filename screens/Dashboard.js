@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableScale } from 'react-native-touchable-scale';
 import { Button } from "react-native-elements";
 import { List, ListItem } from "react-native-elements";
 import { Container } from "native-base";
@@ -87,8 +88,13 @@ export default class Dashboard extends React.Component {
           <View style={styles.body}>
             <List>
               {list.map(item => (
-                <TouchableOpacity>
                 <ListItem
+                  component={TouchableScale}
+
+                  friction={90}
+                  tension={100}
+                  activeScale={0.95}
+                  
                   containerStyle={styles.listItem}
                   titleStyle={styles.listItemContent}
                   key={item.title}
@@ -96,8 +102,7 @@ export default class Dashboard extends React.Component {
                   onPress={() => this.props.navigation.navigate(item.navigate)}
                   // leftIcon={{name: item.icon}}
                 />
-                </TouchableOpacity>
-              ))}
+                ))}
             </List>
           </View>
         </View>
