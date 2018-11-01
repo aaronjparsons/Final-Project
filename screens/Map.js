@@ -395,12 +395,18 @@ const styles = StyleSheet.create({
   },
   dialog: {
     position: "absolute",
-    top: "4%",
+    top: "10%",
     width: "90%",
     height: "60%",
     backgroundColor: 'rgba(38, 50, 56, 0.8)',
   },
-  statusDialog: {},
+  statusDialog: {
+    position: "absolute",
+    top: "10%",
+    width: "90%",
+    height: "40%",
+    backgroundColor: 'rgba(38, 50, 56, 0.8)',
+  },
   currentRental: {
     position: "absolute",
     bottom: "10%"

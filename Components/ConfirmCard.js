@@ -43,7 +43,11 @@ class ConfimCard extends React.Component {
         <Text style={styles.info}>{this.props.info.info[0]}</Text>
         <Text style={styles.info}>{`$${this.props.info.price}/hour`}</Text>
         {!this.state.confirmPressed ? 
-        <Button buttonStyle={styles.parkButton} title='CONFIRM PARKING' onPress={this.confirmButtonPressed} />
+        <Button 
+          buttonStyle={styles.parkButton} 
+          color='#FAFAFA'
+          title='CONFIRM PARKING' 
+          onPress={this.confirmButtonPressed} />
         :
         <ActivityIndicator size="large" color="#FAFAFA" />
         }
@@ -68,6 +72,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   info: {
+    fontFamily: 'sans-serif-thin',
     color: '#FAFAFA',
     textAlign: 'center',
     marginBottom: 10
@@ -79,8 +84,6 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   parkButton: {
-    fontFamily: 'sans-serif-thin',
-    color: '#FAFAFA',
     backgroundColor: '#546E7A',
   },
 });

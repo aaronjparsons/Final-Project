@@ -37,6 +37,7 @@ class InfoCard extends React.Component {
         ) : firebase.auth().currentUser ? (
           <Button
             buttonStyle={styles.parkButton}
+            color='#FAFAFA'
             title="PARK HERE"
             onPress={this.props.parkButtonPressed}
           />
@@ -76,17 +77,15 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   info: {
+    fontFamily: 'sans-serif-thin',
     marginBottom: 10,
     color: '#FAFAFA',
     textAlign: 'center'
   },
   parkButton: {
-    fontFamily: 'sans-serif-thin',
-    color: '#FAFAFA',
     backgroundColor: '#546E7A',
   },
   disabledButton: {
-    fontFamily: 'sans-serif-thin',
     color: 'black',
   }
 });
