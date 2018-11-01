@@ -57,17 +57,20 @@ class Map extends Component {
 
   markerPressed(data) {
     console.log(data);
-    this.setState(
-      {
-        spotInfo: {
-          price: data.price,
-          info: [data.title, data.description],
-          is_rented: data.is_rented,
-          id: data.id,
-          address: data.title,
-          owner: data.owner
-        }
+    this.setState({
+      spotInfo: {
+        price: data.price,
+        info: [data.title, data.description],
+        is_rented: data.is_rented,
+        id: data.id,
+        address: data.title,
+        owner: data.owner,
       },
+      location: {
+        lat: data.location.latitude,
+        lng: data.location.longitude
+      }
+    },
       function() {
         console.log("show popup");
         this.infoPopup.show();
