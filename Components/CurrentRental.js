@@ -55,22 +55,24 @@ export default CurrentRental;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#1194F6',
+    backgroundColor: '#3c3c3c',
     margin: '10%',
     padding: 20,
     borderRadius: 5,
     borderWidth: 2,
-    borderColor: '#0773c5'
+    borderColor: '#546E7A'
   },
   text: {
+    fontFamily: 'sans-serif-thin',
     fontSize: 20,
     textAlign: 'center',
-    color: 'white',
+    color: '#dfdfdf',
     fontWeight: 'bold'
   },
   smallText: {
-    fontSize: 14,
+    fontFamily: 'sans-serif-thin',
+    fontSize: 16,
     textAlign: 'center',
-    color: 'white',
+    color: '#dfdfdf',
   }
 });

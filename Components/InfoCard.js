@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet, Text, Button, Image } from "react-native";
+import { View, StyleSheet, Text, Image } from "react-native";
+import { Button } from 'react-native-elements';
 import firebase from "../Firebase.js";
 
 const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/parker-7a5ba.appspot.com/o/lot_images%2F';
@@ -27,20 +28,23 @@ class InfoCard extends React.Component {
         })}
         {this.props.info.is_rented ? (
           <Button
-            style={styles.parkButton}
+            buttonStyle={styles.disabledButton}
+            color='black'
             title="UNAVAILABLE"
             disabled={true}
             onPress={() => {}}
           />
         ) : firebase.auth().currentUser ? (
           <Button
-            style={styles.parkButton}
+            buttonStyle={styles.parkButton}
+            color='#FAFAFA'
             title="PARK HERE"
             onPress={this.props.parkButtonPressed}
           />
         ) : (
           <Button
-            style={styles.parkButton}
+            buttonStyle={styles.disabledButton}
+            color='black'
             title="PLEASE LOGIN"
             disabled={true}
             onPress={() => {}}
@@ -57,22 +61,31 @@ const styles = StyleSheet.create({
   popup: {
     display: "flex",
     alignItems: "center",
-    padding: 20
+    padding: 20,
   },
   popupPrice: {
-    fontSize: 42,
+    fontFamily: 'sans-serif-thin',
+    color: '#FAFAFA',
+    fontSize: 36,
     fontWeight: "bold",
     marginBottom: 20
   },
   image: {
-    width: 100,
-    height: 100
-  },
-  info: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
     marginBottom: 10
   },
-  parkButton: {},
-  confirmButton: {
-    backgroundColor: "green"
+  info: {
+    fontFamily: 'sans-serif-thin',
+    marginBottom: 10,
+    color: '#FAFAFA',
+    textAlign: 'center'
+  },
+  parkButton: {
+    backgroundColor: '#546E7A',
+  },
+  disabledButton: {
+    color: 'black',
   }
 });
