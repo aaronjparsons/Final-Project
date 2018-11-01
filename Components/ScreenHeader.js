@@ -10,7 +10,7 @@ export default class ScreenHeader extends Component {
           onPress={() => this.props.navigation.navigate("Home")}
           style={styles.title}
         >
-          Stable
+          STABLE
         </Text>
         <Button
           style={styles.button}
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
-    fontSize: 30,
-    fontStyle: "italic",
+    fontSize: 25,
+    letterSpacing: 1,
     marginTop: 20,
     fontFamily: "sans-serif-thin"
   },

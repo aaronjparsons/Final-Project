@@ -6,17 +6,16 @@ import { Container } from "native-base";
 import HeaderNavigation from "../Components/HeaderNavigation.js";
 
 export default class Dashboard extends React.Component {
-  
   vehicleSize(size) {
     switch (size) {
-      case 'small':
-        return 'https://png.icons8.com/dotty/40/000000/dirt-bike.png';
-      case 'medium':
-        return 'https://png.icons8.com/dotty/40/000000/fiat-500.png';
-      case 'large':
-        return 'https://png.icons8.com/dotty/40/000000/suv.png';
+      case "small":
+        return "https://png.icons8.com/dotty/40/000000/dirt-bike.png";
+      case "medium":
+        return "https://png.icons8.com/dotty/40/000000/fiat-500.png";
+      case "large":
+        return "https://png.icons8.com/dotty/40/000000/suv.png";
       default:
-        return 'https://png.icons8.com/dotty/40/000000/fiat-500.png';
+        return "https://png.icons8.com/dotty/40/000000/fiat-500.png";
     }
   }
 
@@ -26,7 +25,6 @@ export default class Dashboard extends React.Component {
   }
 
   render() {
-    
     const list = [
       {
         title: "Order History",
@@ -44,17 +42,16 @@ export default class Dashboard extends React.Component {
         navigate: "MySpots"
       },
       {
-        title: 'Add a spot',
-        icon: '',
-        navigate: 'AddASpot'
+        title: "Add a spot",
+        icon: "",
+        navigate: "AddASpot"
       },
       {
-        title: 'Payment Info',
-        icon: '',
-        navigate: 'PaymentInfo'
+        title: "Payment Info",
+        icon: "",
+        navigate: "PaymentInfo"
       }
-      
-    ]
+    ];
 
     return (
       <Container>
@@ -66,19 +63,23 @@ export default class Dashboard extends React.Component {
                 {this.props.user.first_name} {this.props.user.last_name}
               </Text>
               <Text style={styles.userInfo}>{this.props.user.email}</Text>
-              <Text style={styles.userInfo}>{this.props.user.phone_number}</Text>
+              <Text style={styles.userInfo}>
+                {this.props.user.phone_number}
+              </Text>
               <Text style={styles.userInfo}>
                 License Plate: {this.props.user.license_plate}
               </Text>
-              <Image style={styles.avatar} source={{uri: this.vehicleSize(this.props.user.car_size)}} />
+              <Image
+                style={styles.avatar}
+                source={{ uri: this.vehicleSize(this.props.user.car_size) }}
+              />
               <Button
                 // buttonStyle={styles.bottom_button}
                 buttonStyle={styles.bottom_button}
                 raise={true}
                 title="EDIT PROFILE"
-                
                 accessibilityLabel="Change User Profile"
-                onPress={() => this.props.navigation.navigate('EditProfile')}
+                onPress={() => this.props.navigation.navigate("EditProfile")}
               />
             </View>
           </View>
@@ -106,12 +107,13 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  header:{
-    backgroundColor: "#424242",
+  header: {
+    backgroundColor: "#424242"
   },
-  headerContent:{
-    padding:30,
-    alignItems: 'center',
+  headerContent: {
+    padding: 30,
+    alignItems: "center",
+    backgroundColor: "#2f2f2f"
   },
   avatar: {
     width: 80,
@@ -119,53 +121,53 @@ const styles = StyleSheet.create({
     // borderRadius: 63,
     // borderWidth: 4,
     // borderColor: "white",
-    marginBottom:10,
+    marginBottom: 10
   },
-  name:{
-    fontSize:22,
-    color:"#F5F5F5",
-    fontWeight:'200',
-    fontFamily: 'sans-serif-thin'
+  name: {
+    fontSize: 22,
+    color: "#F5F5F5",
+    fontWeight: "200",
+    fontFamily: "sans-serif-thin"
   },
-  userInfo:{
-    fontSize:16,
-    color:"#F5F5F5",
-    fontWeight:'100',
-    fontFamily: 'sans-serif-thin'
+  userInfo: {
+    fontSize: 16,
+    color: "#F5F5F5",
+    fontWeight: "100",
+    fontFamily: "sans-serif-thin"
   },
-  body:{
+  body: {
     backgroundColor: "#424242",
-    height:500,
+    height: 500
     // alignItems:'center',
   },
-  item:{
-    flexDirection : 'row',
+  item: {
+    flexDirection: "row"
   },
-  infoContent:{
-    flex:1,
-    alignItems:'flex-start',
-    paddingLeft:5
+  infoContent: {
+    flex: 1,
+    alignItems: "flex-start",
+    paddingLeft: 5
   },
-  iconContent:{
-    flex:1,
-    alignItems:'flex-end',
-    paddingRight:5,
+  iconContent: {
+    flex: 1,
+    alignItems: "flex-end",
+    paddingRight: 5
   },
-  icon:{
-    width:30,
-    height:30,
-    marginTop:20,
+  icon: {
+    width: 30,
+    height: 30,
+    marginTop: 20
   },
-  info:{
-    fontSize:18,
-    marginTop:20,
-    color: "#FFFFFF",
+  info: {
+    fontSize: 18,
+    marginTop: 20,
+    color: "#FFFFFF"
   },
-  bottom_button:{
+  bottom_button: {
     // position: 'absolute',
-    backgroundColor: '#212121',
+    backgroundColor: "#212121",
     width: 350,
-    // fontFamily: 'sans-serif-thin'
+    fontFamily: "sans-serif-thin"
     // marginTop: 290,
     // bottom: 0,
   },
@@ -174,10 +176,10 @@ const styles = StyleSheet.create({
     marginTop: 65
   },
   listItem: {
-    backgroundColor: '#424242',
+    backgroundColor: "#424242"
   },
   listItemContent: {
-    color: '#F5F5F5',
-    fontFamily: 'sans-serif-thin'
+    color: "#F5F5F5",
+    fontFamily: "sans-serif-thin"
   }
 });

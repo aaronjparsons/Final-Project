@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet, Text, Button, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
+import { Button } from 'react-native-elements';
 import Map from "../screens/Map.js";
 import firebase from "../Firebase.js";
 import { doPayment } from "../Api.js";
@@ -71,6 +72,7 @@ class StatusCard extends React.Component {
         {!this.state.checkoutPressed ?
         <Button
           title="CHECKOUT"
+          buttonStyle={styles.checkoutButton}
           onPress={() => {
             console.log("CHECKOUT PRESSED");
             // this.checkout();
@@ -78,7 +80,7 @@ class StatusCard extends React.Component {
           }}
         />
         :
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#FAFAFA" />
         }
       </View>
     );
@@ -94,11 +96,20 @@ const styles = StyleSheet.create({
     padding: 20
   },
   popupPrice: {
-    fontSize: 42,
+    fontFamily: 'sans-serif-thin',
+    color: '#FAFAFA',
+    fontSize: 36,
     fontWeight: "bold",
-    marginBottom: 20
+    marginBottom: 20,
+    textAlign: 'center'
   },
   info: {
-    marginBottom: 10
-  }
+    fontFamily: 'sans-serif-thin',
+    marginBottom: 10,
+    color: '#FAFAFA',
+    textAlign: 'center'
+  },
+  checkoutButton: {
+    backgroundColor: '#546E7A',
+  },
 });
