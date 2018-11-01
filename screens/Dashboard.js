@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Image, StyleSheet } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import { List, ListItem } from "react-native-elements";
 import { Container } from "native-base";
@@ -86,6 +86,7 @@ export default class Dashboard extends React.Component {
           <View style={styles.body}>
             <List>
               {list.map(item => (
+                <TouchableOpacity>
                 <ListItem
                   containerStyle={styles.listItem}
                   titleStyle={styles.listItemContent}
@@ -94,6 +95,7 @@ export default class Dashboard extends React.Component {
                   onPress={() => this.props.navigation.navigate(item.navigate)}
                   // leftIcon={{name: item.icon}}
                 />
+                </TouchableOpacity>
               ))}
             </List>
           </View>

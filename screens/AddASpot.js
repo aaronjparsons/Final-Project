@@ -6,13 +6,13 @@ import {
   View,
   Image,
   StatusBar,
-  Button,
   TextInput,
   KeyboardAvoidingView,
   TouchableOpacity,
   Container,
   Dimensions
 } from "react-native";
+import { Button } from 'react-native-elements';
 import MapView, { Marker } from "react-native-maps";
 // import ImagePicker from 'react-native-image-crop-picker';
 import { ImagePicker } from "expo";
@@ -139,7 +139,7 @@ export default class AddASpot extends React.Component {
 
   render() {
     return (
-      <ScrollView keyboardShouldPersistTaps='always'>
+      <ScrollView style={styles.fullBody} keyboardShouldPersistTaps='always'>
         <ScreenHeader
           style={{ width: Dimensions.get("window").width }}
           navigation={this.props.navigation}
@@ -284,21 +284,23 @@ export default class AddASpot extends React.Component {
 
 const styles = StyleSheet.create({
   body: {
-    backgroundColor: "white",
+    backgroundColor: "#424242",
     height: Dimensions.get("window").height,
     alignItems: "center"
   },
   inputField: {
+    backgroundColor: '#606060',
+    color: '#FAFAFA',
     height: 40,
     width: Dimensions.get("window").width * 0.8,
-    borderColor: "black",
+    // borderColor: "black",
     borderWidth: 1,
     borderRadius: 10,
     alignItems: "center",
     margin: 10,
     padding: 5,
     borderRadius: 15,
-    borderColor: "#161D7D",
+    borderColor: "#3C3C3C",
     fontSize: 15,
     alignItems: "flex-start"
   },
@@ -320,7 +322,11 @@ const styles = StyleSheet.create({
     padding: 5
     // flex: 1,
     // justifyContent: 'center'
-  }
+  },
+  // fullBody: {
+  //   marginBottom: 48,
+  //   backgroundColor: '#424242'
+  // }
   // content: {
   //   flex:1,
   //   alignItems:'flex-start',
