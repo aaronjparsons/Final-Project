@@ -1,39 +1,57 @@
 import React from "react";
-import { View, Text, ActivityIndicator, StyleSheet, ImageBackground } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  ImageBackground
+} from "react-native";
 import { LoggedOutApp, MyApp } from "./config/router.js";
-import { BlurView } from 'expo';
+import { BlurView } from "expo";
 
-import firebase from 'firebase'
+import firebase from "firebase";
 
 console.ignoredYellowBox = ["Setting a timer"];
 console.disableYellowBox = true;
 
 export default class App extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      currentUser : null,
+      currentUser: null,
       userObject: null,
-      loading: true,
-        }
-    this.authenticate = this.authenticate.bind(this)
-    this.logout = this.logout.bind(this)
-    this.isLoggedIn = this.isLoggedIn.bind(this)
+      loading: true
+    };
+    this.authenticate = this.authenticate.bind(this);
+    this.logout = this.logout.bind(this);
+    this.isLoggedIn = this.isLoggedIn.bind(this);
   }
 
   _isMounted = false;
 
   authenticate(userObject) {
     if (this._isMounted) {
-      this.setState({currentUser:firebase.auth().currentUser,userObject:userObject, loading: false})
-    }  
+      this.setState({
+        currentUser: firebase.auth().currentUser,
+        userObject: userObject,
+        loading: false
+      });
+    }
   }
 
   logout() {
     if (this._isMounted) {
-      firebase.auth().signOut().then(()=>{console.log("Signed out")}, ()=>{})
+      firebase
+        .auth()
+        .signOut()
+        .then(
+          () => {
+            console.log("Signed out");
+          },
+          () => {}
+        );
       this.setState({
-        currentUser:null,
+        currentUser: null,
         loading: false
       });
     }
@@ -67,8 +85,8 @@ export default class App extends React.Component {
         this.isLoggedIn();
       } else {
         // no user logged in. currentUser is null.
-        console.log('yeah you definitely logged out')
-        this.setState({currentUser:null, loading: false});
+        console.log("yeah you definitely logged out");
+        this.setState({ currentUser: null, loading: false });
       }
     });
   }
@@ -83,26 +101,46 @@ export default class App extends React.Component {
 
     return (
       <View>
-        {!this.state.loading ?
-          <View style={{ width: "100%", height: "100%", marginTop: 24, paddingBottom: 48}}>
-            {firebase.auth().currentUser ? <MyApp screenProps={{logout:this.logout,userObject:this.state.userObject}} /> : <LoggedOutApp screenProps={this.authenticate}/> }    
+        {!this.state.loading ? (
+          <View
+            style={{
+              width: "100%",
+              height: "100%",
+              marginTop: 24,
+              paddingBottom: 48
+            }}
+          >
+            {firebase.auth().currentUser ? (
+              <MyApp
+                screenProps={{
+                  logout: this.logout,
+                  userObject: this.state.userObject
+                }}
+              />
+            ) : (
+              <LoggedOutApp screenProps={this.authenticate} />
+            )}
           </View>
-        :
-        <View style={styles.loadingView}>
-          <ImageBackground
-            resizeMode='cover'
-            style={{height: '100%', }}
-            source={require('./assets/parkparkblur.jpg')}
-          > 
-            <BlurView tint="dark" intensity={90} style={styles.opacityView}>
-              <View style={styles.info}>
-                <Text style={styles.text}>STABLE</Text>
-                <ActivityIndicator size="large" color="white" style={styles.spinner}/>
-              </View>
-            </BlurView>
-          </ImageBackground>
-        </View>
-        }
+        ) : (
+          <View style={styles.loadingView}>
+            <ImageBackground
+              resizeMode="cover"
+              style={{ height: "100%" }}
+              source={require("./assets/parkparkblur.jpg")}
+            >
+              <BlurView tint="dark" intensity={90} style={styles.opacityView}>
+                <View style={styles.info}>
+                  <Text style={styles.text}>STABLE</Text>
+                  <ActivityIndicator
+                    size="large"
+                    color="white"
+                    style={styles.spinner}
+                  />
+                </View>
+              </BlurView>
+            </ImageBackground>
+          </View>
+        )}
       </View>
     );
   }
@@ -110,23 +148,23 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   loadingView: {
-    width: '100%',
-    height: '100%'
+    width: "100%",
+    height: "100%"
   },
   opacityView: {
-    width: '100%',
-    height: '100%',
-    paddingTop: 360,
+    width: "100%",
+    height: "100%",
+    paddingTop: 360
   },
   info: {
-    backgroundColor: 'rgba(38, 50, 56, 0.6)',
-    display: 'flex',
-    alignItems: 'center'
+    backgroundColor: "rgba(38, 50, 56, 0.6)",
+    display: "flex",
+    alignItems: "center"
   },
   text: {
-    color: 'white',
+    color: "white",
     fontSize: 36,
-    fontFamily: 'sans-serif-thin',
+    fontFamily: "sans-serif-thin"
   },
   spinner: {
     marginTop: 20,
