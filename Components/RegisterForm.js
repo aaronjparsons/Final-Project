@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    fontFamily: "sans-serif-thin"
+    // fontFamily: "sans-serif-thin"
   },
   title: {
     fontWeight: "bold",
