@@ -286,7 +286,8 @@ const styles = StyleSheet.create({
   body: {
     backgroundColor: "#424242",
     height: Dimensions.get("window").height,
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent:"space-around"
   },
   inputField: {
     backgroundColor: '#606060',
@@ -307,7 +308,7 @@ const styles = StyleSheet.create({
   button: {
     width: 300,
     color: "blue",
-    elevation: 0
+    elevation: 0,
   },
   headerContent: {
     padding: 30,

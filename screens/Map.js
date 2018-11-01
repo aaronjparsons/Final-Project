@@ -314,8 +314,12 @@ class Map extends Component {
                   onPress={() => this.markerPressed(marker)}
                   image={
                     marker.is_rented
-                      ? require("../assets/GrayMarker.png")
-                      : require("../assets/GreenMarker.png")
+                      ? marker.id === this.state.spotRented ?
+                        require("../assets/RedMarker.png")  
+                        : 
+                        require("../assets/GrayMarker.png")
+                      : 
+                      require("../assets/GreenMarker.png")
                   }
                 />
               );

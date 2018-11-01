@@ -5,9 +5,9 @@ import {
   View,
   Image,
   StatusBar,
-  Button,
   Keyboard
 } from "react-native";
+import { Button } from 'react-native-elements';
 import { CreditCardInput } from "react-native-credit-card-input";
 import ScreenHeader from "../Components/ScreenHeader";
 import { Container } from "native-base";
@@ -122,9 +122,11 @@ export default class PaymentInfo extends React.Component {
     return (
       <Container style={styles.container}>
         <ScreenHeader navigation={this.props.navigation} />
-        <View>
-          <CreditCardInput onChange={this.formOnChange} allowScroll={true} />
+        <View style={styles.paymentContainer}>
+          <CreditCardInput onChange={this.formOnChange} allowScroll={true} inputStyle={styles.label} labelStyle={styles.label} />
           <Button
+            buttonStyle={styles.button}
+            color='#FAFAFA'
             title={
               this.state.submitButtonDisabled
                 ? "Enter A Valid Credit Card"
@@ -142,5 +144,16 @@ export default class PaymentInfo extends React.Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#3c3c3c"
+  },
+  paymentContainer: {
+    paddingTop: 20
+  },
+  label: {
+    color: '#FAFAFA',
+    fontFamily: 'sans-serif-thin',
+  },
+  button: {
+    marginTop: 10,
+    backgroundColor: '#546E7A'
   }
 });
