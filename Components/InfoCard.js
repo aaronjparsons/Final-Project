@@ -84,8 +84,5 @@ const styles = StyleSheet.create({
   },
   parkButton: {
     backgroundColor: '#546E7A',
-  },
-  disabledButton: {
-    color: 'black',
   }
 });
